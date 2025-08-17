@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
+import Winners from './components/Winners';
 import Hero from './components/Hero';
 import EventBasics from './components/EventBasics';
 import Schedule from './components/Schedule';
@@ -42,6 +43,7 @@ function App() {
       <Header activeSection={activeSection} />
       <main>
         <Hero />
+        <Winners />
         <EventBasics />
         <Schedule />
         <WhyJoin />
