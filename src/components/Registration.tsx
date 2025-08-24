@@ -122,7 +122,7 @@ const Registration: React.FC = () => {
 
             <div className="mt-8 text-center">
               <a
-                href="https://www.spaceappschallenge.org"
+                href="https://www.spaceappschallenge.org/2025/local-events/houston"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 rounded-lg font-fira-sans font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/25"
