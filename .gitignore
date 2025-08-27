@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 .env
 spaceapps_scraper/venv/
+spaceapps_scraper/venv/
+venv/
+__pycache__/
+.DS_Store
