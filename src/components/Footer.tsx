@@ -14,7 +14,6 @@ const Footer: React.FC = () => {
     resources: [
       { name: 'NASA Space Apps Global', href: 'https://www.spaceappschallenge.org', external: true },
       { name: 'Challenge Guidelines', href: 'https://www.spaceappschallenge.org/challenges', external: true },
-      { name: 'Event Planning Kit', href: 'https://www.spaceappschallenge.org/organizers', external: true },
       { name: 'Code of Conduct', href: 'https://www.spaceappschallenge.org/code-of-conduct', external: true }
     ],
     community: [
@@ -99,23 +98,84 @@ const Footer: React.FC = () => {
               <div>
                 <h4 className="font-overpass font-bold text-lg text-white mb-4">Resources</h4>
                 <ul className="space-y-3">
-                  {footerLinks.resources.map((link, index) => (
-                    <li key={index}>
-                      <a
-                        href={link.href}
-                        onClick={(e) => {
-                          if (link.external) {
-                            e.preventDefault();
-                            scrollToSection(link.href);
-                          }
-                        }}
-                        className="inline-flex items-center space-x-1 font-fira-sans text-gray-400 hover:text-white transition-colors duration-200"
-                      >
-                        <span>{link.name}</span>
-                        {link.external && <ExternalLink className="w-3 h-3" />}
-                      </a>
-                    </li>
-                  ))}
+                  <li>
+                    <a href="https://www.spaceappschallenge.org/resources/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-1 font-fira-sans text-blue-400 hover:underline">
+                      All Resources
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.spaceappschallenge.org/resources/-faq/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-1 font-fira-sans text-blue-400 hover:underline">
+                      Participant FAQ
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.spaceappschallenge.org/brand/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-1 font-fira-sans text-blue-400 hover:underline">
+                      Brand Guidelines
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.spaceappschallenge.org/nasa-space-apps-2024/awards/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-1 font-fira-sans text-blue-400 hover:underline">
+                      Awards
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.spaceappschallenge.org/2025/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-1 font-fira-sans text-blue-400 hover:underline">
+                      2025 Hackathon
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.spaceappschallenge.org/2025/local-events/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-1 font-fira-sans text-blue-400 hover:underline">
+                      2025 Local Events
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.spaceappschallenge.org/2025/challenges/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-1 font-fira-sans text-blue-400 hover:underline">
+                      2025 Challenges
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.spaceappschallenge.org/2025/find-a-team/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-1 font-fira-sans text-blue-400 hover:underline">
+                      Find a Team
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.spaceappschallenge.org/2025/space-agency-partners/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-1 font-fira-sans text-blue-400 hover:underline">
+                      Space Agency Partners
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.facebook.com/spaceappschallenge" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-1 font-fira-sans text-blue-400 hover:underline">
+                      Facebook
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.twitter.com/spaceapps" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-1 font-fira-sans text-blue-400 hover:underline">
+                      Twitter
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.instagram.com/nasa_spaceapps" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-1 font-fira-sans text-blue-400 hover:underline">
+                      Instagram
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.youtube.com/nasaspaceappschallenge" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-1 font-fira-sans text-blue-400 hover:underline">
+                      YouTube
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </li>
                 </ul>
               </div>
 

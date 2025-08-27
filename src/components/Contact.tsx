@@ -1,67 +1,24 @@
-import React, { useState } from 'react';
-import { Mail, MessageSquare, Users, Globe, Send, MapPin, Clock } from 'lucide-react';
+import React from 'react';
+import { Mail, MessageSquare, Users, Globe, Clock, MapPin } from 'lucide-react';
 
 const Contact: React.FC = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const mailtoLink = `mailto:houston@spaceapps.local?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(
-      `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-    )}`;
-    window.location.href = mailtoLink;
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
   const contactMethods = [
     {
       icon: Mail,
-      title: "Email",
+      title: "Local Lead",
       description: "Primary contact for all inquiries",
-      contact: "houston@spaceapps.local",
-      action: "Send Email"
-    },
-    {
-      icon: MessageSquare,
-      title: "Discord Community",
-      description: "Join our Discord server for real-time updates",
-      contact: "discord.gg/spaceappshouston",
-      action: "Join Discord"
-    },
-    {
-      icon: Users,
-      title: "Social Media",
-      description: "Follow us for updates and announcements",
-      contact: "@SpaceAppsHouston",
-      action: "Follow Us"
-    },
-    {
-      icon: Globe,
-      title: "Official Website",
-      description: "Visit the main NASA Space Apps website",
-      contact: "spaceappschallenge.org",
-      action: "Visit Site"
+      contact: "Zain Khan",
+      email: "zain@nasaspaceappschallenge.org"
     }
   ];
 
   const quickLinks = [
-    { title: "Registration Help", subject: "Registration Assistance" },
-    { title: "Sponsorship Inquiry", subject: "Sponsorship Opportunity" },
-    { title: "Volunteer Application", subject: "Volunteer Interest" },
-    { title: "Media & Press", subject: "Media Inquiry" },
-    { title: "Technical Questions", subject: "Technical Question" },
-    { title: "General Information", subject: "General Inquiry" }
+    { title: "Registration Help", type: "video", url: "https://www.youtube.com/watch?v=_AL3QrPBugc" },
+    { title: "Sponsorship Inquiry", type: "mailto", email: "Houston@nasaspaceappschallenge.org", subject: "Sponsorship Opportunity" },
+    { title: "Volunteer Application", type: "mailto", email: "Houston@nasaspaceappschallenge.org", subject: "Volunteer Application" },
+    { title: "Media & Press", type: "comingsoon" },
+    { title: "Technical Questions", type: "mailto", email: "Houston@nasaspaceappschallenge.org", subject: "Technical Question" },
+    { title: "General Information", type: "mailto", email: "Houston@nasaspaceappschallenge.org", subject: "General Inquiry" }
   ];
 
   return (
@@ -75,14 +32,12 @@ const Contact: React.FC = () => {
             Have questions about Space Apps Houston 2025? We're here to help!
           </p>
         </div>
-
         <div className="grid lg:grid-cols-3 gap-12">
           {/* Contact Methods */}
           <div className="lg:col-span-1">
             <h3 className="font-overpass font-bold text-2xl text-white mb-8">
               Get in Touch
             </h3>
-            
             <div className="space-y-6 mb-8">
               {contactMethods.map((method, index) => {
                 const IconComponent = method.icon;
@@ -102,11 +57,30 @@ const Contact: React.FC = () => {
                         <div className="text-blue-400 font-medium text-sm">
                           {method.contact}
                         </div>
+                        <div className="text-blue-400 font-medium text-sm">
+                          <a href={`mailto:${method.email}`} className="underline">{method.email}</a>
+                        </div>
                       </div>
                     </div>
                   </div>
                 );
               })}
+            </div>
+
+            {/* Admin Team */}
+            <div className="bg-slate-900/50 rounded-xl p-6 border border-blue-500/20 mb-8">
+              <h4 className="font-overpass font-bold text-lg text-white mb-4">Admin Team</h4>
+              <div className="space-y-3 font-fira-sans text-gray-300 text-sm">
+                <div><strong>Inquiries or Questions:</strong> <a href="mailto:Houston@nasaspaceappschallenge.org" className="text-blue-400 underline">Houston@nasaspaceappschallenge.org</a></div>
+                <div><strong>Social Media:</strong></div>
+                <div className="ml-4">
+                  <div>Instagram: <a href="https://www.instagram.com/nasaspaceapps_houston/" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">@nasaspaceapps_houston</a></div>
+                  <div>Facebook: <a href="https://www.facebook.com/profile.php?id=100094729717802" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">Space Apps Houston</a></div>
+                  <div>TikTok: <a href="https://www.tiktok.com/@nasa.space.apps.houston" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">@nasa.space.apps.houston</a></div>
+                  <div>Discord: <a href="https://discord.com/channels/1282054890600009841/customize-community" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">Join Discord</a></div>
+                  <div>Youtube: <a href="https://youtube.com/c/nasaspaceappschallenge?reload=9" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">NASA Space Apps Challenge</a></div>
+                </div>
+              </div>
             </div>
 
             {/* Event Details */}
@@ -135,108 +109,42 @@ const Contact: React.FC = () => {
             </div>
           </div>
 
-          {/* Contact Form */}
+          {/* Quick Inquiries */}
           <div className="lg:col-span-2">
             <h3 className="font-overpass font-bold text-2xl text-white mb-8">
-              Send us a Message
+              Quick Inquiries
             </h3>
-
-            {/* Quick Links */}
             <div className="mb-8">
-              <h4 className="font-fira-sans font-semibold text-white mb-4">Quick Inquiries</h4>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {quickLinks.map((link, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setFormData({ ...formData, subject: link.subject })}
-                    className="bg-slate-800/50 hover:bg-slate-700/50 border border-blue-500/20 hover:border-blue-400/40 rounded-lg p-3 text-left transition-all duration-200"
-                  >
-                    <span className="font-fira-sans text-white text-sm">{link.title}</span>
-                  </button>
-                ))}
+                {quickLinks.map((link, index) => {
+                  if (link.type === "video") {
+                    return (
+                      <a key={index} href={link.url} target="_blank" rel="noopener noreferrer" className="bg-slate-800/50 hover:bg-slate-700/50 border border-blue-500/20 hover:border-blue-400/40 rounded-lg p-3 text-left transition-all duration-200 block">
+                        <span className="font-fira-sans text-white text-sm">{link.title}</span>
+                      </a>
+                    );
+                  } else if (link.type === "mailto") {
+                    const subject = link.subject ?? "";
+                    return (
+                      <a key={index} href={`mailto:${link.email}?subject=${encodeURIComponent(subject)}`} className="bg-slate-800/50 hover:bg-slate-700/50 border border-blue-500/20 hover:border-blue-400/40 rounded-lg p-3 text-left transition-all duration-200 block">
+                        <span className="font-fira-sans text-white text-sm">{link.title}</span>
+                      </a>
+                    );
+                  } else if (link.type === "comingsoon") {
+                    return (
+                      <div key={index} className="bg-slate-800/50 border border-yellow-400 rounded-lg p-3 text-left transition-all duration-200 block">
+                        <span className="font-fira-sans text-yellow-400 text-sm font-bold">{link.title}: Coming Soon</span>
+                      </div>
+                    );
+                  }
+                  return null;
+                })}
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="bg-slate-900/50 rounded-xl p-6 border border-blue-500/20">
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <label htmlFor="name" className="block font-fira-sans font-medium text-white mb-2">
-                    Name *
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="w-full bg-slate-800/50 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
-                    placeholder="Your name"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block font-fira-sans font-medium text-white mb-2">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full bg-slate-800/50 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
-                    placeholder="your.email@example.com"
-                  />
-                </div>
-              </div>
-
-              <div className="mb-6">
-                <label htmlFor="subject" className="block font-fira-sans font-medium text-white mb-2">
-                  Subject *
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  required
-                  value={formData.subject}
-                  onChange={handleInputChange}
-                  className="w-full bg-slate-800/50 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
-                  placeholder="What's your inquiry about?"
-                />
-              </div>
-
-              <div className="mb-6">
-                <label htmlFor="message" className="block font-fira-sans font-medium text-white mb-2">
-                  Message *
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  required
-                  rows={6}
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  className="w-full bg-slate-800/50 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 resize-none"
-                  placeholder="Please provide details about your inquiry..."
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-lg font-fira-sans font-semibold transition-all duration-300 transform hover:scale-105"
-              >
-                <Send className="w-5 h-5" />
-                <span>Send Message</span>
-              </button>
-            </form>
-
-            <div className="mt-6 bg-blue-600/10 border border-blue-500/30 rounded-lg p-4">
-              <p className="font-fira-sans text-blue-300 text-sm">
-                <strong>Response Time:</strong> We typically respond to inquiries within 24-48 hours. 
-                For urgent matters during the event, please reach out on our Discord server for faster assistance.
-              </p>
+            {/* Terms and Conditions Section */}
+            <div className="mt-8 text-center">
+              <a href="https://www.spaceappschallenge.org/legal/" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline font-fira-sans text-lg">Terms and Conditions</a>
             </div>
           </div>
         </div>

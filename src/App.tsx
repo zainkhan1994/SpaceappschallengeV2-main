@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './components/Header';
+import Resources from './components/Resources';
 import Winners from './components/Winners';
 import Hero from './components/Hero';
 import EventBasics from './components/EventBasics';
@@ -11,6 +12,7 @@ import Judges from './components/Judges';
 import Sponsors from './components/Sponsors';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   const [activeSection, setActiveSection] = useState('hero');
@@ -48,12 +50,14 @@ function App() {
         <Schedule />
         <WhyJoin />
         <Registration />
+        <Resources />
         <Team />
         <Judges />
         <Sponsors />
         <Contact />
       </main>
       <Footer />
+      <Analytics />
     </div>
   );
 }
