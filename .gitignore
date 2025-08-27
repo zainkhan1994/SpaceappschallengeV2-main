@@ -28,3 +28,7 @@ spaceapps_scraper/venv/
 venv/
 __pycache__/
 .DS_Store
+spaceapps_scraper/venv/
+venv/
+__pycache__/
+.DS_Store
