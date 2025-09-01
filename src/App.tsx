@@ -7,8 +7,6 @@ import EventBasics from './components/EventBasics';
 import Schedule from './components/Schedule';
 import WhyJoin from './components/WhyJoin';
 import Registration from './components/Registration';
-import Team from './components/Team';
-import Judges from './components/Judges';
 import Sponsors from './components/Sponsors';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
@@ -51,8 +49,6 @@ function App() {
         <WhyJoin />
         <Registration />
         <Resources />
-        <Team />
-        <Judges />
         <Sponsors />
         <Contact />
       </main>
