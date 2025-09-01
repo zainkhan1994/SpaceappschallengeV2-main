@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ExternalLink, CheckCircle, AlertCircle, Users, Calendar } from 'lucide-react';
+import { ExternalLink, AlertCircle } from 'lucide-react';
 
 const Registration: React.FC = () => {
   const [registrationStep, setRegistrationStep] = useState(0);
@@ -28,38 +28,6 @@ const Registration: React.FC = () => {
       description: "Connect with other Houston participants before the event",
       action: "Join Discord/Social",
       completed: false
-    }
-  ];
-
-  const registrationInfo = [
-    {
-      icon: Calendar,
-      title: "Registration Timeline",
-      items: [
-        "Early Bird: Now through August 31, 2025",
-        "Regular Registration: September 1-25, 2025",
-        "Late Registration: September 26 - October 3, 2025"
-      ]
-    },
-    {
-      icon: Users,
-      title: "Team Formation",
-      items: [
-        "Teams of 2-6 participants recommended",
-        "Can register individually and form teams at event",
-        "Pre-formed teams welcome",
-        "Team formation session on Saturday morning"
-      ]
-    },
-    {
-      icon: CheckCircle,
-      title: "What's Included",
-      items: [
-        "All meals and snacks during the event",
-        "Workspace, WiFi, and power outlets",
-        "Access to mentors and workshops",
-        "Event t-shirt and swag bag"
-      ]
     }
   ];
 
@@ -132,31 +100,6 @@ const Registration: React.FC = () => {
               </a>
             </div>
           </div>
-        </div>
-
-        {/* Registration Information */}
-        <div className="grid lg:grid-cols-3 gap-8 mb-16">
-          {registrationInfo.map((info, index) => {
-            const IconComponent = info.icon;
-            return (
-              <div key={index} className="bg-slate-900/50 rounded-xl p-6 border border-blue-500/20">
-                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mb-4">
-                  <IconComponent className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="font-overpass font-bold text-xl text-white mb-4">
-                  {info.title}
-                </h3>
-                <ul className="space-y-2 font-fira-sans text-gray-300">
-                  {info.items.map((item, itemIndex) => (
-                    <li key={itemIndex} className="flex items-start space-x-2">
-                      <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          })}
         </div>
 
         {/* Important Notes */}

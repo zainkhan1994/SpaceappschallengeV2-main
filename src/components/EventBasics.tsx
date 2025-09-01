@@ -4,6 +4,9 @@ import { Clock, MapPin, Users, Mail, Globe } from 'lucide-react';
 const EventBasics: React.FC = () => {
   return (
     <section id="event-basics" className="py-20 bg-slate-800/50">
+      <div className="flex justify-center mb-8">
+        <img src="/Pictures/2024_NASA_International_Space_Apps_Challenge_Infographic.png" alt="2024 NASA International Space Apps Challenge Infographic" className="rounded-xl shadow-lg max-w-full h-auto" />
+      </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="font-overpass font-bold text-4xl lg:text-5xl text-white mb-6">

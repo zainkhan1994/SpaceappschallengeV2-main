@@ -41,13 +41,6 @@ const WhyJoin: React.FC = () => {
     }
   ];
 
-  const communityStats = [
-    { number: "200+", label: "Expected Participants" },
-    { number: "40+", label: "Diverse Teams" },
-    { number: "48", label: "Hours of Innovation" },
-    { number: "15+", label: "NASA Challenges" }
-  ];
-
   return (
     <section id="why-join" className="py-20 bg-gradient-to-b from-slate-800/50 to-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -86,28 +79,20 @@ const WhyJoin: React.FC = () => {
         {/* Community Section */}
         <div className="bg-slate-800/50 rounded-xl p-8 border border-blue-500/20 mb-16">
           <h3 className="font-overpass font-bold text-3xl text-white text-center mb-8">
-            Join Houston's Space Community
+            2024 NASA Space Apps Challenge
           </h3>
-          
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-            {communityStats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2">
-                  {stat.number}
-                </div>
-                <div className="font-fira-sans text-gray-300 text-sm">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
+            <div className="text-center"><div className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2">93,520</div><div className="font-fira-sans text-gray-300 text-sm">Registered Participants</div></div>
+            <div className="text-center"><div className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2">15,444</div><div className="font-fira-sans text-gray-300 text-sm">Teams</div></div>
+            <div className="text-center"><div className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2">485</div><div className="font-fira-sans text-gray-300 text-sm">Local Events</div></div>
+            <div className="text-center"><div className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2">163</div><div className="font-fira-sans text-gray-300 text-sm">Countries/Territories</div></div>
+            <div className="text-center"><div className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2">9,996</div><div className="font-fira-sans text-gray-300 text-sm">Projects Submitted</div></div>
+            <div className="text-center"><div className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2">15</div><div className="font-fira-sans text-gray-300 text-sm">Space Agency Partners</div></div>
+            <div className="text-center"><div className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2">120</div><div className="font-fira-sans text-gray-300 text-sm">Subject Matter Experts</div></div>
+            <div className="text-center"><div className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2">26</div><div className="font-fira-sans text-gray-300 text-sm">Navigators</div></div>
           </div>
-
-          <div className="text-center">
-            <p className="font-fira-sans text-lg text-gray-300 max-w-4xl mx-auto leading-relaxed">
-              Space Apps Houston brings together a diverse community of students, professionals, entrepreneurs, 
-              designers, and space enthusiasts. Whether you're a seasoned developer, a creative designer, 
-              a domain expert, or just passionate about space exploration, there's a place for you in our community.
-            </p>
+          <div className="flex justify-center mb-8">
+            <img src="/Pictures/TheGrowthofNASASpaceApps.png" alt="Growth of NASA Space Apps" className="rounded-xl shadow-lg max-w-full h-auto" />
           </div>
         </div>
 

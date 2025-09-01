@@ -16,7 +16,6 @@ const Winners = () => {
             </div>
             <h3 className="text-2xl font-bold text-yellow-300 mb-2">Farmvis</h3>
             <p className="text-lg text-white font-semibold">1st Place Winner</p>
-            <p className="text-md text-yellow-200 mt-2">This is a test line to check live updates.</p>
           </div>
         </div>
       </div>

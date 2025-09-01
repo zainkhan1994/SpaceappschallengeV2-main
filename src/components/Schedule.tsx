@@ -1,242 +1,141 @@
 import React, { useState } from 'react';
-import { Clock, Calendar, MapPin, Coffee, Trophy, Lightbulb } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
+import Team from './Team';
 
 const Schedule: React.FC = () => {
-  const [activeDay, setActiveDay] = useState(0);
+  const [activeMonth, setActiveMonth] = useState(0);
 
-  const schedule = [
+  const importantDates = [
     {
-      day: "Saturday, October 4",
-      date: "Day 1",
+      month: "July",
       events: [
-        {
-          time: "8:00 AM",
-          title: "Registration & Breakfast",
-          description: "Check-in, welcome breakfast, and networking",
-          icon: Coffee,
-          type: "social"
-        },
-        {
-          time: "9:00 AM",
-          title: "Opening Ceremony",
-          description: "Welcome remarks, NASA challenge overview, and keynote speaker",
-          icon: Calendar,
-          type: "ceremony"
-        },
-        {
-          time: "10:30 AM",
-          title: "Challenge Deep Dive",
-          description: "Detailed presentation of challenge themes and requirements",
-          icon: Lightbulb,
-          type: "info"
-        },
-        {
-          time: "11:30 AM",
-          title: "Team Formation",
-          description: "Networking session and team building activities",
-          icon: MapPin,
-          type: "social"
-        },
-        {
-          time: "12:30 PM",
-          title: "Lunch & Mentor Introductions",
-          description: "Catered lunch and meet your mentors",
-          icon: Coffee,
-          type: "social"
-        },
-        {
-          time: "2:00 PM",
-          title: "Hacking Begins!",
-          description: "Official start of the 24-hour development period",
-          icon: Clock,
-          type: "main"
-        },
-        {
-          time: "6:00 PM",
-          title: "Dinner",
-          description: "Catered dinner for all participants",
-          icon: Coffee,
-          type: "social"
-        },
-        {
-          time: "8:00 PM",
-          title: "Evening Activities",
-          description: "Optional workshops and networking sessions",
-          icon: Lightbulb,
-          type: "info"
-        },
-        {
-          time: "11:00 PM",
-          title: "Venue Closes",
-          description: "Day 1 concludes - rest up for tomorrow!",
-          icon: MapPin,
-          type: "info"
-        }
+        "July 8: Theme Announced",
+        "July 17: Registration Opens and 2025 Space Agency Partners Announced"
       ]
     },
     {
-      day: "Sunday, October 5",
-      date: "Day 2",
+      month: "August", 
       events: [
-        {
-          time: "8:00 AM",
-          title: "Venue Opens & Breakfast",
-          description: "Doors open, continental breakfast available",
-          icon: Coffee,
-          type: "social"
-        },
-        {
-          time: "9:00 AM",
-          title: "Final Sprint",
-          description: "Last hours of development and testing",
-          icon: Clock,
-          type: "main"
-        },
-        {
-          time: "12:00 PM",
-          title: "Lunch Break",
-          description: "Quick lunch while continuing development",
-          icon: Coffee,
-          type: "social"
-        },
-        {
-          time: "2:00 PM",
-          title: "Submissions Due",
-          description: "Final submissions must be uploaded by this time",
-          icon: Trophy,
-          type: "deadline"
-        },
-        {
-          time: "2:30 PM",
-          title: "Project Presentations",
-          description: "Teams present their solutions to judges",
-          icon: Lightbulb,
-          type: "main"
-        },
-        {
-          time: "4:30 PM",
-          title: "Judging & Networking",
-          description: "Judges deliberate while participants network",
-          icon: MapPin,
-          type: "social"
-        },
-        {
-          time: "5:30 PM",
-          title: "Closing Ceremony & Awards",
-          description: "Winner announcements and prize distribution",
-          icon: Trophy,
-          type: "ceremony"
-        },
-        {
-          time: "6:00 PM",
-          title: "Event Concludes",
-          description: "Thank you and see you next year!",
-          icon: Calendar,
-          type: "ceremony"
-        }
+        "August 21: Challenge Summaries available and Team Formation opens. Team Formation Participant Guide available."
+      ]
+    },
+    {
+      month: "September",
+      events: [
+        "September 16: Challenge Statements available",
+        "September 23: Space Apps Connect opens. Space Apps Connect Participant Guide available."
+      ]
+    },
+    {
+      month: "October",
+      events: [
+        "October 3: Global Offers available. Project Submission and Judging & Awards Participant Guides available.",
+        "October 4-5: NASA Space Apps Challenge event"
+      ]
+    },
+    {
+      month: "After the Hackathon",
+      events: [
+        "Judging occurs. Experts from NASA, Space Agency Partners, and industry leaders will evaluate the projects and select the winners. See the Judging and Awards Guide for details about the judging process and Global Awards.",
+        "Global Winners are announced!"
       ]
     }
   ];
 
-  const getEventColor = (type: string) => {
-    switch (type) {
-      case 'ceremony': return 'border-yellow-500/30 bg-yellow-500/10';
-      case 'main': return 'border-blue-500/30 bg-blue-500/10';
-      case 'deadline': return 'border-red-500/30 bg-red-500/10';
-      case 'social': return 'border-green-500/30 bg-green-500/10';
-      case 'info': return 'border-purple-500/30 bg-purple-500/10';
-      default: return 'border-gray-500/30 bg-gray-500/10';
+  const resourceLinks = [
+    {
+      title: "2025 Registration",
+      url: "https://www.spaceappschallenge.org/2025/"
+    },
+    {
+      title: "2025 Challenges",
+      url: "https://www.spaceappschallenge.org/2025/challenges/"
+    },
+    {
+      title: "Space Apps Connect Guide",
+      url: "https://www.spaceappschallenge.org/resources/space-app-connect-guide/"
+    },
+    {
+      title: "Team Formation Guide", 
+      url: "https://www.spaceappschallenge.org/resources/team-formation-guide/"
     }
-  };
-
-  return (
+  ];
+          return (
     <section id="schedule" className="py-20 bg-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="font-overpass font-bold text-4xl lg:text-5xl text-white mb-6">
-            Event Schedule
+            Important Dates
           </h2>
           <p className="font-fira-sans text-xl text-gray-300 max-w-3xl mx-auto">
-            Two action-packed days of innovation, collaboration, and space exploration
+            Key milestones and deadlines for the 2025 NASA Space Apps Challenge
           </p>
         </div>
+        
+        {/* Meet Your Local Lead Section moved here */}
+        <div className="my-16">
+          <Team />
+        </div>
 
-        {/* Day Selector */}
-        <div className="flex justify-center mb-12">
-          <div className="bg-slate-800/50 rounded-lg p-1 border border-blue-500/20">
-            {schedule.map((day, index) => (
+        {/* Month Selector */}
+        <div className="flex justify-center mb-12 overflow-x-auto">
+          <div className="bg-slate-800/50 rounded-lg p-1 border border-blue-500/20 flex gap-1">
+            {importantDates.map((month, index) => (
               <button
                 key={index}
-                onClick={() => setActiveDay(index)}
-                className={`px-6 py-3 rounded-md font-fira-sans font-medium transition-all duration-300 ${
-                  activeDay === index
+                onClick={() => setActiveMonth(index)}
+                className={`px-4 py-3 rounded-md font-fira-sans font-medium transition-all duration-300 whitespace-nowrap ${
+                  activeMonth === index
                     ? 'bg-blue-600 text-white shadow-lg'
                     : 'text-gray-300 hover:text-white hover:bg-slate-700'
                 }`}
               >
-                <div className="text-sm">{day.date}</div>
-                <div className="text-xs opacity-75">{day.day.split(',')[1]}</div>
+                {month.month}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Schedule Content */}
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-8">
-            <h3 className="font-overpass font-bold text-2xl text-white text-center mb-2">
-              {schedule[activeDay].day}
+        {/* Active Month Content */}
+        <div className="max-w-4xl mx-auto mb-16">
+          <div className="bg-slate-800/50 rounded-xl p-8 border border-blue-500/20">
+            <h3 className="font-overpass font-bold text-2xl text-white mb-6 text-center">
+              {importantDates[activeMonth].month}
             </h3>
-            <p className="font-fira-sans text-gray-400 text-center">
-              All times are in CDT (Central Daylight Time)
-            </p>
-          </div>
-
-          <div className="space-y-6">
-            {schedule[activeDay].events.map((event, index) => {
-              const IconComponent = event.icon;
-              return (
+            
+            <div className="space-y-4">
+              {importantDates[activeMonth].events.map((event, index) => (
                 <div
                   key={index}
-                  className={`rounded-xl p-6 border backdrop-blur-sm transition-all duration-300 hover:transform hover:scale-105 ${getEventColor(event.type)}`}
+                  className="bg-slate-900/50 rounded-lg p-4 border border-blue-500/10"
                 >
-                  <div className="flex items-start space-x-4">
-                    <div className="flex-shrink-0">
-                      <div className="w-12 h-12 bg-slate-800/50 rounded-full flex items-center justify-center border border-blue-500/20">
-                        <IconComponent className="w-6 h-6 text-blue-400" />
-                      </div>
-                    </div>
-                    <div className="flex-grow">
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                        <h4 className="font-overpass font-bold text-xl text-white">
-                          {event.title}
-                        </h4>
-                        <span className="font-fira-sans font-medium text-blue-400 bg-slate-800/50 px-3 py-1 rounded-full text-sm mt-2 sm:mt-0">
-                          {event.time}
-                        </span>
-                      </div>
-                      <p className="font-fira-sans text-gray-300">
-                        {event.description}
-                      </p>
-                    </div>
-                  </div>
+                  <p className="font-fira-sans text-gray-200 leading-relaxed">
+                    {event}
+                  </p>
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="mt-16 text-center">
-          <div className="bg-slate-800/50 rounded-xl p-8 border border-blue-500/20 max-w-2xl mx-auto">
-            <h4 className="font-overpass font-bold text-xl text-white mb-4">
-              Important Notes
-            </h4>
-            <ul className="font-fira-sans text-gray-300 space-y-2 text-left max-w-md mx-auto">
-              <li>• All meals and snacks are provided throughout the event</li>
-              <li>• Mentors will be available during development hours</li>
-              <li>• WiFi, power outlets, and workspaces provided</li>
-              <li>• Schedule may be adjusted based on participant needs</li>
-            </ul>
+        {/* Resource Links */}
+        <div className="max-w-4xl mx-auto">
+          <h3 className="font-overpass font-bold text-2xl text-white mb-8 text-center">
+            Essential Resources
+          </h3>
+          <div className="grid md:grid-cols-2 gap-4">
+            {resourceLinks.map((link, index) => (
+              <a
+                key={index}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 rounded-lg font-fira-sans font-semibold transition-colors duration-200 flex items-center justify-between group"
+              >
+                <span>{link.title}</span>
+                <ExternalLink className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
+              </a>
+            ))}
           </div>
         </div>
       </div>
@@ -244,4 +143,3 @@ const Schedule: React.FC = () => {
   );
 };
 
-export default Schedule;

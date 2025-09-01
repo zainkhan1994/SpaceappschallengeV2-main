@@ -8,7 +8,6 @@ const Footer: React.FC = () => {
     event: [
       { name: 'Registration', href: '#registration' },
       { name: 'Schedule', href: '#schedule' },
-      { name: 'Judges & Awards', href: '#judges' },
       { name: 'Contact', href: '#contact' }
     ],
     resources: [

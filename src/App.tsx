@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Header from './components/Header';
 import Resources from './components/Resources';
 import Winners from './components/Winners';
@@ -16,8 +16,39 @@ function App() {
   const [activeSection, setActiveSection] = useState('hero');
 
   useEffect(() => {
+    const script1 = document.createElement('script');
+    script1.async = true;
+    script1.src = 'https://www.googletagmanager.com/gtag/js?id=G-5VH756CNJR';
+    document.head.appendChild(script1);
+
+    const script2 = document.createElement('script');
+    script2.innerHTML = `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-5VH756CNJR');
+    `;
+    document.head.appendChild(script2);
+
+    return () => {
+      document.head.removeChild(script1);
+      document.head.removeChild(script2);
+    };
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
-      const sections = ['hero', 'event-basics', 'schedule', 'why-join', 'registration', 'team', 'judges', 'sponsors', 'contact'];
+      const sections = [
+        'hero',
+        'event-basics',
+        'schedule',
+        'why-join',
+        'registration',
+        'team',
+        'judges',
+        'sponsors',
+        'contact'
+      ];
       const scrollPosition = window.scrollY + 100;
 
       for (const section of sections) {
@@ -25,7 +56,6 @@ function App() {
         if (element) {
           const offsetTop = element.offsetTop;
           const offsetHeight = element.offsetHeight;
-          
           if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
             setActiveSection(section);
             break;
