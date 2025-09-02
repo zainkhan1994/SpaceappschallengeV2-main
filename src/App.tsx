@@ -1,61 +1,50 @@
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
-import Resources from './components/Resources';
-import Winners from './components/Winners';
 import Hero from './components/Hero';
 import EventBasics from './components/EventBasics';
 import Schedule from './components/Schedule';
 import WhyJoin from './components/WhyJoin';
 import Registration from './components/Registration';
+import Resources from './components/Resources';
 import Sponsors from './components/Sponsors';
-import Contact from './components/Contact';
 import Footer from './components/Footer';
-import { Analytics } from '@vercel/analytics/react';
+import Winners from './components/Winners';
+import ChallengeExplorer from './components/ChallengeExplorer';
 
-function App() {
-  const [activeSection, setActiveSection] = useState('hero');
+export type ViewMode = 'landing' | 'explorer';
 
-  useEffect(() => {
-    const script1 = document.createElement('script');
-    script1.async = true;
-    script1.src = 'https://www.googletagmanager.com/gtag/js?id=G-5VH756CNJR';
-    document.head.appendChild(script1);
+const App: React.FC = () => {
+  const [activeSection, setActiveSection] = useState<string>('home');
+  const [viewMode, setViewMode] = useState<ViewMode>('landing');
 
-    const script2 = document.createElement('script');
-    script2.innerHTML = `
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-5VH756CNJR');
-    `;
-    document.head.appendChild(script2);
-
-    return () => {
-      document.head.removeChild(script1);
-      document.head.removeChild(script2);
-    };
-  }, []);
+  const navItems = [
+    { name: 'Home', href: '#home' },
+    { name: 'Event Info', href: '#event-info' },
+    { name: 'Schedule', href: '#schedule' },
+    { name: 'Why Join', href: '#why-join' },
+    { name: 'Registration', href: '#registration' },
+    { name: 'Resources', href: '#resources' },
+    { name: 'Sponsors', href: '#sponsors' },
+    { name: 'Challenges', href: '#challenges' }
+    // Removed the Contact nav item
+  ];
 
   useEffect(() => {
+    // Only run scroll handler for landing page
+    if (viewMode !== 'landing') return;
+
     const handleScroll = () => {
       const sections = [
-        'hero',
-        'event-basics',
-        'schedule',
-        'why-join',
-        'registration',
-        'team',
-        'judges',
-        'sponsors',
-        'contact'
+        'home', 'event-info', 'schedule', 'why-join', 
+        'registration', 'resources', 'sponsors', 'contact'
       ];
+      
       const scrollPosition = window.scrollY + 100;
-
+      
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
-          const offsetTop = element.offsetTop;
-          const offsetHeight = element.offsetHeight;
+          const { offsetTop, offsetHeight } = element;
           if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
             setActiveSection(section);
             break;
@@ -66,26 +55,59 @@ function App() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [viewMode]);
 
+  const handleChallengeClick = () => {
+    console.log('Switching to explorer mode');
+    setViewMode('explorer');
+  };
+
+  const handleBackToLanding = () => {
+    console.log('Switching back to landing mode');
+    setViewMode('landing');
+  };
+
+  // If in explorer mode, show challenge explorer
+  if (viewMode === 'explorer') {
+    return <ChallengeExplorer onBackToLanding={handleBackToLanding} />;
+  }
+
+  // Original landing page - fixed container
   return (
-    <div className="min-h-screen bg-slate-900">
-      <Header activeSection={activeSection} />
-      <main>
-        <Hero />
+    <div className="min-h-screen bg-slate-900 overflow-x-hidden">
+      <Header 
+        activeSection={activeSection} 
+        navItems={navItems} 
+        onChallengeClick={handleChallengeClick} 
+      />
+      <main className="w-full">
+        <section id="home" className="w-full">
+          <Hero />
+        </section>
         <Winners />
-        <EventBasics />
-        <Schedule />
-        <WhyJoin />
-        <Registration />
-        <Resources />
-        <Sponsors />
-        <Contact />
+        <section id="event-info" className="w-full">
+          <EventBasics />
+        </section>
+        <section id="schedule" className="w-full">
+          <Schedule />
+        </section>
+        <section id="why-join" className="w-full">
+          <WhyJoin />
+        </section>
+        <section id="registration" className="w-full">
+          <Registration />
+        </section>
+        <section id="resources" className="w-full">
+          <Resources />
+        </section>
+        <section id="sponsors" className="w-full">
+          <Sponsors />
+        </section>
+        {/* Removed Contact section */}
       </main>
       <Footer />
-      <Analytics />
     </div>
   );
-}
+};
 
 export default App;

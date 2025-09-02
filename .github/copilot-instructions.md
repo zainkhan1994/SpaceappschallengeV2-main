@@ -1,47 +1,36 @@
-# Copilot Instructions for SpaceappschallengeV2-main
+# Updated Copilot Instructions for SpaceappschallengeV2-main
 
 ## Project Overview
-This is a Vite + React + TypeScript web app for the NASA Space Apps Challenge. The codebase is organized for rapid prototyping and modularity, with all main UI sections as React components in `src/components/`.
+This is a Vite + React + TypeScript web app for the NASA Space Apps Challenge with two main modes:
+1. **Landing Page Mode** - Static event information and registration
+2. **Challenge Explorer Mode** - Interactive challenge browsing with 3D visualization
 
 ## Architecture & Patterns
-- **Entry Point:** `src/main.tsx` mounts `<App />` to the DOM.
-- **App Layout:** `src/App.tsx` composes all major sections (Header, Hero, Winners, etc.) as React components. Each section is a separate file in `src/components/`.
-- **Navigation:** The header uses a scroll-to-section pattern, with section IDs matching navigation items.
-- **Styling:** Uses Tailwind CSS (`index.css`, `tailwind.config.js`). Custom classes may be present for special UI elements.
-- **Images:** Static images are referenced from `/Pictures/`, but for production, place images in `/public/Pictures/` for correct serving.
-- **Icons:** Uses `lucide-react` for SVG icons.
+- **Entry Point:** `src/main.tsx` mounts `<App />` to the DOM
+- **App Layout:** `src/App.tsx` composes all sections as React components
+- **Navigation:** Header uses scroll-to-section AND route-based navigation for different modes
+- **Styling:** Tailwind CSS with proper PostCSS configuration
+- **Images:** Place in `/public/Pictures/` for production serving
+- **Icons:** Uses `lucide-react` for SVG icons
 
-## Developer Workflows
-- **Start Dev Server:** `npm run dev` (Vite hot-reloads changes)
-- **Build for Production:** `npm run build`
-- **Preview Production Build:** `npm run preview`
-- **Lint:** `npm run lint`
-- **No built-in tests** (as of current codebase)
+## Critical Configuration Files
+- **`postcss.config.js`:** Must contain `tailwindcss` and `autoprefixer` plugins
+- **`tailwind.config.js`:** Only Tailwind-specific plugins, NOT PostCSS plugins
+- **`vite.config.ts`:** Exclude Python directories from scanning
 
-## Conventions & Gotchas
-- **React/JSX:** Use `className` (not `class`) for styling in components.
-- **Section IDs:** For scroll navigation, section IDs in components must match those in the header nav.
-- **Component Structure:** Each major page section is a separate file in `src/components/`. Example: `Winners.tsx`, `Hero.tsx`, etc.
-- **Image Paths:** For local dev, `/Pictures/xyz.png` works if the dev server is configured to serve from root. For production, use `/public/Pictures/xyz.png`.
-- **No global state management** (Redux, Context) is used; state is local to components.
+## Data Architecture
+- **Challenge Data:** Stored in `src/data/` directory
+- **Types:** TypeScript interfaces in `src/types/`
+- **Components:** Modular sections in `src/components/`
 
-## Integration Points
-- **External:** No backend/API integration; all data is static or hardcoded in components.
-- **Dependencies:** See `package.json` for all dependencies. Key ones: `react`, `react-dom`, `lucide-react`, `tailwindcss`, `vite`.
+## Common Pitfalls (Based on Experience)
+1. **Never mix TypeScript code in CSS files** - Keep `.css` and `.tsx` separate
+2. **PostCSS plugins go in `postcss.config.js`, NOT `tailwind.config.js`**
+3. **Exclude Python venv directories in Vite config**
+4. **Use proper TypeScript tuple types for positions: `[number, number, number]`**
 
-## Example: Adding a New Section
-1. Create a new file in `src/components/` (e.g., `NewSection.tsx`).
-2. Add your component and export it.
-3. Import and render it in `src/App.tsx`.
-4. Add a nav item in `Header.tsx` if needed, and ensure section IDs match.
-
-## Key Files
-- `src/App.tsx`: Main app layout and section composition
-- `src/components/`: All major UI sections
-- `vite.config.ts`: Vite config, including React plugin
-- `tailwind.config.js`: Tailwind CSS config
-- `package.json`: Scripts and dependencies
-
----
-
-If any conventions or workflows are unclear, please provide feedback so this guide can be improved for future AI agents.
+## Safe Development Workflow
+1. Always test with `npm run dev` after config changes
+2. Clear Vite cache with `rm -rf node_modules/.vite` if issues persist
+3. Keep existing components intact when adding new features
+4. Use additive approach - add new components rather than modifying core ones

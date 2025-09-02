@@ -1,150 +1,151 @@
 import React from 'react';
-import { Clock, MapPin, Users, Mail, Globe } from 'lucide-react';
+import { Calendar, MapPin, Users, Globe } from 'lucide-react';
+import EventContactInfo from './EventContactInfo';
 
 const EventBasics: React.FC = () => {
   return (
-    <section id="event-basics" className="py-20 bg-slate-800/50">
-      <div className="flex justify-center mb-8">
-        <img src="/Pictures/2024_NASA_International_Space_Apps_Challenge_Infographic.png" alt="2024 NASA International Space Apps Challenge Infographic" className="rounded-xl shadow-lg max-w-full h-auto" />
-      </div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="font-overpass font-bold text-4xl lg:text-5xl text-white mb-6">
-            Event Information
-          </h2>
-          <p className="font-fira-sans text-xl text-gray-300 max-w-3xl mx-auto">
+    <div className="bg-slate-900 py-16">
+      <div className="container mx-auto px-6">
+        <div className="mb-12 text-center">
+          <img 
+            src="/Pictures/2024-nasa-international-space-apps-challenge-infographic.png" 
+            alt="2024 NASA International Space Apps Challenge Infographic" 
+            className="mx-auto mb-6 max-w-full h-auto"
+          />
+          <h2 className="text-3xl font-bold text-white mb-4">Event Information</h2>
+          <p className="text-gray-400 max-w-3xl mx-auto">
             Everything you need to know about the 2025 NASA Space Apps Challenge in Houston
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8">
-            <div className="bg-slate-900/50 rounded-xl p-6 border border-blue-500/20">
-              <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Globe className="w-6 h-6 text-white" />
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="space-y-6">
+            {/* Event Details Card */}
+            <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 shadow-lg">
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                <Globe className="mr-2 text-blue-400" size={20} />
+                NASA Space Apps Challenge - Houston 2025
+              </h3>
+              <p className="text-gray-300 mb-4">
+                The Houston local event for the world's largest hackathon 
+                focused on space exploration, bringing together innovators, 
+                students, and space enthusiasts.
+              </p>
+            </div>
+
+            {/* Format & Location */}
+            <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 shadow-lg">
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                <MapPin className="mr-2 text-blue-400" size={20} />
+                Format & Location
+              </h3>
+              <div className="space-y-3">
+                <div>
+                  <span className="text-gray-400">Format:</span> 
+                  <span className="text-white ml-2">In-Person Event</span>
                 </div>
                 <div>
-                  <h3 className="font-overpass font-bold text-xl text-white mb-2">
-                    NASA Space Apps Challenge – Houston 2025
-                  </h3>
-                  <p className="font-fira-sans text-gray-300">
-                    The Houston local event for the world's largest hackathon focused on space exploration, 
-                    bringing together innovators, students, and space enthusiasts.
-                  </p>
+                  <span className="text-gray-400">Location:</span> 
+                  <span className="text-white ml-2">Houston, Texas (Venue TBA)</span>
+                </div>
+                <div>
+                  <span className="text-gray-400">Timezone:</span> 
+                  <span className="text-white ml-2">CDT (Central Daylight Time)</span>
                 </div>
               </div>
             </div>
 
-            <div className="bg-slate-900/50 rounded-xl p-6 border border-blue-500/20">
-              <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
-                  <MapPin className="w-6 h-6 text-white" />
-                </div>
+            {/* Capacity & Registration */}
+            <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 shadow-lg">
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                <Users className="mr-2 text-blue-400" size={20} />
+                Capacity & Registration
+              </h3>
+              <div className="space-y-3">
                 <div>
-                  <h3 className="font-overpass font-bold text-xl text-white mb-2">
-                    Format & Location
-                  </h3>
-                  <p className="font-fira-sans text-gray-300 mb-2">
-                    <strong>Format:</strong> In-Person Event
-                  </p>
-                  <p className="font-fira-sans text-gray-300 mb-2">
-                    <strong>Location:</strong> Houston, Texas (Venue TBA)
-                  </p>
-                  <p className="font-fira-sans text-gray-300">
-                    <strong>Timezone:</strong> CDT (Central Daylight Time)
-                  </p>
+                  <span className="text-gray-400">Event Capacity:</span> 
+                  <span className="text-white ml-2">200 participants</span>
                 </div>
-              </div>
-            </div>
-
-            <div className="bg-slate-900/50 rounded-xl p-6 border border-blue-500/20">
-              <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Users className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-overpass font-bold text-xl text-white mb-2">
-                    Capacity & Registration
-                  </h3>
-                  <p className="font-fira-sans text-gray-300 mb-2">
-                    <strong>Event Capacity:</strong> 200 participants
-                  </p>
-                  <p className="font-fira-sans text-gray-300">
-                    Registration includes waitlist option when capacity is reached. 
-                    Early registration recommended.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-8">
-            <div className="bg-slate-900/50 rounded-xl p-6 border border-blue-500/20">
-              <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Clock className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-overpass font-bold text-xl text-white mb-2">
-                    Event Duration
-                  </h3>
-                  <p className="font-fira-sans text-gray-300 mb-4">
-                    <strong>October 4-5, 2025</strong>
-                  </p>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-gray-400">Day 1 (Sat):</span>
-                      <span className="text-white">9:00 AM - 11:00 PM CDT</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-400">Day 2 (Sun):</span>
-                      <span className="text-white">9:00 AM - 6:00 PM CDT</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-slate-900/50 rounded-xl p-6 border border-blue-500/20">
-              <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Mail className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-overpass font-bold text-xl text-white mb-2">
-                    Local Lead Contact
-                  </h3>
-                  <p className="font-fira-sans text-gray-300 mb-2">
-                    For questions about the Houston event:
-                  </p>
+                <p className="text-gray-300">
+                  Registration includes waitlist option when capacity is 
+                  reached. Early registration recommended.
+                </p>
+                <div className="mt-4">
                   <a 
-                    href="mailto:houston@spaceapps.local" 
-                    className="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200"
+                    href="https://www.spaceappschallenge.org/2025/local-events/houston/?tab=details" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
                   >
-                    houston@spaceapps.local
+                    Register Now
                   </a>
                 </div>
               </div>
             </div>
-
-            <div className="bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-xl p-6 border border-blue-400/30">
-              <h3 className="font-overpass font-bold text-xl text-white mb-3">
-                Quick Facts
+          </div>
+          
+          <div className="space-y-6">
+            {/* Event Duration */}
+            <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 shadow-lg">
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                <Calendar className="mr-2 text-blue-400" size={20} />
+                Event Duration
               </h3>
-              <ul className="space-y-2 font-fira-sans text-gray-300">
-                <li>• 48-hour hackathon format</li>
-                <li>• Teams of 2-6 participants</li>
-                <li>• NASA challenge themes</li>
-                <li>• Meals and snacks provided</li>
-                <li>• Prizes and recognition</li>
-                <li>• Networking opportunities</li>
+              <div className="mb-3">
+                <span className="text-gray-400">October 4-5, 2025</span>
+              </div>
+              <div className="space-y-3">
+                <div>
+                  <span className="text-gray-400">Day 1 (Sat):</span> 
+                  <span className="text-white ml-2">9:00 AM - 11:00 PM CDT</span>
+                </div>
+                <div>
+                  <span className="text-gray-400">Day 2 (Sun):</span> 
+                  <span className="text-white ml-2">9:00 AM - 6:00 PM CDT</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Information - NEW */}
+            <EventContactInfo />
+
+            {/* Quick Facts */}
+            <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 shadow-lg">
+              <h3 className="text-xl font-bold text-white mb-4">Quick Facts</h3>
+              <ul className="space-y-2 text-gray-300">
+                <li className="flex items-start">
+                  <span className="text-blue-400 mr-2">•</span>
+                  48-hour hackathon format
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-400 mr-2">•</span>
+                  Teams of 2-6 participants
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-400 mr-2">•</span>
+                  NASA challenge themes
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-400 mr-2">•</span>
+                  Meals and snacks provided
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-400 mr-2">•</span>
+                  Prizes and recognition
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-400 mr-2">•</span>
+                  Networking opportunities
+                </li>
+                <li className="flex items-start mt-4 font-medium text-yellow-400">
+                  More details coming soon!
+                </li>
               </ul>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

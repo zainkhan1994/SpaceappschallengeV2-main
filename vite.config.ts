@@ -1,10 +1,16 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  optimizeDeps: {
-    exclude: ['lucide-react'],
+  server: {
+    port: 5173,
+    hmr: { overlay: false },
+    watch: {
+      ignored: ['**/venv/**', '**/spaceapps_scraper/**', '**/*.py']
+    }
   },
+  publicDir: 'public',
+  assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg'],
+  build: { outDir: 'dist' }
 });

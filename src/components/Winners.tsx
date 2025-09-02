@@ -1,22 +1,86 @@
+import React from 'react';
+import { Trophy } from 'lucide-react';
 
-const Winners = () => {
+const Winners: React.FC = () => {
   return (
-    <section className="py-16 bg-slate-900" id="winners">
-      <div className="max-w-3xl mx-auto px-4 text-center">
-        <h2 className="text-4xl font-extrabold text-yellow-400 mb-8 drop-shadow">Winners</h2>
-        <div className="flex flex-col items-center">
-          <div className="bg-slate-800 rounded-xl p-8 shadow-2xl flex flex-col items-center">
-            <div className="w-48 h-48 mb-6 flex items-center justify-center overflow-hidden rounded-full border-4 border-yellow-400">
-              <img
-                src="/Pictures/Farmvis.png"
-                alt="2024 Global NomineesFarmvis Team - 1st Place"
-                className="w-full h-full object-cover rounded-full"
-                style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-              />
-            </div>
-            <h3 className="text-2xl font-bold text-yellow-300 mb-2">Farmvis</h3>
-            <p className="text-lg text-white font-semibold">1st Place Winner</p>
+    <section id="winners" className="relative min-h-screen flex flex-col justify-center overflow-hidden py-24">
+      {/* Background image - using the astronaut image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
+        style={{ 
+          backgroundImage: 'url("/Pictures/astronaut-data-visualization.jpg")',
+          backgroundAttachment: 'fixed',
+        }}
+      >
+        {/* Overlay to ensure text readability */}
+        <div className="absolute inset-0 bg-black/60"></div>
+      </div>
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center mb-16">
+          <div className="flex items-center justify-center space-x-3 mb-4">
+            <Trophy className="text-yellow-400 w-8 h-8" />
+            <h2 className="text-4xl md:text-5xl font-bold text-white">Past Winners</h2>
           </div>
+          <p className="text-blue-300 max-w-3xl mx-auto">
+            Celebrating innovation and excellence in space exploration solutions
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Winner Card 1 */}
+          <div className="bg-slate-800/40 backdrop-blur-sm rounded-lg p-6">
+            <div className="text-yellow-400 font-bold mb-2">2024 Global Winner</div>
+            <h3 className="text-2xl font-bold text-white mb-3">Project Aquarius</h3>
+            <p className="text-gray-300 mb-4">
+              An AI-powered water quality monitoring system that uses satellite data to predict and prevent water contamination events.
+            </p>
+            <div className="flex items-center justify-between">
+              <span className="text-blue-300">Team Hydro Solutions</span>
+              <span className="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm">
+                Earth & Climate
+              </span>
+            </div>
+          </div>
+
+          {/* Winner Card 2 */}
+          <div className="bg-slate-800/40 backdrop-blur-sm rounded-lg p-6">
+            <div className="text-yellow-400 font-bold mb-2">2024 Regional Winner</div>
+            <h3 className="text-2xl font-bold text-white mb-3">LunarNav</h3>
+            <p className="text-gray-300 mb-4">
+              A navigation system for lunar rovers using computer vision to identify safe paths in challenging terrain.
+            </p>
+            <div className="flex items-center justify-between">
+              <span className="text-blue-300">Team MoonWalkers</span>
+              <span className="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm">
+                Space & Habitats
+              </span>
+            </div>
+          </div>
+
+          {/* Winner Card 3 */}
+          <div className="bg-slate-800/40 backdrop-blur-sm rounded-lg p-6">
+            <div className="text-yellow-400 font-bold mb-2">2024 Local Winner</div>
+            <h3 className="text-2xl font-bold text-white mb-3">CoralWatch</h3>
+            <p className="text-gray-300 mb-4">
+              A platform that uses NASA satellite data to monitor coral reef health and coordinate restoration efforts.
+            </p>
+            <div className="flex items-center justify-between">
+              <span className="text-blue-300">Team ReefGuard</span>
+              <span className="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm">
+                Oceans & Ecosystems
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-12 text-center">
+          <a
+            href="#explore"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded-lg transition-all duration-300"
+          >
+            Join the Challenge
+          </a>
         </div>
       </div>
     </section>
