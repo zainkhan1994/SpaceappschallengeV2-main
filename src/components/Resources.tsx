@@ -7,11 +7,11 @@ const Resources: React.FC = () => {
 		<div className="bg-slate-900 py-16 border-t border-slate-800">
 			<div className="container mx-auto px-6">
 				<div className="text-center mb-12">
-					<img
-						src="/Pictures/nasa-international-space-apps-challenge-logo.png"
-						alt="NASA International Space Apps Challenge Logo"
-						className="h-16 mx-auto mb-4"
-					/>
+								<img
+									src="/Pictures/nasa-space-apps-logo.png"
+									alt="NASA Space Apps Logo"
+									className="h-24 mx-auto mb-4"
+								/>
 					<h2 className="text-3xl font-bold text-white mb-3">Resources</h2>
 				</div>
 
