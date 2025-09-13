@@ -20,7 +20,7 @@ const Winners: React.FC = () => {
         <div className="text-center mb-16">
           <div className="flex items-center justify-center space-x-3 mb-4">
             <Trophy className="text-yellow-400 w-8 h-8" />
-            <h2 className="text-4xl md:text-5xl font-bold text-white">Past Winners</h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-white">2024 Winners</h2>
           </div>
           <p className="text-blue-300 max-w-3xl mx-auto">
             Celebrating innovation and excellence in space exploration solutions
