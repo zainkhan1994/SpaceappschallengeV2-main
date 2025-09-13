@@ -56,12 +56,13 @@ const Header: React.FC<HeaderProps> = ({ activeSection, navItems, onChallengeCli
       <div className="container mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <a href="#home" className="flex items-center space-x-2" onClick={(e) => handleNavClick(e, '#home')}>
-            <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">SA</span>
-            </div>
+          <a href="#home" className="flex items-center space-x-3" onClick={(e) => handleNavClick(e, '#home')}>
+            <img 
+              src="/Pictures/nasa-space-apps-logo.png" 
+              alt="NASA Space Apps Challenge Logo" 
+              className="h-12 w-auto"
+            />
             <div className="hidden sm:block">
-              <div className="text-white font-bold text-xl">SPACE APPS</div>
               <div className="text-blue-300 text-xs">HOUSTON 2025</div>
             </div>
           </a>
