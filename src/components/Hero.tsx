@@ -1,7 +1,7 @@
 import React from 'react';
 import { 
-  Calendar, MapPin, Users, Award, UserPlus, Check, 
-  Clock, Globe, Mail, FileSpreadsheet, Upload,
+  Calendar, MapPin, Users, UserPlus, Check, 
+  Clock, Mail, FileSpreadsheet, Upload,
   List,
 } from 'lucide-react';
 import {
@@ -66,22 +66,6 @@ const Hero: React.FC = () => {
       <ColorLines />
       
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* NASA Space Apps Challenge Logo */}
-        <div className="text-center mb-10">
-          <motion.div
-            className="max-w-md mx-auto"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <img 
-              src="/Pictures/nasa-space-apps-logo.png" 
-              alt="NASA Space Apps Challenge Logo" 
-              className="w-full h-auto mx-auto"
-            />
-            <h2 className="text-white font-bold text-2xl mt-4">Houston 2025</h2>
-          </motion.div>
-        </div>
         
         {/* Save the Date Section */}
         <div className="mb-16 text-center">
