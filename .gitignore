@@ -30,5 +30,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Development artifacts
+.bolt/
+Untitled-*
+scrape-*.js
+
 # MacOS
 .DS_Store
