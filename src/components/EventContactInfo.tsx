@@ -76,6 +76,56 @@ const EventContactInfo: React.FC = () => {
             </a>
           </div>
         </div>
+        
+        {/* Calendar Appointment Scheduling */}
+        <div className="pt-4 border-t border-slate-700">
+          <p className="text-gray-300 mb-3">Schedule a Meeting:</p>
+          <div className="bg-gradient-to-r from-slate-700 to-slate-800 rounded-lg p-4 border border-[#FFFF33]/30">
+            <div className="text-center">
+              <h4 className="text-[#FFFF33] font-semibold mb-2 flex items-center justify-center">
+                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                </svg>
+                Book an Appointment
+              </h4>
+              <p className="text-gray-300 text-sm mb-4">Schedule a one-on-one meeting with our Local Lead</p>
+              
+              <a 
+                href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3NhJFzIf_7Oc7zIWx-XDhPqiPl3R4W8NQbN3Bj21nk2AUQYBNoZbl5SsQrDcg2OaS0SG8xX7db?gv=true"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#FFFF33] to-[#FFFF00] text-black font-semibold rounded-lg hover:from-[#FFFF66] hover:to-[#FFFF33] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-[#FFFF33]/25"
+              >
+                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                </svg>
+                Schedule Now
+                <svg className="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </a>
+              
+              {/* Reassuring Message */}
+              <div className="mt-4 p-4 bg-blue-900/30 border border-blue-400/30 rounded-lg">
+                <div className="text-center">
+                  <h5 className="text-blue-300 font-semibold text-2xl md:text-3xl mb-3">
+                    Are you confused? Are you worried? Are you unsure how to get started?
+                  </h5>
+                  <p className="text-white text-xl md:text-2xl mb-4">
+                    <strong>Don't worry!</strong> Make an appointment with your Local Lead <span className="text-[#FFFF33] font-semibold">Zain</span>.
+                  </p>
+                  <p className="text-blue-200 text-lg md:text-xl">
+                    Whether you're new to hackathons, need help forming a team, or just want guidance getting started - I'm here to help you succeed!
+                  </p>
+                </div>
+              </div>
+              
+              <p className="text-gray-400 text-sm mt-3">
+                Perfect for questions about registration, team formation, or event details
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -261,7 +261,7 @@ const ChallengeExplorer: React.FC<ChallengeExplorerProps> = ({ onBackToLanding }
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case 'Beginner': return 'bg-green-400/20 text-green-400 border-green-400/50';
-      case 'Intermediate': return 'bg-yellow-400/20 text-yellow-400 border-yellow-400/50';
+      case 'Intermediate': return 'bg-[#FFFF33]/20 text-[#FFFF33] border-[#FFFF33]/50';
       case 'Advanced': return 'bg-red-400/20 text-red-400 border-red-400/50';
       default: return 'bg-gray-400/20 text-gray-400 border-gray-400/50';
     }

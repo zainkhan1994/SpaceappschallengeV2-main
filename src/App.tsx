@@ -10,6 +10,9 @@ import Sponsors from './components/Sponsors';
 import Footer from './components/Footer';
 import Winners from './components/Winners';
 import ChallengeExplorer from './components/ChallengeExplorer';
+import ChatbotWidget from './components/ChatbotWidget';
+import EarthVideo from './components/EarthVideo';
+import FloatingHelpWidget from './components/FloatingHelpWidget';
 
 export type ViewMode = 'landing' | 'explorer';
 
@@ -17,17 +20,17 @@ const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string>('home');
   const [viewMode, setViewMode] = useState<ViewMode>('landing');
 
-  const navItems = [
-    { name: 'Home', href: '#home' },
-    { name: 'Event Info', href: '#event-info' },
-    { name: 'Schedule', href: '#schedule' },
-    { name: 'Why Join', href: '#why-join' },
-    { name: 'Registration', href: '#registration' },
-    { name: 'Resources', href: '#resources' },
-    { name: 'Sponsors', href: '#sponsors' },
-    { name: 'Challenges', href: '#challenges' }
-    // Removed the Contact nav item
-  ];
+    const navItems = [
+      { name: 'Home', href: '#home' },
+      { name: 'Event Info', href: '#event-info' },
+      { name: 'Registration', href: '#registration' },
+      { name: 'Resources', href: '#resources' },
+      { name: 'Why Join', href: '#why-join' },
+      { name: 'Schedule', href: '#schedule' },
+      { name: 'Sponsors', href: '#sponsors' },
+      { name: 'Winners', href: '#winners' },
+      { name: 'Challenges', href: '#challenges' }
+    ];
 
   useEffect(() => {
     // Only run scroll handler for landing page
@@ -84,15 +87,8 @@ const App: React.FC = () => {
         <section id="home" className="w-full">
           <Hero />
         </section>
-        <Winners />
         <section id="event-info" className="w-full">
           <EventBasics />
-        </section>
-        <section id="schedule" className="w-full">
-          <Schedule />
-        </section>
-        <section id="why-join" className="w-full">
-          <WhyJoin />
         </section>
         <section id="registration" className="w-full">
           <Registration />
@@ -100,14 +96,27 @@ const App: React.FC = () => {
         <section id="resources" className="w-full">
           <Resources />
         </section>
+        <section id="why-join" className="w-full">
+          <WhyJoin />
+        </section>
+        <section id="schedule" className="w-full">
+          <Schedule />
+        </section>
         <section id="sponsors" className="w-full">
           <Sponsors />
         </section>
-        {/* Removed Contact section */}
+        <section id="winners" className="w-full">
+          <Winners />
+        </section>
+        <section id="earth-video" className="w-full">
+          <EarthVideo />
+        </section>
       </main>
       <Footer />
+      <ChatbotWidget />
+      <FloatingHelpWidget />
     </div>
   );
-};
+}
 
 export default App;

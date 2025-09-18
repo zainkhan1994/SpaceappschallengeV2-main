@@ -1,5 +1,6 @@
 import React from 'react';
 import { Users, Lightbulb, Trophy, Network, Rocket, Star } from 'lucide-react';
+import AnimatedCounter from './AnimatedCounter';
 
 const WhyJoin: React.FC = () => {
   const benefits = [
@@ -82,17 +83,111 @@ const WhyJoin: React.FC = () => {
             2024 NASA Space Apps Challenge
           </h3>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-            <div className="text-center"><div className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2">93,520</div><div className="font-fira-sans text-gray-300 text-sm">Registered Participants</div></div>
-            <div className="text-center"><div className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2">15,444</div><div className="font-fira-sans text-gray-300 text-sm">Teams</div></div>
-            <div className="text-center"><div className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2">485</div><div className="font-fira-sans text-gray-300 text-sm">Local Events</div></div>
-            <div className="text-center"><div className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2">163</div><div className="font-fira-sans text-gray-300 text-sm">Countries/Territories</div></div>
-            <div className="text-center"><div className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2">9,996</div><div className="font-fira-sans text-gray-300 text-sm">Projects Submitted</div></div>
-            <div className="text-center"><div className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2">15</div><div className="font-fira-sans text-gray-300 text-sm">Space Agency Partners</div></div>
-            <div className="text-center"><div className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2">120</div><div className="font-fira-sans text-gray-300 text-sm">Subject Matter Experts</div></div>
-            <div className="text-center"><div className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2">26</div><div className="font-fira-sans text-gray-300 text-sm">Navigators</div></div>
+            <div className="text-center">
+              <AnimatedCounter 
+                end={93520}
+                className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2"
+              />
+              <div className="font-fira-sans text-gray-300 text-sm">Registered Participants</div>
+            </div>
+            <div className="text-center">
+              <AnimatedCounter 
+                end={15444}
+                className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2"
+              />
+              <div className="font-fira-sans text-gray-300 text-sm">Teams</div>
+            </div>
+            <div className="text-center">
+              <AnimatedCounter 
+                end={485}
+                className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2"
+              />
+              <div className="font-fira-sans text-gray-300 text-sm">Local Events</div>
+            </div>
+            <div className="text-center">
+              <AnimatedCounter 
+                end={163}
+                className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2"
+              />
+              <div className="font-fira-sans text-gray-300 text-sm">Countries/Territories</div>
+            </div>
+            <div className="text-center">
+              <AnimatedCounter 
+                end={9996}
+                className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2"
+              />
+              <div className="font-fira-sans text-gray-300 text-sm">Projects Submitted</div>
+            </div>
+            <div className="text-center">
+              <AnimatedCounter 
+                end={15}
+                className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2"
+              />
+              <div className="font-fira-sans text-gray-300 text-sm">Space Agency Partners</div>
+            </div>
+            <div className="text-center">
+              <AnimatedCounter 
+                end={120}
+                className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2"
+              />
+              <div className="font-fira-sans text-gray-300 text-sm">Subject Matter Experts</div>
+            </div>
+            <div className="text-center">
+              <AnimatedCounter 
+                end={26}
+                className="font-overpass font-bold text-3xl lg:text-4xl text-blue-400 mb-2"
+              />
+              <div className="font-fira-sans text-gray-300 text-sm">Navigators</div>
+            </div>
           </div>
           <div className="flex justify-center mb-8">
             <img src="/Pictures/TheGrowthofNASASpaceApps.png" alt="Growth of NASA Space Apps" className="rounded-xl shadow-lg max-w-full h-auto" />
+          </div>
+
+          {/* Highlight Videos Section */}
+          <div className="mt-12">
+            <h4 className="text-2xl font-bold text-white mb-6 text-center">Event Highlight Videos</h4>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="aspect-video w-full">
+                <iframe
+                  width="100%"
+                  height="315"
+                  src="https://www.youtube.com/embed/EWSqfntpYoM?si=zLtclTmup64SrrBr"
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                  className="rounded-lg w-full h-full"
+                ></iframe>
+              </div>
+              <div className="aspect-video w-full">
+                <iframe
+                  width="100%"
+                  height="315"
+                  src="https://www.youtube.com/embed/0B3RlwvWICg?si=FwaVGTg2sGEaI6WO"
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                  className="rounded-lg w-full h-full"
+                ></iframe>
+              </div>
+              <div className="aspect-video w-full">
+                <iframe
+                  width="100%"
+                  height="315"
+                  src="https://www.youtube.com/embed/SeriamoGlnw?si=uJqZ30I5V0z7Jhjo"
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                  className="rounded-lg w-full h-full"
+                ></iframe>
+              </div>
+            </div>
           </div>
         </div>
 

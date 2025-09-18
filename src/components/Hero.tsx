@@ -1,8 +1,6 @@
 import React from 'react';
 import { 
-  Calendar, MapPin, Users, UserPlus, Check, 
-  Clock, Mail, FileSpreadsheet, Upload,
-  List,
+  MapPin, Users, Upload, FileSpreadsheet, UserPlus, Check
 } from 'lucide-react';
 import {
   useRipples,
@@ -17,18 +15,18 @@ import { motion, AnimatePresence } from "framer-motion";
 const ColorLines: React.FC = () => {
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">
-      {/* Yellow Line */}
-      <div className="absolute h-full w-[80px] md:w-[100px] bg-yellow-400/10 blur-[50px] left-[65%] transform -skew-x-12"></div>
+      {/* NASA Blue Line */}
+      <div className="absolute h-full w-[80px] md:w-[100px] bg-blue-500/15 blur-[50px] left-[65%] transform -skew-x-12"></div>
       
-      {/* Blue Line */}
-      <div className="absolute h-full w-[80px] md:w-[100px] bg-blue-500/10 blur-[50px] left-[52%] transform -skew-x-12"></div>
+      {/* NASA Yellow Line */}
+      <div className="absolute h-full w-[80px] md:w-[100px] bg-yellow-400/15 blur-[50px] left-[52%] transform -skew-x-12"></div>
       
-      {/* Red Line */}
-      <div className="absolute h-full w-[80px] md:w-[100px] bg-red-500/10 blur-[50px] left-[78%] transform -skew-x-12"></div>
+      {/* Accent Blue Line */}
+      <div className="absolute h-full w-[80px] md:w-[100px] bg-blue-400/10 blur-[50px] left-[78%] transform -skew-x-12"></div>
       
       {/* Additional subtle lines */}
-      <div className="absolute h-full w-[50px] md:w-[70px] bg-cyan-400/5 blur-[60px] left-[20%] transform skew-x-12"></div>
-      <div className="absolute h-full w-[60px] md:w-[80px] bg-purple-500/5 blur-[70px] left-[35%] transform skew-x-12"></div>
+      <div className="absolute h-full w-[50px] md:w-[70px] bg-blue-300/8 blur-[60px] left-[20%] transform skew-x-12"></div>
+      <div className="absolute h-full w-[60px] md:w-[80px] bg-yellow-300/8 blur-[70px] left-[35%] transform skew-x-12"></div>
     </div>
   );
 };
@@ -64,7 +62,7 @@ const Hero: React.FC = () => {
       
       {/* Color lines background */}
       <ColorLines />
-      
+
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         
         {/* Save the Date Section */}
@@ -83,12 +81,10 @@ const Hero: React.FC = () => {
             
             <div className="absolute top-1/2 left-1/2 w-[350px] h-[350px] rounded-full border-2 border-blue-500/20 border-dashed animate-spin-slow transform -translate-x-1/2 -translate-y-1/2"></div>
           </motion.div>
-        </div>
-        
-        {/* Welcome Section */}
+        </div>        {/* Welcome Section */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center px-4 py-2 bg-blue-600/20 border border-blue-500/30 rounded-full text-blue-300 text-sm font-medium mb-6">
-            <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+          <div className="inline-flex items-center px-4 py-2 bg-yellow-400/10 border border-yellow-400/30 rounded-full text-yellow-300 text-sm font-medium mb-6">
+            <div className="w-2 h-2 bg-yellow-400 rounded-full mr-2 animate-pulse"></div>
             Registration Open
           </div>
           
@@ -110,195 +106,62 @@ const Hero: React.FC = () => {
           </motion.h1>
         </div>
 
-        {/* Event Information Cards - Symmetrical Layout */}
-        <div className="grid md:grid-cols-2 gap-6 mb-12">
-          {/* Left Column - REPLACED text header with logo above */}
+        {/* Enhanced Event Slideshow - Full Width */}
+        <div className="mb-12">
           <motion.div 
-            className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20"
-            whileHover={{ y: -5 }}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            className="relative overflow-hidden rounded-2xl border border-blue-500/30 bg-gradient-to-r from-slate-800/60 to-slate-900/60 backdrop-blur-lg shadow-2xl"
+            whileHover={{ scale: 1.01, rotateY: 1 }}
+            initial={{ opacity: 0, y: 50, rotateX: 10 }}
+            animate={{ opacity: 1, y: 0, rotateX: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <p className="text-gray-300 mb-4">
-              The Houston local event for the world's largest hackathon focused on space exploration,
-              bringing together innovators, students, and space enthusiasts.
-            </p>
-            <div className="grid grid-cols-2 gap-4">
-              <button
-                onClick={(e) => spawnFromEl(e.currentTarget)}
-                className="bg-slate-700/50 rounded-lg p-4 border border-blue-500/10"
-              >
-                <Calendar className="w-5 h-5 text-blue-400 mx-auto mb-2" />
-                <div className="text-sm text-gray-300 mb-1">Event Date</div>
-                <div className="font-semibold text-white">Oct 4-5, 2025</div>
-              </button>
-              <button
-                onClick={(e) => spawnFromEl(e.currentTarget)}
-                className="bg-slate-700/50 rounded-lg p-4 border border-blue-500/10"
-              >
-                <MapPin className="w-5 h-5 text-blue-400 mx-auto mb-2" />
-                <div className="text-sm text-gray-300 mb-1">Location</div>
-                <div className="font-semibold text-white">Houston, TX</div>
-              </button>
+            {/* Animated Background Effects */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-cyan-500/10"></div>
+            <div className="absolute inset-0">
+              <div className="absolute top-0 left-0 w-32 h-32 bg-blue-500/20 rounded-full blur-xl animate-pulse"></div>
+              <div className="absolute bottom-0 right-0 w-24 h-24 bg-purple-500/20 rounded-full blur-xl animate-pulse delay-1000"></div>
             </div>
-          </motion.div>
-
-          {/* Right Column */}
-          <motion.div 
-            className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20"
-            whileHover={{ y: -5 }}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <div className="flex items-center mb-4">
-              <SafeIcon icon={Clock} className="w-6 h-6 text-blue-400 mr-3" />
-              <h3 className="text-xl font-bold text-white">Event Duration</h3>
-            </div>
-            <p className="text-gray-300 mb-3">October 4-5, 2025</p>
-            <div className="space-y-3">
-              <div className="flex items-center">
-                <div className="w-2 h-2 rounded-full bg-blue-400 mr-2"></div>
-                <div className="text-white">Day 1 (Sat): 9:00 AM - 11:00 PM CDT</div>
+            
+            {/* Content */}
+            <div className="relative z-10 p-8">
+              {/* Floating Elements */}
+              <div className="absolute top-4 right-4 flex space-x-2">
+                <div className="w-3 h-3 bg-green-400 rounded-full animate-ping"></div>
+                <div className="w-3 h-3 bg-blue-400 rounded-full animate-ping delay-500"></div>
+                <div className="w-3 h-3 bg-purple-400 rounded-full animate-ping delay-1000"></div>
               </div>
-              <div className="flex items-center">
-                <div className="w-2 h-2 rounded-full bg-blue-400 mr-2"></div>
-                <div className="text-white">Day 2 (Sun): 9:00 AM - 6:00 PM CDT</div>
+              
+              {/* Slideshow Container */}
+              <div className="w-full flex justify-center">
+                <div className="relative w-full max-w-6xl">
+                  {/* Glow Effect Behind Iframe */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl blur-lg transform scale-105"></div>
+                  
+                  <iframe
+                    src="https://docs.google.com/presentation/d/e/2PACX-1vTAmR9ICjANntHQTwGxcivr2ZM9nOKNPZKS1npX59Mr4WH0xB2CqXFt8Kxb4fDMaQ/pubembed?start=true&loop=true&delayms=1000"
+                    frameBorder="0"
+                    width="960"
+                    height="569"
+                    allowFullScreen
+                    title="NASA Space Apps Challenge Houston"
+                    className="relative z-10 rounded-xl w-full aspect-video shadow-2xl border border-blue-500/20"
+                  />
+                </div>
               </div>
-            </div>
-          </motion.div>
-
-          {/* Format & Location */}
-          <motion.div 
-            className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20"
-            whileHover={{ y: -5 }}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <div className="flex items-center mb-4">
-              <MapPin className="w-6 h-6 text-blue-400 mr-3" />
-              <h3 className="text-xl font-bold text-white">Format & Location</h3>
-            </div>
-            <div className="space-y-3">
-              <div>
-                <div className="text-gray-300 mb-1">Format:</div>
-                <div className="text-white font-medium">In-Person Event</div>
-              </div>
-              <div>
-                <div className="text-gray-300 mb-1">Location:</div>
-                <div className="text-white font-medium">Houston, Texas (Venue TBA)</div>
-              </div>
-              <div>
-                <div className="text-gray-300 mb-1">Timezone:</div>
-                <div className="text-white font-medium">CDT (Central Daylight Time)</div>
+              
+              {/* Bottom Accent */}
+              <div className="mt-6 flex justify-center">
+                <div className="flex space-x-2">
+                  {[...Array(5)].map((_, i) => (
+                    <div 
+                      key={i}
+                      className="w-2 h-2 bg-blue-400/60 rounded-full animate-pulse"
+                      style={{ animationDelay: `${i * 200}ms` }}
+                    ></div>
+                  ))}
+                </div>
               </div>
             </div>
-          </motion.div>
-
-          {/* Capacity & Registration */}
-          <motion.div 
-            className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20"
-            whileHover={{ y: -5 }}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <div className="flex items-center mb-4">
-              <Users className="w-6 h-6 text-blue-400 mr-3" />
-              <h3 className="text-xl font-bold text-white">Capacity & Registration</h3>
-            </div>
-            <div className="mb-4">
-              <div className="text-gray-300 mb-1">Event Capacity:</div>
-              <div className="text-white font-medium">200 participants</div>
-              <p className="text-gray-400 text-sm mt-2">
-                Registration includes waitlist option when capacity is reached. Early registration recommended.
-              </p>
-            </div>
-            <motion.a 
-              href="https://www.spaceappschallenge.org/2025/local-events/houston/?tab=details" 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 bg-yellow-400 text-slate-900 px-5 py-2.5 rounded-lg hover:bg-yellow-300 transition-colors font-bold"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={(e) => spawnFromEl(e.currentTarget)}
-            >
-              Register Now
-            </motion.a>
-          </motion.div>
-
-          {/* Local Lead Contact */}
-          <motion.div 
-            className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20"
-            whileHover={{ y: -5 }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-          >
-            <div className="flex items-center mb-4">
-              <Mail className="w-6 h-6 text-blue-400 mr-3" />
-              <h3 className="text-xl font-bold text-white">Local Lead Contact</h3>
-            </div>
-            <div className="space-y-3">
-              <div>
-                <div className="text-gray-300 mb-1">Primary contact for all inquiries:</div>
-                <div className="text-white font-medium">Zain Khan</div>
-                <a 
-                  href="mailto:zain@nasaspaceappschallenge.org"
-                  className="text-blue-400 hover:text-blue-300 transition-colors"
-                >
-                  zain@nasaspaceappschallenge.org
-                </a>
-              </div>
-              <div>
-                <div className="text-gray-300 mb-1">Inquiries or Questions:</div>
-                <a 
-                  href="mailto:houston@nasaspaceappschallenge.org"
-                  className="text-blue-400 hover:text-blue-300 transition-colors"
-                >
-                  houston@nasaspaceappschallenge.org
-                </a>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Quick Facts */}
-          <motion.div 
-            className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20"
-            whileHover={{ y: -5 }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-          >
-            <div className="flex items-center mb-4">
-              <List className="w-6 h-6 text-blue-400 mr-3" />
-              <h3 className="text-xl font-bold text-white">Quick Facts</h3>
-            </div>
-            <ul className="space-y-2">
-              <li className="flex items-start">
-                <div className="w-2 h-2 rounded-full bg-blue-400 mt-2 mr-2 flex-shrink-0"></div>
-                <span className="text-gray-300">48-hour hackathon format</span>
-              </li>
-              <li className="flex items-start">
-                <div className="w-2 h-2 rounded-full bg-blue-400 mt-2 mr-2 flex-shrink-0"></div>
-                <span className="text-gray-300">Teams of 2-6 participants</span>
-              </li>
-              <li className="flex items-start">
-                <div className="w-2 h-2 rounded-full bg-blue-400 mt-2 mr-2 flex-shrink-0"></div>
-                <span className="text-gray-300">NASA challenge themes</span>
-              </li>
-              <li className="flex items-start">
-                <div className="w-2 h-2 rounded-full bg-blue-400 mt-2 mr-2 flex-shrink-0"></div>
-                <span className="text-gray-300">Meals and snacks provided</span>
-              </li>
-              <li className="flex items-start">
-                <div className="w-2 h-2 rounded-full bg-blue-400 mt-2 mr-2 flex-shrink-0"></div>
-                <span className="text-gray-300">Prizes and recognition</span>
-              </li>
-            </ul>
-            <p className="text-yellow-400 text-sm mt-3">More details coming soon!</p>
           </motion.div>
         </div>
 
@@ -381,7 +244,7 @@ const Hero: React.FC = () => {
             <p className="text-yellow-400 text-sm mb-4">July 17, 2025</p>
             <p className="text-gray-300 mb-6">Connect with the NASA Space Apps community by choosing an in-person or virtual Local Event near you.</p>
             <motion.a
-              href="https://www.spaceappschallenge.org/2025/locations/"
+              href="https://www.spaceappschallenge.org/2025/local-events/houston/?tab=details"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 bg-blue-600/30 text-blue-300 px-4 py-2 rounded-lg hover:bg-blue-600/50 transition-colors"
@@ -407,9 +270,12 @@ const Hero: React.FC = () => {
             </div>
             <h3 className="text-xl font-bold text-white mb-2">JOIN OR FORM A TEAM</h3>
             <p className="text-yellow-400 text-sm mb-4">August 21, 2025</p>
-            <p className="text-gray-300 mb-6">Collaborate with participants by forming or joining a team according to your chosen challenge. Teams should have no more than six participants.</p>
+            <p className="text-gray-300 mb-4">Collaborate with participants by forming or joining a team according to your chosen challenge. Teams should have no more than six participants.</p>
+            <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3 mb-6">
+              <p className="text-red-300 text-sm font-medium">Don't worry about finding a team - Zain will help you find the perfect team match!</p>
+            </div>
             <motion.a
-              href="https://www.spaceappschallenge.org/2025/teams/"
+              href="https://www.spaceappschallenge.org/2025/local-events/houston/?tab=teams"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 bg-blue-600/30 text-blue-300 px-4 py-2 rounded-lg hover:bg-blue-600/50 transition-colors"

@@ -43,21 +43,38 @@ export function centerOf(el: HTMLElement) {
 export function Stars() {
   const dots = useMemo(
     () =>
-      Array.from({ length: 160 }).map(() => ({
+      Array.from({ length: 200 }).map(() => ({
         left: Math.random() * window.innerWidth,
         top: Math.random() * window.innerHeight,
-        size: Math.random() * 1.4 + 0.3,
-        opacity: Math.random() * 0.8 + 0.2,
+        size: Math.random() * 2 + 0.5,
+        opacity: Math.random() * 0.9 + 0.1,
+        twinkleDelay: Math.random() * 3,
       })),
     []
   );
+  
   return (
     <div className="pointer-events-none absolute inset-0" aria-hidden>
       <svg width="100%" height="100%" style={{ position: "absolute", left: 0, top: 0 }}>
         {dots.map((d, i) => (
-          <circle key={i} cx={d.left} cy={d.top} r={d.size} fill={`rgba(255,255,255,${d.opacity})`} />
+          <circle 
+            key={i} 
+            cx={d.left} 
+            cy={d.top} 
+            r={d.size} 
+            fill={`rgba(255,255,255,${d.opacity})`}
+            className="animate-pulse"
+            style={{ 
+              animationDelay: `${d.twinkleDelay}s`,
+              animationDuration: `${2 + Math.random() * 3}s`
+            }}
+          />
         ))}
       </svg>
+      
+      {/* Additional cosmic effects */}
+      <div className="absolute inset-0 bg-gradient-to-b from-indigo-950/20 via-transparent to-purple-950/20"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-950/10 to-transparent"></div>
     </div>
   );
 }

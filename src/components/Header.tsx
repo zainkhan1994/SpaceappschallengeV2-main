@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import CountdownToEvent from './CountdownToEvent';
 import { Menu, X } from 'lucide-react';
 
 interface NavItem {
@@ -56,14 +57,24 @@ const Header: React.FC<HeaderProps> = ({ activeSection, navItems, onChallengeCli
       <div className="container mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <a href="#home" className="flex items-center space-x-3" onClick={(e) => handleNavClick(e, '#home')}>
-            <img 
-              src="/Pictures/nasa-space-apps-logo.png" 
-              alt="NASA Space Apps Challenge Logo" 
-              className="h-12 w-auto"
-            />
+          <a href="#home" className="flex flex-col items-center space-y-2" onClick={(e) => handleNavClick(e, '#home')}>
+            <div className="flex items-center space-x-4">
+              <img 
+                src="/Pictures/nasa-space-apps-logo.png" 
+                alt="NASA Space Apps Challenge Logo" 
+                className="h-16 w-auto"
+              />
+              <div className="hidden sm:block">
+                <div className="flex flex-col">
+                  <div className="text-blue-300 text-xs">HOUSTON 2025</div>
+                </div>
+              </div>
+            </div>
+            {/* Countdown positioned under the logo - BIGGER AND STACKED */}
             <div className="hidden sm:block">
-              <div className="text-blue-300 text-xs">HOUSTON 2025</div>
+              <div className="text-center">
+                <CountdownToEvent />
+              </div>
             </div>
           </a>
 
@@ -75,7 +86,7 @@ const Header: React.FC<HeaderProps> = ({ activeSection, navItems, onChallengeCli
                   {item.name === 'Challenges' ? (
                     <button
                       onClick={handleChallengesClick}
-                      className={`text-sm font-medium ${activeSection === 'challenges' ? 'text-blue-400' : 'text-gray-300 hover:text-white'}`}
+                      className={`text-sm font-medium transition-colors duration-300 ${activeSection === 'challenges' ? 'text-[#FFFF33]' : 'text-gray-300 hover:text-[#FFFF33]'}`}
                     >
                       {item.name}
                     </button>
@@ -83,7 +94,7 @@ const Header: React.FC<HeaderProps> = ({ activeSection, navItems, onChallengeCli
                     <a
                       href={item.href}
                       onClick={(e) => handleNavClick(e, item.href)}
-                      className={`text-sm font-medium ${activeSection === item.href.substring(1) ? 'text-blue-400' : 'text-gray-300 hover:text-white'}`}
+                      className={`text-sm font-medium transition-colors duration-300 ${activeSection === item.href.substring(1) ? 'text-[#FFFF33]' : 'text-gray-300 hover:text-[#FFFF33]'}`}
                     >
                       {item.name}
                     </a>
@@ -112,7 +123,7 @@ const Header: React.FC<HeaderProps> = ({ activeSection, navItems, onChallengeCli
                 {item.name === 'Challenges' ? (
                   <button
                     onClick={handleChallengesClick}
-                    className={`block w-full text-left text-base ${activeSection === 'challenges' ? 'text-blue-400' : 'text-gray-300 hover:text-white'}`}
+                    className={`block w-full text-left text-base transition-colors duration-300 ${activeSection === 'challenges' ? 'text-[#FFFF33]' : 'text-gray-300 hover:text-[#FFFF33]'}`}
                   >
                     {item.name}
                   </button>
@@ -120,7 +131,7 @@ const Header: React.FC<HeaderProps> = ({ activeSection, navItems, onChallengeCli
                   <a
                     href={item.href}
                     onClick={(e) => handleNavClick(e, item.href)}
-                    className={`block text-base ${activeSection === item.href.substring(1) ? 'text-blue-400' : 'text-gray-300 hover:text-white'}`}
+                    className={`block text-base transition-colors duration-300 ${activeSection === item.href.substring(1) ? 'text-[#FFFF33]' : 'text-gray-300 hover:text-[#FFFF33]'}`}
                   >
                     {item.name}
                   </a>
