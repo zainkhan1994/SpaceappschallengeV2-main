@@ -1,9 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Users, Globe } from 'lucide-react';
 import EventContactInfo from './EventContactInfo';
 import Timeline from './Timeline';
 
 const EventBasics: React.FC = () => {
+  const [showPhoto, setShowPhoto] = useState(false);
+
+  useEffect(() => {
+    if (!showPhoto) return;
+    const t = setTimeout(() => setShowPhoto(false), 3000);
+    return () => clearTimeout(t);
+  }, [showPhoto]);
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setShowPhoto(false);
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
   return (
     <div className="bg-slate-900 py-16">
       <div className="container mx-auto px-6">
@@ -53,6 +69,59 @@ const EventBasics: React.FC = () => {
                 </div>
               </div>
             </div>
+
+            {/* Venue */}
+            <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 shadow-lg">
+              <h3 className="text-xl font-bold text-white mb-4">Event Location</h3>
+              <p className="text-gray-300 mb-2">
+                The NASA Space Apps Challenge in Houston will take place at the University of Houston Student Center South – Multipurpose Room (aka “Space City”).
+              </p>
+              <p className="text-gray-300 mb-4">
+                Address: 4800 Calhoun Rd, Houston, TX 77204
+              </p>
+              <div>
+                <div className="flex items-center space-x-3">
+                  <a
+                    href="https://www.uh.edu/studentcenters/index.php"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                  >
+                    View Venue
+                  </a>
+                  <button
+                    onClick={() => setShowPhoto(true)}
+                    className="inline-block px-5 py-3 bg-white text-slate-900 rounded-lg hover:brightness-95 transition-all font-medium border border-transparent"
+                  >
+                    View Photos
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Photo Modal (auto-dismiss) */}
+            {showPhoto && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center">
+                <div
+                  className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                  onClick={() => setShowPhoto(false)}
+                />
+                <div className="pointer-events-auto bg-white rounded-lg overflow-hidden shadow-xl transform transition-all duration-300 ease-out max-w-3xl w-full mx-4 animate-modal-scale">
+                  <div className="p-2 flex justify-end">
+                    <button
+                      onClick={() => setShowPhoto(false)}
+                      className="bg-transparent text-slate-800 rounded-full p-2 hover:bg-slate-100 transition"
+                      aria-label="Close photos"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <div className="p-4">
+                    <img src="/Pictures/multipurpose-room-fair-style.jpg" alt="Multipurpose Room" className="w-full h-auto rounded-md" />
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Contact Information - NEW */}
             <EventContactInfo />
