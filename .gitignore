@@ -37,3 +37,6 @@ scrape-*.js
 
 # MacOS
 .DS_Store
+
+# Assessment results (stored data)
+data/assessment-results.json

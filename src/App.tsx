@@ -29,7 +29,8 @@ const App: React.FC = () => {
       { name: 'Schedule', href: '#schedule' },
       { name: 'Sponsors', href: '#sponsors' },
       { name: 'Winners', href: '#winners' },
-      { name: 'Challenges', href: '#challenges' }
+      { name: 'Challenges', href: '#challenges' },
+      { name: 'Assessment', href: '/assessment' }
     ];
 
   useEffect(() => {
