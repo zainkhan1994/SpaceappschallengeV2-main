@@ -41,8 +41,8 @@ const Header: React.FC<HeaderProps> = ({ activeSection, navItems, onChallengeCli
       
       setIsMenuOpen(false);
     }
-    
-    // External links will work as normal
+    // For route-based links (like /assessment), let them navigate normally
+    // External links will also work as normal
   };
 
   // Special handler for Challenges link
