@@ -11,9 +11,10 @@ interface HeaderProps {
   activeSection: string;
   navItems: NavItem[];
   onChallengeClick: () => void;
+  onGlobeClick?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ activeSection, navItems, onChallengeClick }) => {
+const Header: React.FC<HeaderProps> = ({ activeSection, navItems, onChallengeClick, onGlobeClick }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -52,8 +53,17 @@ const Header: React.FC<HeaderProps> = ({ activeSection, navItems, onChallengeCli
     setIsMenuOpen(false);
   };
 
+  // Special handler for Globe Explorer link
+  const handleGlobeClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onGlobeClick) {
+      onGlobeClick();
+    }
+    setIsMenuOpen(false);
+  };
+
   return (
-    <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-slate-900/90 backdrop-blur-sm shadow-lg' : 'bg-transparent'}`}>
+    <header className={`sticky top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-slate-900/90 backdrop-blur-sm shadow-lg' : 'bg-transparent'}`}>
       <div className="container mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
@@ -87,6 +97,13 @@ const Header: React.FC<HeaderProps> = ({ activeSection, navItems, onChallengeCli
                     <button
                       onClick={handleChallengesClick}
                       className={`text-sm font-medium transition-colors duration-300 ${activeSection === 'challenges' ? 'text-[#FFFF33]' : 'text-gray-300 hover:text-[#FFFF33]'}`}
+                    >
+                      {item.name}
+                    </button>
+                  ) : item.name === 'Globe Explorer' ? (
+                    <button
+                      onClick={handleGlobeClick}
+                      className={`text-sm font-medium transition-colors duration-300 ${activeSection === 'globe' ? 'text-[#FFFF33]' : 'text-gray-300 hover:text-[#FFFF33]'}`}
                     >
                       {item.name}
                     </button>
@@ -124,6 +141,13 @@ const Header: React.FC<HeaderProps> = ({ activeSection, navItems, onChallengeCli
                   <button
                     onClick={handleChallengesClick}
                     className={`block w-full text-left text-base transition-colors duration-300 ${activeSection === 'challenges' ? 'text-[#FFFF33]' : 'text-gray-300 hover:text-[#FFFF33]'}`}
+                  >
+                    {item.name}
+                  </button>
+                ) : item.name === 'Globe Explorer' ? (
+                  <button
+                    onClick={handleGlobeClick}
+                    className={`block w-full text-left text-base transition-colors duration-300 ${activeSection === 'globe' ? 'text-[#FFFF33]' : 'text-gray-300 hover:text-[#FFFF33]'}`}
                   >
                     {item.name}
                   </button>

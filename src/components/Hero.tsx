@@ -1,35 +1,14 @@
 import React from 'react';
 import { 
-  MapPin, Users, Upload, FileSpreadsheet, UserPlus, Check
+  FileSpreadsheet, UserPlus
 } from 'lucide-react';
 import {
   useRipples,
   Ripple,
   centerOf,
-  Stars,
-  NAVY,
 } from "./RippleEffectUtils";
 import { motion, AnimatePresence } from "framer-motion";
-
-// Color lines background component
-const ColorLines: React.FC = () => {
-  return (
-    <div className="absolute inset-0 z-0 overflow-hidden">
-      {/* NASA Blue Line */}
-      <div className="absolute h-full w-[80px] md:w-[100px] bg-blue-500/15 blur-[50px] left-[65%] transform -skew-x-12"></div>
-      
-      {/* NASA Yellow Line */}
-      <div className="absolute h-full w-[80px] md:w-[100px] bg-yellow-400/15 blur-[50px] left-[52%] transform -skew-x-12"></div>
-      
-      {/* Accent Blue Line */}
-      <div className="absolute h-full w-[80px] md:w-[100px] bg-blue-400/10 blur-[50px] left-[78%] transform -skew-x-12"></div>
-      
-      {/* Additional subtle lines */}
-      <div className="absolute h-full w-[50px] md:w-[70px] bg-blue-300/8 blur-[60px] left-[20%] transform skew-x-12"></div>
-      <div className="absolute h-full w-[60px] md:w-[80px] bg-yellow-300/8 blur-[70px] left-[35%] transform skew-x-12"></div>
-    </div>
-  );
-};
+import NASAGlobe from './NASAGlobe';
 
 const Hero: React.FC = () => {
   const { items, add, remove } = useRipples();
@@ -39,297 +18,93 @@ const Hero: React.FC = () => {
     add(x, y);
   };
 
-  // Helper to safely render icons with fallback
-  const SafeIcon = ({ 
-    icon: IconComponent, 
-    ...props 
-  }: { 
-    icon: React.ComponentType<any>,
-    [key: string]: any 
-  }) => {
-    try {
-      return <IconComponent {...props} />;
-    } catch (e) {
-      console.warn("Failed to render icon:", e);
-      return <div className={`${props.className || ''} bg-blue-400/30 rounded-sm`}></div>;
-    }
-  };
-
   return (
-    <section id="hero" className="relative min-h-screen flex flex-col justify-center overflow-hidden" style={{ background: NAVY }}>
-      {/* Starfield background */}
-      <Stars />
+    <section id="hero" className="relative min-h-screen flex flex-col justify-center overflow-hidden">
+      {/* NASA Globe Background */}
+      <NASAGlobe showOverlay={false} />
       
-      {/* Color lines background */}
-      <ColorLines />
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        
-        {/* Save the Date Section */}
-        <div className="mb-16 text-center">
+      {/* Main content container */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        {/* Hero Content */}
+        <div className="text-center mb-16">
           <motion.div
-            className="relative max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <img 
-              src="/Pictures/Savethedate.jpeg" 
-              alt="Save the Date - NASA Space Apps Challenge 2025" 
-              className="w-full h-auto rounded-lg shadow-2xl relative z-10"
-            />
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+              NASA Space Apps Challenge
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-yellow-400">
+                2025 - Houston
+              </span>
+            </h1>
             
-            <div className="absolute top-1/2 left-1/2 w-[350px] h-[350px] rounded-full border-2 border-blue-500/20 border-dashed animate-spin-slow transform -translate-x-1/2 -translate-y-1/2"></div>
-          </motion.div>
-        </div>        {/* Welcome Section */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center px-4 py-2 bg-yellow-400/10 border border-yellow-400/30 rounded-full text-yellow-300 text-sm font-medium mb-6">
-            <div className="w-2 h-2 bg-yellow-400 rounded-full mr-2 animate-pulse"></div>
-            Registration Open
-          </div>
-          
-          <motion.h1 
-            className="font-bold text-4xl sm:text-5xl lg:text-6xl text-white mb-6 leading-tight"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            Welcome to the 2025
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-yellow-400">
-              NASA SPACE APPS
-            </span>
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-yellow-400">
-              CHALLENGE!
-            </span>
-          </motion.h1>
-        </div>
-
-        {/* Enhanced Event Slideshow - Full Width */}
-        <div className="mb-12">
-          <motion.div 
-            className="relative overflow-hidden rounded-2xl border border-blue-500/30 bg-gradient-to-r from-slate-800/60 to-slate-900/60 backdrop-blur-lg shadow-2xl"
-            whileHover={{ scale: 1.01, rotateY: 1 }}
-            initial={{ opacity: 0, y: 50, rotateX: 10 }}
-            animate={{ opacity: 1, y: 0, rotateX: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-          >
-            {/* Animated Background Effects */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-cyan-500/10"></div>
-            <div className="absolute inset-0">
-              <div className="absolute top-0 left-0 w-32 h-32 bg-blue-500/20 rounded-full blur-xl animate-pulse"></div>
-              <div className="absolute bottom-0 right-0 w-24 h-24 bg-purple-500/20 rounded-full blur-xl animate-pulse delay-1000"></div>
-            </div>
+            <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Join us for the world's largest global hackathon using NASA's open data to solve real-world challenges on Earth and in space.
+            </p>
             
-            {/* Content */}
-            <div className="relative z-10 p-8">
-              {/* Floating Elements */}
-              <div className="absolute top-4 right-4 flex space-x-2">
-                <div className="w-3 h-3 bg-green-400 rounded-full animate-ping"></div>
-                <div className="w-3 h-3 bg-blue-400 rounded-full animate-ping delay-500"></div>
-                <div className="w-3 h-3 bg-purple-400 rounded-full animate-ping delay-1000"></div>
-              </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <motion.a
+                href="#registration"
+                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={(e) => spawnFromEl(e.currentTarget)}
+              >
+                <UserPlus className="w-5 h-5 mr-2" />
+                Register Now
+              </motion.a>
               
-              {/* Slideshow Container */}
-              <div className="w-full flex justify-center">
-                <div className="relative w-full max-w-6xl">
-                  {/* Glow Effect Behind Iframe */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl blur-lg transform scale-105"></div>
-                  
-                  <iframe
-                    src="https://docs.google.com/presentation/d/e/2PACX-1vTAmR9ICjANntHQTwGxcivr2ZM9nOKNPZKS1npX59Mr4WH0xB2CqXFt8Kxb4fDMaQ/pubembed?start=true&loop=true&delayms=1000"
-                    frameBorder="0"
-                    width="960"
-                    height="569"
-                    allowFullScreen
-                    title="NASA Space Apps Challenge Houston"
-                    className="relative z-10 rounded-xl w-full aspect-video shadow-2xl border border-blue-500/20"
-                  />
-                </div>
-              </div>
-              
-              {/* Bottom Accent */}
-              <div className="mt-6 flex justify-center">
-                <div className="flex space-x-2">
-                  {[...Array(5)].map((_, i) => (
-                    <div 
-                      key={i}
-                      className="w-2 h-2 bg-blue-400/60 rounded-full animate-pulse"
-                      style={{ animationDelay: `${i * 200}ms` }}
-                    ></div>
-                  ))}
-                </div>
-              </div>
+              <motion.a
+                href="#challenges"
+                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-semibold rounded-xl hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={(e) => spawnFromEl(e.currentTarget)}
+              >
+                <FileSpreadsheet className="w-5 h-5 mr-2" />
+                View Challenges
+              </motion.a>
             </div>
           </motion.div>
         </div>
 
-        {/* How to Participate Section - Heading */}
-        <div className="text-center mb-8 mt-16">
-          <h2 className="font-bold text-3xl sm:text-4xl text-white mb-4">How to Participate</h2>
-          <p className="text-gray-300 max-w-3xl mx-auto">Follow these steps to join the NASA Space Apps Challenge and make your mark in space exploration.</p>
-        </div>
-
-        {/* Participation Steps - Symmetrical Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {/* Step 01 */}
-          <motion.div 
-            className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20 hover:border-blue-400/40 transition-all duration-300"
+        {/* Event Details */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          <motion.div
+            className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20 text-center"
             whileHover={{ y: -5 }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <div className="inline-block px-3 py-1 rounded-md bg-blue-600/20 text-blue-300 text-sm font-medium mb-4">
-              Step 01
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">CREATE ACCOUNT</h3>
-            <p className="text-yellow-400 text-sm mb-4">July 17, 2025</p>
-            <p className="text-gray-300 mb-6">The first step in your hackathon journey is to create a NASA Space Apps account or log in to your existing account.</p>
-            <motion.a
-              href="https://www.spaceappschallenge.org/account/register/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 bg-blue-600/30 text-blue-300 px-4 py-2 rounded-lg hover:bg-blue-600/50 transition-colors"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={(e) => spawnFromEl(e.currentTarget)}
-            >
-              <UserPlus size={16} />
-              <span>Create Account</span>
-            </motion.a>
+            <div className="text-3xl mb-4">📅</div>
+            <h3 className="text-xl font-bold text-white mb-2">Event Date</h3>
+            <p className="text-yellow-400 font-semibold">October 4-5, 2025</p>
           </motion.div>
           
-          {/* Step 02 */}
-          <motion.div 
-            className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20 hover:border-blue-400/40 transition-all duration-300"
+          <motion.div
+            className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20 text-center"
             whileHover={{ y: -5 }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <div className="inline-block px-3 py-1 rounded-md bg-blue-600/20 text-blue-300 text-sm font-medium mb-4">
-              Step 02
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">REGISTER FOR THE HACKATHON</h3>
-            <p className="text-yellow-400 text-sm mb-4">July 17, 2025</p>
-            <p className="text-gray-300 mb-6">To participate and be eligible for Global Judging, you must first register for the 2025 NASA Space Apps Challenge.</p>
-            <motion.a
-              href="https://www.spaceappschallenge.org/2025/local-events/houston/?tab=details"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 bg-blue-600/30 text-blue-300 px-4 py-2 rounded-lg hover:bg-blue-600/50 transition-colors"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={(e) => spawnFromEl(e.currentTarget)}
-            >
-              <Check size={16} />
-              <span>Register</span>
-            </motion.a>
+            <div className="text-3xl mb-4">📍</div>
+            <h3 className="text-xl font-bold text-white mb-2">Location</h3>
+            <p className="text-yellow-400 font-semibold">Houston, Texas</p>
           </motion.div>
           
-          {/* Step 03 */}
-          <motion.div 
-            className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20 hover:border-blue-400/40 transition-all duration-300"
+          <motion.div
+            className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20 text-center"
             whileHover={{ y: -5 }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <div className="inline-block px-3 py-1 rounded-md bg-blue-600/20 text-blue-300 text-sm font-medium mb-4">
-              Step 03
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">CHOOSE A LOCAL EVENT</h3>
-            <p className="text-yellow-400 text-sm mb-4">July 17, 2025</p>
-            <p className="text-gray-300 mb-6">Connect with the NASA Space Apps community by choosing an in-person or virtual Local Event near you.</p>
-            <motion.a
-              href="https://www.spaceappschallenge.org/2025/local-events/houston/?tab=details"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 bg-blue-600/30 text-blue-300 px-4 py-2 rounded-lg hover:bg-blue-600/50 transition-colors"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={(e) => spawnFromEl(e.currentTarget)}
-            >
-              <MapPin size={16} />
-              <span>Choose a Local Event</span>
-            </motion.a>
-          </motion.div>
-          
-          {/* Step 04 */}
-          <motion.div 
-            className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20 hover:border-blue-400/40 transition-all duration-300"
-            whileHover={{ y: -5 }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <div className="inline-block px-3 py-1 rounded-md bg-blue-600/20 text-blue-300 text-sm font-medium mb-4">
-              Step 04
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">JOIN OR FORM A TEAM</h3>
-            <p className="text-yellow-400 text-sm mb-4">August 21, 2025</p>
-            <p className="text-gray-300 mb-4">Collaborate with participants by forming or joining a team according to your chosen challenge. Teams should have no more than six participants.</p>
-            <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3 mb-6">
-              <p className="text-red-300 text-sm font-medium">Don't worry about finding a team - Zain will help you find the perfect team match!</p>
-            </div>
-            <motion.a
-              href="https://www.spaceappschallenge.org/2025/local-events/houston/?tab=teams"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 bg-blue-600/30 text-blue-300 px-4 py-2 rounded-lg hover:bg-blue-600/50 transition-colors"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={(e) => spawnFromEl(e.currentTarget)}
-            >
-              <SafeIcon icon={Users} size={16} />
-              <span>Browse Teams</span>
-            </motion.a>
-          </motion.div>
-          
-          {/* Step 05 */}
-          <motion.div 
-            className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20 hover:border-blue-400/40 transition-all duration-300"
-            whileHover={{ y: -5 }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-          >
-            <div className="inline-block px-3 py-1 rounded-md bg-blue-600/20 text-blue-300 text-sm font-medium mb-4">
-              Step 05
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">SUBMIT A PROJECT</h3>
-            <p className="text-yellow-400 text-sm mb-4">October 5, 2025</p>
-            <p className="text-gray-300 mb-6">All project submissions are due by 11:59 p.m. on October 5. Submit your project to receive a participant certificate and to be eligible for Global Judging.</p>
-            <motion.div
-              className="flex items-center justify-center gap-2 bg-blue-600/30 text-blue-300 px-4 py-2 rounded-lg cursor-default"
-            >
-              <Upload size={16} />
-              <span>Coming Soon</span>
-            </motion.div>
-          </motion.div>
-          
-          {/* Step 06 */}
-          <motion.div 
-            className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20 hover:border-blue-400/40 transition-all duration-300"
-            whileHover={{ y: -5 }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-          >
-            <div className="inline-block px-3 py-1 rounded-md bg-blue-600/20 text-blue-300 text-sm font-medium mb-4">
-              Step 06
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">Complete the Participant Survey</h3>
-            <p className="text-yellow-400 text-sm mb-4">October 24, 2025</p>
-            <p className="text-gray-300 mb-6">Share your feedback about your hackathon journey to help improve future events. All participants are encouraged to complete the survey.</p>
-            <motion.div
-              className="flex items-center justify-center gap-2 bg-blue-600/30 text-blue-300 px-4 py-2 rounded-lg cursor-default"
-            >
-              <FileSpreadsheet size={16} />
-              <span>Coming Soon</span>
-            </motion.div>
+            <div className="text-3xl mb-4">👥</div>
+            <h3 className="text-xl font-bold text-white mb-2">Team Size</h3>
+            <p className="text-yellow-400 font-semibold">1-6 Members</p>
           </motion.div>
         </div>
       </div>

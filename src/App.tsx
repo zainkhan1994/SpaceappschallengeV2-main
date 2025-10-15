@@ -10,11 +10,14 @@ import Sponsors from './components/Sponsors';
 import Footer from './components/Footer';
 import Winners from './components/Winners';
 import ChallengeExplorer from './components/ChallengeExplorer';
+import CognitiveDiversityUI from './pages/CognitiveDiversityUI';
 import ChatbotWidget from './components/ChatbotWidget';
 import EarthVideo from './components/EarthVideo';
 import FloatingHelpWidget from './components/FloatingHelpWidget';
+import AgencyPartners from './components/AgencyPartners';
+import GlobeExplorer from './pages/GlobeExplorer';
 
-export type ViewMode = 'landing' | 'explorer';
+export type ViewMode = 'landing' | 'explorer' | 'globe';
 
 const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string>('home');
@@ -28,8 +31,11 @@ const App: React.FC = () => {
       { name: 'Why Join', href: '#why-join' },
       { name: 'Schedule', href: '#schedule' },
       { name: 'Sponsors', href: '#sponsors' },
+      { name: 'Agency Partners', href: '#agency-partners' },
       { name: 'Winners', href: '#winners' },
-      { name: 'Challenges', href: '#challenges' }
+      { name: 'Diversity', href: '#diversity' },
+      { name: 'Challenges', href: '#challenges' },
+      { name: 'Globe Explorer', href: '#globe' }
     ];
 
   useEffect(() => {
@@ -39,7 +45,7 @@ const App: React.FC = () => {
     const handleScroll = () => {
       const sections = [
         'home', 'event-info', 'schedule', 'why-join', 
-        'registration', 'resources', 'sponsors', 'contact'
+        'registration', 'resources', 'sponsors', 'agency-partners', 'winners', 'earth-video'
       ];
       
       const scrollPosition = window.scrollY + 100;
@@ -56,13 +62,27 @@ const App: React.FC = () => {
       }
     };
 
+    const handleNavigateToGlobe = () => {
+      setViewMode('globe');
+    };
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('navigateToGlobe', handleNavigateToGlobe);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('navigateToGlobe', handleNavigateToGlobe);
+    };
   }, [viewMode]);
 
   const handleChallengeClick = () => {
     console.log('Switching to explorer mode');
     setViewMode('explorer');
+  };
+
+  const handleGlobeClick = () => {
+    console.log('Switching to globe mode');
+    setViewMode('globe');
   };
 
   const handleBackToLanding = () => {
@@ -75,14 +95,20 @@ const App: React.FC = () => {
     return <ChallengeExplorer onBackToLanding={handleBackToLanding} />;
   }
 
+  // If in globe mode, show globe explorer
+  if (viewMode === 'globe') {
+    return <GlobeExplorer onBackToLanding={handleBackToLanding} />;
+  }
+
   // Original landing page - fixed container
   return (
     <div className="min-h-screen bg-slate-900 overflow-x-hidden">
-      <Header 
-        activeSection={activeSection} 
-        navItems={navItems} 
-        onChallengeClick={handleChallengeClick} 
-      />
+          <Header 
+            activeSection={activeSection} 
+            navItems={navItems} 
+            onChallengeClick={handleChallengeClick}
+            onGlobeClick={handleGlobeClick}
+          />
       <main className="w-full">
         <section id="home" className="w-full">
           <Hero />
@@ -92,6 +118,9 @@ const App: React.FC = () => {
         </section>
         <section id="registration" className="w-full">
           <Registration />
+        </section>
+        <section id="diversity" className="w-full">
+          <CognitiveDiversityUI />
         </section>
         <section id="resources" className="w-full">
           <Resources />
@@ -104,6 +133,9 @@ const App: React.FC = () => {
         </section>
         <section id="sponsors" className="w-full">
           <Sponsors />
+        </section>
+        <section id="agency-partners" className="w-full">
+          <AgencyPartners />
         </section>
         <section id="winners" className="w-full">
           <Winners />
