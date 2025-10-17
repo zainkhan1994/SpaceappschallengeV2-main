@@ -214,14 +214,14 @@ const Assessment: React.FC<AssessmentProps> = ({ onComplete }) => {
 
             <div className="bg-slate-700/50 rounded-lg p-6 mb-8">
               <h3 className="text-xl font-semibold text-white mb-4">Your Key Traits:</h3>
-              <div className="grid grid-cols-2 gap-3">
+              <ul className="grid grid-cols-2 gap-3">
                 {archetypeData.traits.map((trait, index) => (
-                  <div key={index} className="flex items-center space-x-2">
+                  <li key={index} className="flex items-center space-x-2">
                     <CheckCircle className="text-green-400 flex-shrink-0" size={20} />
                     <span className="text-gray-300">{trait}</span>
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
 
             {!submitSuccess ? (
