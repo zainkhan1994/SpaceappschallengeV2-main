@@ -26,7 +26,13 @@ const DATA_DIR = path.join(__dirname, 'data');
 const RESULTS_FILE = path.join(DATA_DIR, 'assessment-results.json');
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://yourdomain.com',
+    'http://localhost:3000'
+  ],
+  methods: ['POST', 'GET']
+}));
 app.use(express.json());
 
 // Serve static files from the dist directory (built React app)
