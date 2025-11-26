@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import CountdownToEvent from './CountdownToEvent';
 import { Menu, X } from 'lucide-react';
 
 interface NavItem {
@@ -78,12 +77,6 @@ const Header: React.FC<HeaderProps> = ({ activeSection, navItems, onChallengeCli
                 <div className="flex flex-col">
                   <div className="text-blue-300 text-xs">HOUSTON 2025</div>
                 </div>
-              </div>
-            </div>
-            {/* Countdown positioned under the logo - BIGGER AND STACKED */}
-            <div className="hidden sm:block">
-              <div className="text-center">
-                <CountdownToEvent />
               </div>
             </div>
           </a>
