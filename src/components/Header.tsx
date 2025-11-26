@@ -79,7 +79,6 @@ const Header: React.FC<HeaderProps> = ({ activeSection, navItems, onChallengeCli
                 </div>
               </div>
             </div>
-
           </a>
 
           {/* Desktop Nav */}
