@@ -1,0 +1,14 @@
+node_modules
+.git
+.github
+*.log
+*.md
+venv/
+spaceapps_scraper/
+__pycache__/
+*.py
+.bolt/
+Untitled-*
+scrape-*.js
+chatgpt-archive/
+.DS_Store
