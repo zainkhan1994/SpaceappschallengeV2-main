@@ -15,8 +15,12 @@ This project is configured to deploy to Vercel with the following settings:
 
 ### Automatic Deployments
 
-- **Production**: Automatic deployments occur on pushes to the `main` branch
-- **Preview**: Preview deployments are created for pull requests (optional)
+**Note**: Automatic deployments require initial setup:
+1. Connect your GitHub repository to Vercel (via Vercel Dashboard or GitHub App)
+2. Configure the project settings in Vercel
+3. Once configured:
+   - **Production**: Automatic deployments occur on pushes to the `main` branch
+   - **Preview**: Preview deployments are created for pull requests (optional)
 
 ### Manual Deployment
 

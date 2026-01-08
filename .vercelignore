@@ -2,7 +2,9 @@ node_modules
 .git
 .github
 *.log
-*.md
+README.md
+DEPLOYMENT.md
+NON_ESSENTIAL_FILES_REPORT.md
 venv/
 spaceapps_scraper/
 __pycache__/
