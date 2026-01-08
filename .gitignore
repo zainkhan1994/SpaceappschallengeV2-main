@@ -38,3 +38,6 @@ chatgpt-archive/
 
 # MacOS
 .DS_Store
+
+# Vercel
+.vercel
