@@ -22,6 +22,11 @@ const Hero: React.FC = () => {
     <section id="hero" className="relative min-h-screen flex flex-col justify-center overflow-hidden">
       {/* NASA Globe Background */}
       <NASAGlobe showOverlay={false} />
+      <div className="shooting-stars" aria-hidden="true">
+        <span className="shooting-star" />
+        <span className="shooting-star" />
+        <span className="shooting-star" />
+      </div>
       
       {/* Main content container */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">

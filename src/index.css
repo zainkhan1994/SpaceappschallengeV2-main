@@ -104,3 +104,57 @@ html, body {
   max-width: 100vw;
   overflow-x: hidden;
 }
+
+.shooting-stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.shooting-star {
+  position: absolute;
+  top: calc(var(--star-index, 0) * 22% + 8%);
+  left: -18%;
+  width: 130px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.95));
+  border-radius: 999px;
+  opacity: 0;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.65));
+  transform: rotate(-18deg);
+  animation: shooting-star 4.8s linear infinite;
+}
+
+.shooting-star:nth-child(1) {
+  --star-index: 0;
+  animation-delay: 0s;
+}
+
+.shooting-star:nth-child(2) {
+  --star-index: 1;
+  animation-delay: 1.6s;
+}
+
+.shooting-star:nth-child(3) {
+  --star-index: 2;
+  animation-delay: 3.2s;
+}
+
+@keyframes shooting-star {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(-18deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate3d(130vw, 35vh, 0) rotate(-18deg);
+    opacity: 0;
+  }
+}
