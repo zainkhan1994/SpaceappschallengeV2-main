@@ -108,6 +108,9 @@ html, body {
 .shooting-stars {
   position: absolute;
   inset: 0;
+  --star-spacing: 22%;
+  --star-offset: 8%;
+  --star-width: 130px;
   pointer-events: none;
   z-index: 1;
   overflow: hidden;
@@ -115,9 +118,9 @@ html, body {
 
 .shooting-star {
   position: absolute;
-  top: calc(var(--star-index, 0) * 22% + 8%);
+  top: calc(var(--star-index, 0) * var(--star-spacing) + var(--star-offset));
   left: -18%;
-  width: 130px;
+  width: var(--star-width);
   height: 2px;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.95));
   border-radius: 999px;
@@ -154,7 +157,7 @@ html, body {
     opacity: 0.9;
   }
   100% {
-    transform: translate3d(130vw, 35vh, 0) rotate(-18deg);
+    transform: translate3d(calc(100vw + var(--star-width)), 35vh, 0) rotate(-18deg);
     opacity: 0;
   }
 }
