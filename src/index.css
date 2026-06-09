@@ -122,12 +122,19 @@ html, body {
   left: -18%;
   width: var(--star-width);
   height: 2px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.95));
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.7));
   border-radius: 999px;
   opacity: 0;
   filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.65));
   transform: rotate(-18deg);
   animation: shooting-star 4.8s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shooting-star {
+    animation: none;
+    opacity: 0;
+  }
 }
 
 .shooting-star:nth-child(1) {
