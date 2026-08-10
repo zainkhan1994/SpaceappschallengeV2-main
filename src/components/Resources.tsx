@@ -27,14 +27,14 @@ const Resources: React.FC = () => {
 			icon: <Video className="h-8 w-8" />,
 			iconColor: "text-purple-400",
 			shortDescription: "Step-by-step registration guide",
-			fullDescription: "Watch this quick video for a step-by-step guide to registering for the 2025 NASA Space Apps Challenge.",
+			fullDescription: "Watch this quick video for a step-by-step guide to registering for the NASA Space Apps Challenge.",
 			specialContent: (
 				<div className="w-full aspect-video mt-4">
 					<iframe
 						width="100%"
 						height="315"
 						src="https://www.youtube.com/embed/_AL3QrPBugc"
-						title="How to Register | 2025 NASA Space Apps Challenge"
+						title="How to Register | NASA Space Apps Challenge"
 						frameBorder="0"
 						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 						referrerPolicy="strict-origin-when-cross-origin"
@@ -50,9 +50,40 @@ const Resources: React.FC = () => {
 			icon: <MessageCircle className="h-8 w-8" />,
 			iconColor: "text-blue-400",
 			shortDescription: "Most frequently asked questions",
-			fullDescription: "The most frequently asked questions related to the NASA Space Apps Challenge.",
+			fullDescription: "Key details for the 2026 NASA Space Apps Challenge, including participation guidance and important dates.",
 			link: "https://www.spaceappschallenge.org/resources/-faq/",
-			linkText: "FAQ Overview"
+			linkText: "Official FAQ",
+			specialContent: (
+				<div className="space-y-4 text-sm text-gray-300">
+					<div>
+						<h4 className="text-white font-semibold mb-2">About the NASA Space Apps Challenge</h4>
+						<div className="space-y-3">
+							<p><span className="text-blue-300 font-medium">What are the dates for the NASA Space Apps Challenge?</span><br />The 2026 NASA Space Apps Challenge will take place November 14–15, 2026.</p>
+							<p><span className="text-blue-300 font-medium">Who should participate in the NASA Space Apps Challenge?</span><br />The NASA Space Apps Challenge offers opportunities for students, technologists, and citizen scientists to better understand how to utilize NASA open data to respond to today's most pressing science and space exploration challenges. No matter your age, skill level, or professional background, when you participate in the NASA Space Apps Challenge, you join a global community that embraces collaboration to develop projects and tools that improve life on Earth and in space.</p>
+							<p><span className="text-blue-300 font-medium">Does it cost anything to participate?</span><br />There is no cost to participate in the NASA Space Apps Challenge. If you are asked to pay money to participate in any aspect of a NASA Space Apps event, do not pay anything and please report to <a href="mailto:info@spaceappschallenge.org" className="text-blue-400 underline">info@spaceappschallenge.org</a>.</p>
+							<p><span className="text-blue-300 font-medium">What is the minimum age for participants?</span><br />The NASA Space Apps Challenge is open to all ages! However, participants who are under the age of 18 must be registered for the event by a parent or legal guardian and must be accompanied by a parent or legal guardian at all times during the event. Recognizable names, voices, and likenesses of persons under the age of 18 should not be included in any video or project submissions. Please read the details in our Participant Terms &amp; Conditions.</p>
+							<p><span className="text-blue-300 font-medium">Where does the NASA Space Apps Challenge take place?</span><br />The NASA Space Apps Challenge takes place at hundreds of events around the world. You may participate in an in-person or virtual Local Event near you or the virtual Universal Event if there is not an event near you.</p>
+							<p>Local Events are organized by Local Leads. Learn more about how to host a Local Event.</p>
+							<p><span className="text-blue-300 font-medium">What should I do if I experience or witness discrimination, harassment, or bullying?</span><br />We strive to ensure that NASA Space Apps is a place where all feel they belong, where all are comfortable being authentic, and where all are empowered to contribute to their fullest.</p>
+							<p>If you experience or witness discrimination, harassment, or any form of bullying during the NASA Space Apps Challenge, or have any other concerns, please contact your Local Lead and/or the NASA Space Apps Global Organizing (GO) Team at conduct@spaceappschallenge.org. The GO Team will take appropriate action, which may include warning or expelling offending participants from the event.</p>
+						</div>
+					</div>
+					<div>
+						<h4 className="text-white font-semibold mb-2">Important Dates: 2026 NASA Space Apps Challenge</h4>
+						<ul className="list-disc pl-5 space-y-1">
+							<li><span className="font-medium text-blue-300">August:</span> August 26: Registration Opens.</li>
+							<li><span className="font-medium text-blue-300">September:</span> September 17: Challenge Summaries available and Team Formation opens. Team Formation Participant Guide available.</li>
+							<li><span className="font-medium text-blue-300">October:</span> October 28: Challenge Statements available.</li>
+							<li><span className="font-medium text-blue-300">November:</span> November 2: Space Apps Connect Opens. Space Apps Connect Participant Guide available.</li>
+							<li><span className="font-medium text-blue-300">November:</span> November 13: Global Offers Available. Project Submission and Judging &amp; Awards Participant Guides available.</li>
+							<li><span className="font-medium text-blue-300">November:</span> November 14–15: NASA Space Apps Challenge event.</li>
+							<li><span className="font-medium text-blue-300">After the Hackathon:</span> Judging occurs. Experts from NASA, Space Agency Partners, and industry leaders will evaluate the projects and select the winners. See the Judging and Awards Guide for details about the judging process and Global Awards.</li>
+							<li><span className="font-medium text-blue-300">After the Hackathon:</span> December 2026: Global Nominees, Global Finalists, and Honorable Mentions are announced.</li>
+							<li><span className="font-medium text-blue-300">After the Hackathon:</span> January 2027: Global Winners are announced!</li>
+						</ul>
+					</div>
+				</div>
+			)
 		},
 		{
 			id: "bootcamp",
@@ -70,8 +101,8 @@ const Resources: React.FC = () => {
 			icon: <Users className="h-8 w-8" />,
 			iconColor: "text-yellow-400",
 			shortDescription: "How to create or join teams",
-			fullDescription: "Teams of up to 5 members. Team formation opens August 21, 2025. A step-by-step guide on how to create or join a team for Space Apps.",
-			link: "https://www.spaceappschallenge.org/2025/local-events/houston/?tab=teams",
+			fullDescription: "Team Formation opens September 17, 2026. A step-by-step guide on how to create or join a team for Space Apps.",
+			link: "https://www.spaceappschallenge.org/resources/team-formation-guide/",
 			linkText: "Full Team Formation Guide"
 		},
 		{
@@ -80,7 +111,7 @@ const Resources: React.FC = () => {
 			icon: <Globe2 className="h-8 w-8" />,
 			iconColor: "text-indigo-400",
 			shortDescription: "Collaborative hub for participants",
-			fullDescription: "A collaborative hub for participants, Local Leads, and more. Opens September 23, 2025. Step-by-step instructions on how to navigate Space Apps Connect (available Sept 23, 2025).",
+			fullDescription: "A collaborative hub for participants, Local Leads, and more. Opens November 2, 2026. Step-by-step instructions on how to navigate Space Apps Connect.",
 			link: "https://www.spaceappschallenge.org/resources/space-app-connect-guide/",
 			linkText: "Guide Overview"
 		},
@@ -90,7 +121,7 @@ const Resources: React.FC = () => {
 			icon: <Send className="h-8 w-8" />,
 			iconColor: "text-pink-400",
 			shortDescription: "How to submit your project",
-			fullDescription: "Submit your project through your team's project page before the deadline. Instructions and best practices for building and submitting your project (available Oct 3, 2025).",
+			fullDescription: "Submit your project through your team's project page before the deadline. Instructions and best practices for building and submitting your project (available November 13, 2026).",
 			link: "https://www.spaceappschallenge.org/resources/project-submission-guide/",
 			linkText: "Guide Overview"
 		},
@@ -100,7 +131,7 @@ const Resources: React.FC = () => {
 			icon: <Trophy className="h-8 w-8" />,
 			iconColor: "text-red-400",
 			shortDescription: "Judging process and awards",
-			fullDescription: "All participants who submit a project receive a certificate. See the Judging & Awards Guide for details. Overview of the judging process and Global Awards (available Oct 3, 2025).",
+			fullDescription: "All participants who submit a project receive a certificate. See the Judging & Awards Guide for details. Overview of the judging process and Global Awards (available November 13, 2026).",
 			link: "https://www.spaceappschallenge.org/resources/judging-awards-guide/",
 			linkText: "Guide Overview"
 		},

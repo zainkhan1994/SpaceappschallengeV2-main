@@ -4,7 +4,7 @@ import { MessageCircle, X, Send } from 'lucide-react';
 const ChatbotWidget: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: 'system', content: 'You are a helpful assistant for the NASA Space Apps Challenge Houston event. Answer questions based on the event FAQ, rules, and guides.' }
+    { role: 'system', content: 'You are a helpful assistant for the NASA Space Apps Challenge 2026 event. Answer questions based on the event FAQ, rules, and guides.' }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);

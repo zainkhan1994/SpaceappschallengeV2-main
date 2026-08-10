@@ -16,13 +16,13 @@ const Footer: React.FC = () => {
                 className="h-10 w-auto"
               />
               <div>
-                <div className="text-blue-300 text-xs">HOUSTON 2025</div>
+                <div className="text-blue-300 text-xs">SPACE APPS 2026</div>
               </div>
             </div>
             
             <p className="text-gray-400 mb-6">
               Join the world's largest hackathon focused on space exploration.
-              Two days of innovation, collaboration, and discovery in the heart of Space City.
+              Two days of innovation, collaboration, and discovery powered by NASA open data.
             </p>
             
             <div className="flex space-x-4">
@@ -70,7 +70,7 @@ const Footer: React.FC = () => {
         
         <div className="border-t border-slate-800 mt-12 pt-8 text-center">
           <p className="text-gray-500">
-            © {currentYear} NASA Space Apps Challenge - Houston. All rights reserved.
+            © {currentYear} NASA Space Apps Challenge. All rights reserved.
           </p>
         </div>
       </div>

@@ -75,7 +75,7 @@ const Header: React.FC<HeaderProps> = ({ activeSection, navItems, onChallengeCli
               />
               <div className="hidden sm:block">
                 <div className="flex flex-col">
-                  <div className="text-blue-300 text-xs">HOUSTON 2025</div>
+                <div className="text-blue-300 text-xs">SPACE APPS 2026</div>
                 </div>
               </div>
             </div>
