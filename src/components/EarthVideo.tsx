@@ -43,7 +43,7 @@ const EarthVideo: React.FC = () => {
           </h2>
           
           <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Join us in Houston as we tackle real-world challenges using NASA's open data. 
+            Join us as we tackle real-world challenges using NASA's open data. 
             Together, we'll develop solutions that benefit life on Earth and advance space exploration.
           </p>
           

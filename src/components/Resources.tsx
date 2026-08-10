@@ -27,14 +27,14 @@ const Resources: React.FC = () => {
 			icon: <Video className="h-8 w-8" />,
 			iconColor: "text-purple-400",
 			shortDescription: "Step-by-step registration guide",
-			fullDescription: "Watch this quick video for a step-by-step guide to registering for the 2025 NASA Space Apps Challenge.",
+			fullDescription: "Watch this quick video for a step-by-step guide to registering for the NASA Space Apps Challenge.",
 			specialContent: (
 				<div className="w-full aspect-video mt-4">
 					<iframe
 						width="100%"
 						height="315"
 						src="https://www.youtube.com/embed/_AL3QrPBugc"
-						title="How to Register | 2025 NASA Space Apps Challenge"
+						title="How to Register | NASA Space Apps Challenge"
 						frameBorder="0"
 						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 						referrerPolicy="strict-origin-when-cross-origin"
@@ -101,8 +101,8 @@ const Resources: React.FC = () => {
 			icon: <Users className="h-8 w-8" />,
 			iconColor: "text-yellow-400",
 			shortDescription: "How to create or join teams",
-			fullDescription: "Teams of up to 5 members. Team formation opens August 21, 2025. A step-by-step guide on how to create or join a team for Space Apps.",
-			link: "https://www.spaceappschallenge.org/2025/local-events/houston/?tab=teams",
+			fullDescription: "Team Formation opens September 17, 2026. A step-by-step guide on how to create or join a team for Space Apps.",
+			link: "https://www.spaceappschallenge.org/resources/team-formation-guide/",
 			linkText: "Full Team Formation Guide"
 		},
 		{
@@ -111,7 +111,7 @@ const Resources: React.FC = () => {
 			icon: <Globe2 className="h-8 w-8" />,
 			iconColor: "text-indigo-400",
 			shortDescription: "Collaborative hub for participants",
-			fullDescription: "A collaborative hub for participants, Local Leads, and more. Opens September 23, 2025. Step-by-step instructions on how to navigate Space Apps Connect (available Sept 23, 2025).",
+			fullDescription: "A collaborative hub for participants, Local Leads, and more. Opens November 2, 2026. Step-by-step instructions on how to navigate Space Apps Connect.",
 			link: "https://www.spaceappschallenge.org/resources/space-app-connect-guide/",
 			linkText: "Guide Overview"
 		},
@@ -121,7 +121,7 @@ const Resources: React.FC = () => {
 			icon: <Send className="h-8 w-8" />,
 			iconColor: "text-pink-400",
 			shortDescription: "How to submit your project",
-			fullDescription: "Submit your project through your team's project page before the deadline. Instructions and best practices for building and submitting your project (available Oct 3, 2025).",
+			fullDescription: "Submit your project through your team's project page before the deadline. Instructions and best practices for building and submitting your project (available November 13, 2026).",
 			link: "https://www.spaceappschallenge.org/resources/project-submission-guide/",
 			linkText: "Guide Overview"
 		},
@@ -131,7 +131,7 @@ const Resources: React.FC = () => {
 			icon: <Trophy className="h-8 w-8" />,
 			iconColor: "text-red-400",
 			shortDescription: "Judging process and awards",
-			fullDescription: "All participants who submit a project receive a certificate. See the Judging & Awards Guide for details. Overview of the judging process and Global Awards (available Oct 3, 2025).",
+			fullDescription: "All participants who submit a project receive a certificate. See the Judging & Awards Guide for details. Overview of the judging process and Global Awards (available November 13, 2026).",
 			link: "https://www.spaceappschallenge.org/resources/judging-awards-guide/",
 			linkText: "Guide Overview"
 		},

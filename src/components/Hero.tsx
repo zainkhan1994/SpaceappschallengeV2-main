@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   FileSpreadsheet, UserPlus
 } from 'lucide-react';
@@ -10,8 +10,34 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import NASAGlobe from './NASAGlobe';
 
+const EVENT_DATE = new Date('2026-11-14T00:00:00');
+
 const Hero: React.FC = () => {
   const { items, add, remove } = useRipples();
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+
+  useEffect(() => {
+    const updateCountdown = () => {
+      const now = new Date().getTime();
+      const distance = EVENT_DATE.getTime() - now;
+
+      if (distance <= 0) {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((distance / (1000 * 60)) % 60);
+      const seconds = Math.floor((distance / 1000) % 60);
+
+      setTimeLeft({ days, hours, minutes, seconds });
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const spawnFromEl = (el: HTMLElement) => {
     const { x, y } = centerOf(el);
@@ -35,7 +61,7 @@ const Hero: React.FC = () => {
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
               NASA Space Apps Challenge
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-yellow-400">
-                2025 - Houston
+                2026
               </span>
             </h1>
             
@@ -69,42 +95,36 @@ const Hero: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Event Details */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        {/* Countdown */}
+        <div className="mb-16">
           <motion.div
-            className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20 text-center"
+            className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20 text-center max-w-3xl mx-auto"
             whileHover={{ y: -5 }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             <div className="text-3xl mb-4">📅</div>
-            <h3 className="text-xl font-bold text-white mb-2">Event Date</h3>
-            <p className="text-yellow-400 font-semibold">October 4-5, 2025</p>
-          </motion.div>
-          
-          <motion.div
-            className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20 text-center"
-            whileHover={{ y: -5 }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <div className="text-3xl mb-4">📍</div>
-            <h3 className="text-xl font-bold text-white mb-2">Location</h3>
-            <p className="text-yellow-400 font-semibold">Houston, Texas</p>
-          </motion.div>
-          
-          <motion.div
-            className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20 text-center"
-            whileHover={{ y: -5 }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <div className="text-3xl mb-4">👥</div>
-            <h3 className="text-xl font-bold text-white mb-2">Team Size</h3>
-            <p className="text-yellow-400 font-semibold">1-6 Members</p>
+            <h3 className="text-xl font-bold text-white mb-2">Countdown to NASA Space Apps 2026</h3>
+            <p className="text-yellow-400 font-semibold mb-4">November 14–15, 2026 • Venue: TBD</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-slate-900/60 rounded-lg p-3">
+                <p className="text-2xl font-bold text-white">{timeLeft.days}</p>
+                <p className="text-xs uppercase tracking-wide text-gray-400">Days</p>
+              </div>
+              <div className="bg-slate-900/60 rounded-lg p-3">
+                <p className="text-2xl font-bold text-white">{timeLeft.hours}</p>
+                <p className="text-xs uppercase tracking-wide text-gray-400">Hours</p>
+              </div>
+              <div className="bg-slate-900/60 rounded-lg p-3">
+                <p className="text-2xl font-bold text-white">{timeLeft.minutes}</p>
+                <p className="text-xs uppercase tracking-wide text-gray-400">Minutes</p>
+              </div>
+              <div className="bg-slate-900/60 rounded-lg p-3">
+                <p className="text-2xl font-bold text-white">{timeLeft.seconds}</p>
+                <p className="text-xs uppercase tracking-wide text-gray-400">Seconds</p>
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>
