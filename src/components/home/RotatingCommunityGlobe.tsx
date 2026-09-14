@@ -195,15 +195,15 @@ function AgencyPinMarker({ agency, isActive, onSelect }: AgencyPinMarkerProps) {
     <group ref={groupRef} position={localPos}>
       {/* Surface dot */}
       <mesh>
-        <sphereGeometry args={[0.02, 12, 12]} />
+        <sphereGeometry args={[0.018, 12, 12]} />
         <meshBasicMaterial color={isActive || hovered ? "#EAFE07" : "#2E96F5"} />
       </mesh>
 
-      {/* HTML Pin Drop displaying Space Agency Logo */}
+      {/* Sleek compact HTML Pin Drop displaying Space Agency Logo */}
       <Html
         center
-        distanceFactor={6.5}
-        position={[0, 0.03, 0]}
+        distanceFactor={7.5}
+        position={[0, 0.025, 0]}
         style={{
           pointerEvents: 'auto',
           cursor: 'pointer',
@@ -219,17 +219,17 @@ function AgencyPinMarker({ agency, isActive, onSelect }: AgencyPinMarkerProps) {
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
           className={`flex flex-col items-center group transition-transform duration-200 ${
-            hovered || isActive ? 'scale-125 z-50' : 'scale-90 opacity-90 hover:opacity-100'
+            hovered || isActive ? 'scale-125 z-50' : 'scale-85 opacity-90 hover:opacity-100'
           }`}
         >
           {/* Teardrop Pin Container with Agency Logo inside */}
           <div className="relative flex flex-col items-center">
-            {/* Circular Logo Frame */}
+            {/* Circular Logo Frame - Compact 24px/28px */}
             <div
-              className={`w-9 h-9 md:w-10 md:h-10 rounded-full p-[3px] bg-white flex items-center justify-center transition-all duration-300 shadow-md ${
+              className={`w-6 h-6 md:w-7 md:h-7 rounded-full p-[2px] bg-white flex items-center justify-center transition-all duration-300 shadow-md ${
                 hovered || isActive
-                  ? 'ring-4 ring-[#EAFE07] shadow-[0_0_20px_#EAFE07]'
-                  : 'ring-2 ring-[#2E96F5]'
+                  ? 'ring-3 ring-[#EAFE07] shadow-[0_0_14px_#EAFE07]'
+                  : 'ring-1.5 ring-[#2E96F5]'
               }`}
             >
               <img
@@ -243,14 +243,14 @@ function AgencyPinMarker({ agency, isActive, onSelect }: AgencyPinMarkerProps) {
             </div>
 
             {/* Downward Pointer Tip */}
-            <div className={`w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[8px] -mt-[1px] ${
+            <div className={`w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[6px] -mt-[1px] ${
               hovered || isActive ? 'border-t-[#EAFE07]' : 'border-t-[#2E96F5]'
             }`} />
           </div>
 
           {/* Hover Tooltip with Agency Abbr & Country */}
           {hovered && !isActive && (
-            <div className="absolute -top-7 bg-[#050A1C]/95 text-white border border-[#EAFE07]/50 px-2 py-0.5 rounded text-[10px] font-['Fira_Sans_Condensed',sans-serif] font-bold uppercase tracking-wider whitespace-nowrap shadow-lg">
+            <div className="absolute -top-6 bg-[#050A1C]/95 text-white border border-[#EAFE07]/50 px-1.5 py-0.5 rounded text-[9px] font-['Fira_Sans_Condensed',sans-serif] font-bold uppercase tracking-wider whitespace-nowrap shadow-lg">
               {agency.abbr} ({agency.country})
             </div>
           )}
@@ -345,7 +345,7 @@ export const RotatingCommunityGlobe: React.FC = () => {
       {selectedAgency && (
         <div className="absolute bottom-4 left-4 right-4 md:left-6 md:right-auto md:max-w-[340px] bg-[#050A1C]/92 backdrop-blur-md border border-[#EAFE07]/40 rounded-xl p-3.5 shadow-2xl z-20 transition-all duration-300">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full p-1 bg-white flex items-center justify-center flex-none border-2 border-[#EAFE07] shadow-sm">
+            <div className="w-10 h-10 rounded-full p-1 bg-white flex items-center justify-center flex-none border-2 border-[#EAFE07] shadow-sm">
               <img
                 src={selectedAgency.logo}
                 alt={selectedAgency.name}
@@ -369,11 +369,6 @@ export const RotatingCommunityGlobe: React.FC = () => {
           </div>
         </div>
       )}
-
-      {/* Interaction Tag */}
-      <div className="absolute top-4 left-4 bg-[#050A1C]/80 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-[#2E96F5]/30 text-[11px] font-['Fira_Sans_Condensed',sans-serif] font-bold tracking-wider text-[#2E96F5] uppercase">
-        🌍 Drag globe · Click space agency logos to explore
-      </div>
     </div>
   );
 };

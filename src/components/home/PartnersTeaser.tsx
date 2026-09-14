@@ -18,31 +18,35 @@ export const PartnersTeaser: React.FC = () => {
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-3.5">
+        {/* Even, uniform grid of Space Agency cards */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
           {agencies.map((a, i) => (
-            <ScrollReveal key={i}>
+            <ScrollReveal key={i} className="h-full">
               <a
                 href={a.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center gap-3 min-h-[130px] border border-white/13 rounded-xl p-4 bg-white/[0.04] transition-all duration-300 hover:border-[#2E96F5] hover:bg-[rgba(46,150,245,0.1)] hover:-translate-y-1 group"
+                className="flex flex-col items-center justify-between h-[140px] w-full border border-white/13 rounded-xl p-4 bg-white/[0.04] transition-all duration-300 hover:border-[#2E96F5] hover:bg-[rgba(46,150,245,0.12)] hover:-translate-y-1 group"
               >
-                {a.logo ? (
-                  <img src={a.logo} alt={`${a.name} logo`} className="h-[44px] w-auto max-w-full object-contain block" />
-                ) : (
-                  <span className="w-[44px] h-[44px] border border-[#2E96F5]/50 rounded-lg bg-[#2E96F5]/12 flex items-center justify-center font-['Fira_Sans_Condensed',sans-serif] font-extrabold text-[16px] text-[#9ecdff]">
-                    {a.mono || a.abbr}
-                  </span>
-                )}
-                <span className="text-[13px] font-semibold text-center text-white/75 leading-tight group-hover:text-[#EAFE07]">
-                  {a.name}
+                <div className="h-[52px] w-full flex items-center justify-center p-1 bg-white/95 rounded-lg shadow-sm group-hover:bg-white transition-colors">
+                  <img
+                    src={a.logo}
+                    alt={`${a.abbr || a.name} logo`}
+                    className="max-h-[44px] max-w-[90%] object-contain block"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/sac-logo-houston-transparent.png';
+                    }}
+                  />
+                </div>
+                <span className="text-[12px] font-bold text-center text-white/80 leading-snug tracking-wide uppercase group-hover:text-[#EAFE07] line-clamp-2 mt-2">
+                  {a.abbr || a.name}
                 </span>
               </a>
             </ScrollReveal>
           ))}
         </div>
 
-        <ScrollReveal className="mt-7.5">
+        <ScrollReveal className="mt-8">
           <div className="border border-white/16 rounded-2xl p-7 bg-white/[0.03] flex flex-wrap gap-5 items-center justify-between">
             <div>
               <h3 className="m-0 mb-2 text-[22px] font-extrabold text-white">Houston sponsors &amp; local collaborators</h3>
