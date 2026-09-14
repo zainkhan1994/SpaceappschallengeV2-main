@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, MessageSquare, Users, Globe, Clock, MapPin } from 'lucide-react';
+import { Mail, Users, Globe, Clock, MapPin } from 'lucide-react';
 
 const Contact: React.FC = () => {
   const contactMethods = [

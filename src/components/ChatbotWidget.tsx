@@ -30,7 +30,7 @@ const ChatbotWidget: React.FC = () => {
       });
       const data = await res.json();
       setMessages([...newMessages, { role: 'assistant', content: data.result.content }]);
-    } catch (err) {
+    } catch {
       setMessages([...newMessages, { role: 'assistant', content: 'Sorry, there was an error. Please try again.' }]);
     }
     setLoading(false);

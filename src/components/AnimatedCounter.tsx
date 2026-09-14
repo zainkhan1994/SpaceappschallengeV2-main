@@ -27,13 +27,14 @@ const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
       { threshold: 0.5 }
     );
 
-    if (countRef.current) {
-      observer.observe(countRef.current);
+    const node = countRef.current;
+    if (node) {
+      observer.observe(node);
     }
 
     return () => {
-      if (countRef.current) {
-        observer.unobserve(countRef.current);
+      if (node) {
+        observer.unobserve(node);
       }
     };
   }, [isVisible]);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Lightbulb, Users, Brain, LayoutDashboard, CalendarCheck, ClipboardList, CheckCircle, UserCheck, Compass, Palette, BarChart3, FileText, Settings, FlaskConical, Rocket } from 'lucide-react';
+import { Lightbulb, Users, Brain, LayoutDashboard, ClipboardList, CheckCircle, UserCheck, Compass, Palette, BarChart3, FileText, Settings, FlaskConical, Rocket } from 'lucide-react';
 
 export default function CognitiveDiversityUI() {
   return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Award, Star, ExternalLink } from 'lucide-react';
+import { Award, Star } from 'lucide-react';
 
 const Judges: React.FC = () => {
   const judges = [

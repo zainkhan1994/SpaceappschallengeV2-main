@@ -9,7 +9,7 @@ export interface AppData {
 }
 
 export interface CastUnknownRules {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // Re-export Challenge and Constellation types for convenience
