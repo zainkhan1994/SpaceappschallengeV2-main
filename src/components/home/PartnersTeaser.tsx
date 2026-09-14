@@ -18,29 +18,34 @@ export const PartnersTeaser: React.FC = () => {
           </p>
         </ScrollReveal>
 
-        {/* Even, uniform grid of Space Agency cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
+        {/* Clean, perfectly balanced 6-column grid across screens */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {agencies.map((a, i) => (
             <ScrollReveal key={i} className="h-full">
               <a
                 href={a.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-between h-[140px] w-full border border-white/13 rounded-xl p-4 bg-white/[0.04] transition-all duration-300 hover:border-[#2E96F5] hover:bg-[rgba(46,150,245,0.12)] hover:-translate-y-1 group"
+                className="flex flex-col items-center justify-between h-[150px] w-full border border-white/13 rounded-xl p-3.5 bg-white/[0.04] transition-all duration-300 hover:border-[#2E96F5] hover:bg-[rgba(46,150,245,0.12)] hover:-translate-y-1 group shadow-sm"
               >
-                <div className="h-[52px] w-full flex items-center justify-center p-1 bg-white/95 rounded-lg shadow-sm group-hover:bg-white transition-colors">
+                <div className="h-[58px] w-full flex items-center justify-center p-2 bg-white/95 rounded-lg shadow-sm group-hover:bg-white transition-colors">
                   <img
                     src={a.logo}
                     alt={`${a.abbr || a.name} logo`}
-                    className="max-h-[44px] max-w-[90%] object-contain block"
+                    className="max-h-[46px] max-w-[85%] object-contain block"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = '/sac-logo-houston-transparent.png';
                     }}
                   />
                 </div>
-                <span className="text-[12px] font-bold text-center text-white/80 leading-snug tracking-wide uppercase group-hover:text-[#EAFE07] line-clamp-2 mt-2">
-                  {a.abbr || a.name}
-                </span>
+                <div className="flex flex-col items-center justify-center flex-1 mt-2">
+                  <span className="text-[13px] font-extrabold text-center text-white leading-tight tracking-wide uppercase group-hover:text-[#EAFE07]">
+                    {a.abbr}
+                  </span>
+                  <span className="text-[11px] font-medium text-center text-white/60 leading-tight truncate max-w-full mt-0.5">
+                    {a.country}
+                  </span>
+                </div>
               </a>
             </ScrollReveal>
           ))}

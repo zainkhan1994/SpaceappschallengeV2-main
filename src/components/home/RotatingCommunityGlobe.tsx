@@ -26,6 +26,56 @@ const spaceAgenciesData: AgencyPin[] = [
     url: 'https://www.nasa.gov/'
   },
   {
+    id: 'ggpen',
+    name: 'National Space Programme Management Office',
+    country: 'Angola',
+    abbr: 'GGPEN',
+    coordinates: [-11.2027, 17.8739],
+    logo: '/ggpen-logo.png',
+    description: 'Operates ANGOSAT-2 satellite connecting communities across Southern Africa.',
+    url: 'https://www.spaceappschallenge.org/2026/space-agency-partners/'
+  },
+  {
+    id: 'conae',
+    name: 'National Commission on Space Activities',
+    country: 'Argentina',
+    abbr: 'CONAE',
+    coordinates: [-38.4161, -63.6167],
+    logo: '/conae-logo.png',
+    description: 'Implements Argentina’s national space program across scientific & educational sectors.',
+    url: 'https://www.argentina.gob.ar/conae'
+  },
+  {
+    id: 'bsa',
+    name: 'Bahrain Space Agency',
+    country: 'Bahrain',
+    abbr: 'BSA',
+    coordinates: [25.9304, 50.6378],
+    logo: '/bahrain-space-agency-logo.png',
+    description: 'Positions Bahrain as a global player in space science to support sustainable development.',
+    url: 'https://www.nssa.gov.bh/'
+  },
+  {
+    id: 'aeb',
+    name: 'Brazilian Space Agency',
+    country: 'Brazil',
+    abbr: 'AEB',
+    coordinates: [-14.2350, -51.9253],
+    logo: '/aeb-logo.png',
+    description: 'Promotes space activities that drive scientific advancement and innovation.',
+    url: 'https://www.gov.br/aeb/'
+  },
+  {
+    id: 'csa',
+    name: 'Canadian Space Agency',
+    country: 'Canada',
+    abbr: 'CSA',
+    coordinates: [56.1304, -106.3468],
+    logo: '/canadian-space-agency-logo.png',
+    description: 'Promotes peaceful use and development of space through exploration and open data.',
+    url: 'https://www.asc-csa.gc.ca/'
+  },
+  {
     id: 'esa',
     name: 'European Space Agency',
     country: 'Europe',
@@ -34,16 +84,6 @@ const spaceAgenciesData: AgencyPin[] = [
     logo: '/esa-logo.png',
     description: 'Europe’s gateway to space and open Earth observation data.',
     url: 'https://www.esa.int/'
-  },
-  {
-    id: 'jaxa',
-    name: 'Japan Aerospace Exploration Agency',
-    country: 'Japan',
-    abbr: 'JAXA',
-    coordinates: [36.2048, 138.2529],
-    logo: '/jaxa-logo.png',
-    description: 'Advances Earth observation and space exploration missions.',
-    url: 'https://global.jaxa.jp/'
   },
   {
     id: 'isro',
@@ -56,64 +96,44 @@ const spaceAgenciesData: AgencyPin[] = [
     url: 'https://www.isro.gov.in/'
   },
   {
-    id: 'uksa',
-    name: 'UK Space Agency',
-    country: 'United Kingdom',
-    abbr: 'UKSA',
-    coordinates: [55.3781, -3.4360],
-    logo: '/uksa-logo.png',
-    description: 'Catalyses investment and champions space science & innovation.',
-    url: 'https://www.gov.uk/government/organisations/uk-space-agency'
-  },
-  {
-    id: 'mbrsc',
-    name: 'Mohammed Bin Rashid Space Centre',
-    country: 'UAE',
-    abbr: 'MBRSC',
-    coordinates: [23.4241, 53.8478],
-    logo: '/mbrsc-logo.png',
-    description: 'Leading hub for space exploration and Earth observation in UAE.',
-    url: 'https://www.mbrsc.ae/'
-  },
-  {
-    id: 'aeb',
-    name: 'Brazilian Space Agency',
-    country: 'Brazil',
-    abbr: 'AEB',
-    coordinates: [-14.2350, -51.9253],
-    logo: '/aeb-logo.png',
-    description: 'Promotes technological innovation and space science in Latin America.',
-    url: 'https://www.gov.br/aeb/'
-  },
-  {
-    id: 'csa',
-    name: 'Canadian Space Agency',
-    country: 'Canada',
-    abbr: 'CSA',
-    coordinates: [56.1304, -106.3468],
-    logo: '/canadian-space-agency-logo.png',
-    description: 'Promotes space exploration, innovation and open data.',
-    url: 'https://www.asc-csa.gc.ca/'
-  },
-  {
     id: 'asi',
     name: 'Italian Space Agency',
     country: 'Italy',
     abbr: 'ASI',
     coordinates: [41.8719, 12.5674],
     logo: '/asi-italy-logo.png',
-    description: 'Coordinates scientific research, Earth observation and innovation.',
+    description: 'Coordinates scientific research, Earth observation and space exploration.',
     url: 'https://www.asi.it/'
   },
   {
-    id: 'nssa',
-    name: 'National Space Science Agency',
-    country: 'Bahrain',
-    abbr: 'BSA',
-    coordinates: [25.9304, 50.6378],
-    logo: '/bahrain-space-agency-logo.png',
-    description: 'Promotes space technologies for national growth and research.',
-    url: 'https://www.nssa.gov.bh/'
+    id: 'jaxa',
+    name: 'Japan Aerospace Exploration Agency',
+    country: 'Japan',
+    abbr: 'JAXA',
+    coordinates: [36.2048, 138.2529],
+    logo: '/jaxa-logo.png',
+    description: 'Advances Earth observation, data analysis and application research.',
+    url: 'https://global.jaxa.jp/'
+  },
+  {
+    id: 'kasa',
+    name: 'Korea AeroSpace Administration',
+    country: 'Republic of Korea',
+    abbr: 'KASA',
+    coordinates: [35.9078, 127.7669],
+    logo: '/kasa-logo.png',
+    description: 'Control tower for Korea’s space, exploration, and aeronautics endeavors.',
+    url: 'https://www.spaceappschallenge.org/2026/space-agency-partners/'
+  },
+  {
+    id: 'nasrda',
+    name: 'National Space Research & Development Agency',
+    country: 'Nigeria',
+    abbr: 'NASRDA',
+    coordinates: [9.0820, 8.6753],
+    logo: '/nasrda-logo.png',
+    description: 'Utilizes space science and technology for sustainable national development.',
+    url: 'https://nasrda.gov.ng/'
   },
   {
     id: 'aep',
@@ -122,18 +142,28 @@ const spaceAgenciesData: AgencyPin[] = [
     abbr: 'AEP',
     coordinates: [-23.4425, -58.4438],
     logo: '/paraguay-space-agency-logo.png',
-    description: 'Champions open innovation and international space collaboration.',
+    description: 'Champions youth participation, open innovation and international space collaboration.',
     url: 'https://www.aep.gov.py/'
   },
   {
-    id: 'sansa',
-    name: 'South African National Space Agency',
-    country: 'South Africa',
-    abbr: 'SANSA',
-    coordinates: [-30.5595, 22.9375],
-    logo: '/sansa-logo.png',
-    description: 'Drives space science, Earth observation and technological advancement.',
-    url: 'https://www.sansa.org.za/'
+    id: 'ases',
+    name: 'Senegalese Space Studies Agency',
+    country: 'Senegal',
+    abbr: 'ASES',
+    coordinates: [14.4974, -14.4524],
+    logo: '/ases-logo.png',
+    description: 'Responsible for Senegal’s national strategy for space activities and research.',
+    url: 'https://www.spaceappschallenge.org/2026/space-agency-partners/'
+  },
+  {
+    id: 'aee',
+    name: 'Spanish Space Agency',
+    country: 'Spain',
+    abbr: 'AEE',
+    coordinates: [40.4168, -3.7038],
+    logo: '/spanish-space-agency-logo.png',
+    description: 'Promotes research, supports innovation, and encourages young minds to explore.',
+    url: 'https://www.aee.gob.es/'
   },
   {
     id: 'tua',
@@ -142,8 +172,28 @@ const spaceAgenciesData: AgencyPin[] = [
     abbr: 'TUA',
     coordinates: [38.9637, 35.2433],
     logo: '/turkish-space-agency-logo.png',
-    description: 'Supports development and dissemination of space science and tech.',
+    description: 'Supports the development & dissemination of space and aeronautics sciences.',
     url: 'https://www.tua.gov.tr/'
+  },
+  {
+    id: 'mbrsc',
+    name: 'Mohammed Bin Rashid Space Centre',
+    country: 'UAE',
+    abbr: 'MBRSC',
+    coordinates: [23.4241, 53.8478],
+    logo: '/mbrsc-logo.png',
+    description: 'Leading hub for scientific innovation and space exploration in the UAE.',
+    url: 'https://www.mbrsc.ae/'
+  },
+  {
+    id: 'uksa',
+    name: 'UK Space Agency',
+    country: 'United Kingdom',
+    abbr: 'UKSA',
+    coordinates: [55.3781, -3.4360],
+    logo: '/uksa-logo.png',
+    description: 'Catalyses investment, delivers missions and capabilities, and champions space.',
+    url: 'https://www.gov.uk/government/organisations/uk-space-agency'
   }
 ];
 
@@ -195,7 +245,7 @@ function AgencyPinMarker({ agency, isActive, onSelect }: AgencyPinMarkerProps) {
     <group ref={groupRef} position={localPos}>
       {/* Surface dot */}
       <mesh>
-        <sphereGeometry args={[0.018, 12, 12]} />
+        <sphereGeometry args={[0.016, 12, 12]} />
         <meshBasicMaterial color={isActive || hovered ? "#EAFE07" : "#2E96F5"} />
       </mesh>
 
@@ -219,7 +269,7 @@ function AgencyPinMarker({ agency, isActive, onSelect }: AgencyPinMarkerProps) {
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
           className={`flex flex-col items-center group transition-transform duration-200 ${
-            hovered || isActive ? 'scale-125 z-50' : 'scale-85 opacity-90 hover:opacity-100'
+            hovered || isActive ? 'scale-125 z-50' : 'scale-80 opacity-90 hover:opacity-100'
           }`}
         >
           {/* Teardrop Pin Container with Agency Logo inside */}
@@ -243,7 +293,7 @@ function AgencyPinMarker({ agency, isActive, onSelect }: AgencyPinMarkerProps) {
             </div>
 
             {/* Downward Pointer Tip */}
-            <div className={`w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[6px] -mt-[1px] ${
+            <div className={`w-0 h-0 border-l-[3.5px] border-l-transparent border-r-[3.5px] border-r-transparent border-t-[5.5px] -mt-[1px] ${
               hovered || isActive ? 'border-t-[#EAFE07]' : 'border-t-[#2E96F5]'
             }`} />
           </div>
