@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { ScrollReveal } from '../ui/ScrollReveal';
 import { pastStats, videos } from '../../data/pastEventsData';
+import HoustonWinners from '../home/HoustonWinners';
 
 export const PastEventsSection: React.FC = () => {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -45,40 +46,97 @@ export const PastEventsSection: React.FC = () => {
     <div ref={sectionRef}>
       <section data-screen-label="Past events hero" className="max-w-[1320px] mx-auto pt-[clamp(48px,6vw,88px)] px-6 pb-[clamp(32px,4vw,48px)]">
         <p className="m-0 mb-3.5 font-['Fira_Sans_Condensed',sans-serif] font-bold text-[14px] tracking-widest uppercase text-[#EAFE07]">
-          Archive
+          Archive &amp; Highlights
         </p>
         <h1 className="m-0 font-['Overpass',sans-serif] font-black text-[clamp(38px,6.4vw,86px)] leading-none uppercase text-white">
           Past events
           <br />
-          <span className="text-[#2E96F5]">&amp; results</span>
+          <span className="text-[#2E96F5]">&amp; winners</span>
         </h1>
         <p className="mt-6.5 m-0 max-w-[720px] text-[20px] leading-relaxed text-white/80 font-light">
-          Everything on this page is historical and labelled by year. For current information, see{' '}
-          <a href="#/" className="text-[#2E96F5] hover:text-[#EAFE07]">
-            the 2026 homepage
-          </a>
-          .
+          Celebrating Houston's space innovators, event videos, and historical achievements.
         </p>
       </section>
 
-      {/* 2024 Global Stats */}
+      {/* Video Showcase Section (SavetheDate.mp4 & SACHoustonIntro.mp4) */}
       <section className="max-w-[1320px] mx-auto px-6 pb-[clamp(56px,7vw,96px)]">
-        <ScrollReveal className="flex flex-wrap gap-3 mb-11">
-          <span className="border border-white/20 rounded-full px-5.5 py-2.5 text-[16px] font-semibold text-white/75">
-            2025 · October 4–5
-          </span>
-          <span className="border border-white/20 rounded-full px-5.5 py-2.5 text-[16px] font-semibold text-white/75">
-            2024 · global figures below
-          </span>
+        <ScrollReveal>
+          <div className="flex items-center justify-between gap-4 mb-6">
+            <div>
+              <div className="font-['Fira_Sans_Condensed',sans-serif] text-[13px] font-extrabold tracking-widest uppercase text-[#EAFE07] mb-1">
+                Featured Videos
+              </div>
+              <h2 className="m-0 font-['Overpass',sans-serif] font-black text-[clamp(24px,3vw,38px)] uppercase text-white">
+                Space Apps Houston Event Teaser &amp; Highlights
+              </h2>
+            </div>
+          </div>
         </ScrollReveal>
 
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <ScrollReveal>
+            <div className="rounded-2xl overflow-hidden border border-[#2E96F5]/40 bg-[#050A1C] shadow-2xl group">
+              <div className="relative aspect-video w-full bg-black">
+                <video
+                  controls
+                  playsInline
+                  preload="metadata"
+                  poster="/Pictures/StudentCenterNorth.jpg"
+                  className="w-full h-full object-cover"
+                >
+                  <source src="/videos/SavetheDate.mp4" type="video/mp4" />
+                  Your browser does not support HTML5 video.
+                </video>
+              </div>
+              <div className="p-5 bg-white/[0.03]">
+                <h3 className="font-['Overpass',sans-serif] font-bold text-white text-[18px] m-0 mb-1">
+                  Save The Date Teaser
+                </h3>
+                <p className="text-[14px] text-white/70 m-0 font-light">
+                  Official Space Apps Challenge Announcement &amp; Event Teaser.
+                </p>
+              </div>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal>
+            <div className="rounded-2xl overflow-hidden border border-[#EAFE07]/40 bg-[#050A1C] shadow-2xl group">
+              <div className="relative aspect-video w-full bg-black">
+                <video
+                  controls
+                  playsInline
+                  preload="metadata"
+                  poster="/Pictures/Student Center South.jpg"
+                  className="w-full h-full object-cover"
+                >
+                  <source src="/videos/SACHoustonIntro.mp4" type="video/mp4" />
+                  Your browser does not support HTML5 video.
+                </video>
+              </div>
+              <div className="p-5 bg-white/[0.03]">
+                <h3 className="font-['Overpass',sans-serif] font-bold text-white text-[18px] m-0 mb-1">
+                  Houston Event Intro &amp; Community Showcase
+                </h3>
+                <p className="text-[14px] text-white/70 m-0 font-light">
+                  Space Apps Houston Hackathon Experience &amp; Community Introduction.
+                </p>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* Official Houston 2024 Winners (Global Nominees) */}
+      <HoustonWinners />
+
+      {/* 2024 Global Stats */}
+      <section className="max-w-[1320px] mx-auto px-6 pb-[clamp(56px,7vw,96px)]">
         <ScrollReveal>
           <h2 className="m-0 mb-2.5 font-['Overpass',sans-serif] font-black text-[clamp(24px,3vw,38px)] uppercase text-white">
             2024 global participation
           </h2>
           <p className="m-0 mb-11 text-[17px] text-white/65">
-            The highest participation numbers since the program's founding in 2012.{' '}
-            <span className="text-[#EAFE07]">These figures are pending verification against NASA's published totals.</span>
+            The highest participation numbers since the program's founding in 2012.
           </p>
         </ScrollReveal>
 
@@ -137,23 +195,6 @@ export const PastEventsSection: React.FC = () => {
             ))}
           </div>
         </div>
-      </section>
-
-      {/* Houston Winners Placeholder */}
-      <section className="max-w-[1320px] mx-auto py-[clamp(56px,7vw,104px)] px-6">
-        <ScrollReveal>
-          <h2 className="m-0 mb-2.5 font-['Overpass',sans-serif] font-black text-[clamp(24px,3vw,38px)] uppercase text-white">
-            Houston winners
-          </h2>
-          <div className="border-2 dashed border-white/24 rounded-2xl p-[clamp(28px,4vw,40px)] bg-white/[0.03]">
-            <div className="font-['Fira_Sans_Condensed',sans-serif] text-[13px] font-extrabold tracking-widest uppercase text-white/60 mb-3">
-              Coming soon
-            </div>
-            <p className="m-0 max-w-[680px] text-[18px] leading-relaxed text-white/80">
-              A verified list of past Houston winning teams and their projects is being assembled from the official Space Apps project archive. We'd rather leave this blank than publish something unconfirmed.
-            </p>
-          </div>
-        </ScrollReveal>
       </section>
     </div>
   );

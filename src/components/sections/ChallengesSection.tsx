@@ -6,7 +6,7 @@ export const ChallengesSection: React.FC = () => {
   const [activeArtwork, setActiveArtwork] = useState<number | null>(null);
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <section data-screen-label="Challenges hero" className="max-w-[1320px] mx-auto pt-[clamp(48px,6vw,88px)] px-6 pb-[clamp(32px,4vw,48px)]">
         <p className="m-0 mb-3.5 font-['Fira_Sans_Condensed',sans-serif] font-bold text-[14px] tracking-widest uppercase text-[#EAFE07]">
           Challenges
@@ -23,7 +23,7 @@ export const ChallengesSection: React.FC = () => {
 
       {/* Release Timeline Milestones */}
       <section className="max-w-[1320px] mx-auto px-6 pb-[clamp(56px,7vw,96px)]">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4.5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           <ScrollReveal>
             <div className="border-2 border-[rgba(234,254,7,0.4)] rounded-2xl p-7 bg-[rgba(234,254,7,0.07)] h-full">
               <div className="font-['Fira_Sans_Condensed',sans-serif] text-[13px] font-extrabold tracking-widest uppercase text-[#EAFE07] mb-3">
@@ -55,7 +55,7 @@ export const ChallengesSection: React.FC = () => {
               </div>
               <h2 className="m-0 mb-2.5 text-[23px] font-extrabold text-white">Support &amp; Global Offers</h2>
               <p className="m-0 text-[17px] leading-relaxed text-white/82">
-                Space Apps Connect opens November 2 for questions to Navigators and NASA experts. Global Offers and the submission and judging guides land November 13.
+                Space Apps Connect opens November 2 for questions to Navigators and NASA experts. Global Offers and submission guides land November 13.
               </p>
             </div>
           </ScrollReveal>
@@ -67,14 +67,14 @@ export const ChallengesSection: React.FC = () => {
               </div>
               <h2 className="m-0 mb-2.5 text-[23px] font-extrabold text-white">Work begins</h2>
               <p className="m-0 text-[17px] leading-relaxed text-white/82">
-                You can read and plan beforehand, but project work may only begin at 9:00 am local time on the first day. Starting early can lead to disqualification.
+                You can read and plan beforehand, but project work may only begin at 9:00 am local time on the first day.
               </p>
             </div>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* Archive Challenges */}
+      {/* Archive Challenges — Clean non-overlapping grid layout */}
       <section className="py-[clamp(56px,7vw,104px)] px-6 bg-gradient-to-b from-transparent via-[rgba(0,66,166,0.2)] to-transparent">
         <div className="max-w-[1320px] mx-auto">
           <ScrollReveal>
@@ -86,24 +86,25 @@ export const ChallengesSection: React.FC = () => {
             </p>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4.5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 min-w-0">
             {archiveChallenges.map((c, i) => (
-              <ScrollReveal key={i}>
-                <article className="h-full border border-white/14 rounded-2xl p-6.5 bg-white/[0.03] transition-all duration-400 hover:-translate-y-1.5 hover:border-[#EAFE07]">
-                  <div className="flex items-center gap-2.5 mb-3 flex-wrap">
-                    <span className="text-[12px] font-bold tracking-widest uppercase" style={{ color: c.dot }}>
-                      {c.category}
-                    </span>
-                    <span className="text-[12px] text-white/40">·</span>
-                    <span className="text-[12px] font-semibold tracking-widest uppercase text-white/55">
-                      {c.difficulty}
-                    </span>
+              <ScrollReveal key={i} className="h-full">
+                <article className="h-full flex flex-col justify-between border border-white/14 rounded-2xl p-6 bg-white/[0.03] transition-all duration-300 hover:-translate-y-1.5 hover:border-[#EAFE07] overflow-hidden min-w-0 shadow-lg">
+                  <div>
+                    <div className="flex items-center gap-2 mb-3 flex-wrap">
+                      <span className="text-[11px] font-extrabold tracking-wider uppercase px-2.5 py-1 rounded-md bg-white/10" style={{ color: c.dot }}>
+                        {c.category}
+                      </span>
+                      <span className="text-[11px] font-semibold tracking-wider uppercase text-white/55 px-2 py-0.5 rounded border border-white/15">
+                        {c.difficulty}
+                      </span>
+                    </div>
+                    <h3 className="m-0 mb-2.5 text-[20px] font-extrabold text-white leading-snug">{c.title}</h3>
+                    <p className="m-0 text-[15px] leading-relaxed text-white/75 font-light">{c.description}</p>
                   </div>
-                  <h3 className="m-0 mb-3 text-[22px] font-extrabold text-white leading-snug">{c.title}</h3>
-                  <p className="m-0 mb-4 text-[16px] leading-relaxed text-white/75">{c.description}</p>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5 mt-5 pt-3 border-t border-white/10">
                     {c.datasets.map((d, dIdx) => (
-                      <span key={dIdx} className="border border-white/18 rounded-full px-3.5 py-1.5 text-[13px] text-white/70">
+                      <span key={dIdx} className="border border-white/18 rounded-full px-2.5 py-1 text-[11px] text-white/75 truncate max-w-full">
                         {d}
                       </span>
                     ))}
@@ -126,16 +127,16 @@ export const ChallengesSection: React.FC = () => {
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3.5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           {awards.map((a, i) => (
-            <ScrollReveal key={i}>
-              <div className="flex gap-4.5 items-start border border-white/12 rounded-xl p-5.5 bg-white/[0.03] transition-all duration-400 hover:translate-x-1.5 hover:border-[#EAFE07]">
-                <div className="font-['Fira_Sans_Condensed',sans-serif] font-extrabold text-[26px] text-[rgba(234,254,7,0.85)] min-w-[42px] leading-none">
+            <ScrollReveal key={i} className="h-full">
+              <div className="flex gap-4 items-start border border-white/12 rounded-xl p-5 bg-white/[0.03] h-full transition-all duration-300 hover:translate-x-1 hover:border-[#EAFE07]">
+                <div className="font-['Fira_Sans_Condensed',sans-serif] font-extrabold text-[24px] text-[rgba(234,254,7,0.85)] min-w-[36px] leading-none">
                   {a.num}
                 </div>
                 <div>
-                  <div className="font-bold text-[17px] uppercase tracking-wide text-white mb-1.5">{a.name}</div>
-                  <div className="text-[15px] leading-snug text-white/68">{a.desc}</div>
+                  <div className="font-bold text-[16px] uppercase tracking-wide text-white mb-1">{a.name}</div>
+                  <div className="text-[14px] leading-snug text-white/68 font-light">{a.desc}</div>
                 </div>
               </div>
             </ScrollReveal>
@@ -143,24 +144,24 @@ export const ChallengesSection: React.FC = () => {
         </div>
       </section>
 
-      {/* Houston Award Artwork Gallery */}
+      {/* Renamed Houston Awards Section */}
       <section data-screen-label="Award artwork" className="max-w-[1320px] mx-auto pb-[clamp(64px,8vw,116px)] px-6">
         <ScrollReveal className="flex flex-wrap items-baseline gap-2.5 sm:gap-4.5 mb-3">
           <h2 className="m-0 font-['Overpass',sans-serif] font-black text-[clamp(28px,3.6vw,46px)] uppercase text-white">
-            Houston award <span className="text-[#2E96F5]">artwork</span>
+            Houston <span className="text-[#2E96F5]">Awards</span>
           </h2>
           <span className="font-['Fira_Sans_Condensed',sans-serif] text-[13px] font-bold tracking-widest uppercase text-[#EAFE07]">
-            Hover to open
+            Hover or tap poster
           </span>
         </ScrollReveal>
 
         <ScrollReveal>
           <p className="m-0 mb-[clamp(30px,4vw,48px)] max-w-[700px] text-[18px] leading-relaxed text-white/72">
-            Eight award artworks for the Houston event. Hover any mark to open the full poster.
+            Official Houston event award categories and artwork posters. Hover or tap any mark to expand full artwork poster.
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
           {artworkList.map((a, i) => {
             const isOpen = activeArtwork === i;
             return (
@@ -169,7 +170,7 @@ export const ChallengesSection: React.FC = () => {
                 onMouseEnter={() => setActiveArtwork(i)}
                 onMouseLeave={() => setActiveArtwork(null)}
                 onClick={() => setActiveArtwork(isOpen ? null : i)}
-                className={`relative flex flex-col items-center gap-3.5 rounded-2xl p-5.5 cursor-pointer transition-all duration-300 ${
+                className={`relative flex flex-col items-center gap-3.5 rounded-2xl p-5 cursor-pointer transition-all duration-300 ${
                   isOpen
                     ? 'z-[6] border border-[rgba(234,254,7,0.5)] bg-[rgba(46,150,245,0.08)]'
                     : 'z-[1] border border-white/12 bg-white/[0.03]'
