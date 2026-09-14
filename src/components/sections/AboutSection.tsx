@@ -116,7 +116,7 @@ export const AboutSection: React.FC = () => {
                 className="absolute left-[8%] top-[4%] w-[84%] h-[44%] rounded-full bg-[radial-gradient(circle,rgba(46,150,245,0.22),rgba(46,150,245,0.06)_52%,transparent_72%)] blur-2xl pointer-events-none"
               />
               <img
-                src="public/team-globe-blend.png"
+                src="/team-globe-blend.png"
                 alt="Globe linked by glowing lines to seven nodes"
                 className="relative block w-full h-auto"
               />

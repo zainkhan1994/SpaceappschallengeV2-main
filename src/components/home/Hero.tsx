@@ -120,7 +120,7 @@ export const Hero: React.FC = () => {
 
       <div className="relative z-[2] max-w-[1000px] mx-auto">
         <img
-          src="public/sac-logo-houston-transparent.png"
+          src="/sac-logo-houston-transparent.png"
           alt=""
           className="w-[280px] md:w-[323px] h-auto block mx-auto mb-7 animate-[bounce_9s_ease-in-out_infinite] drop-shadow-[0_0_22px_rgba(120,180,255,0.3)] opacity-90"
         />

@@ -8,7 +8,7 @@ export const Footer: React.FC = () => {
         <div className="md:col-span-2">
           <div className="flex items-center gap-3.5 mb-4">
             <img
-              src="public/sac-logo-houston-transparent.png"
+              src="/sac-logo-houston-transparent.png"
               alt="NASA Space Apps Challenge Houston"
               className="h-[54px] w-[54px] object-contain block"
             />

@@ -33,7 +33,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, nextLabel, nextWhe
       <div className="max-w-[1320px] mx-auto px-6 py-3 flex items-center justify-between gap-5">
         <a href="#/" className="flex items-center gap-3 text-white flex-none">
           <img
-            src="public/sac-logo-houston-transparent.png"
+            src="/sac-logo-houston-transparent.png"
             alt="NASA Space Apps Challenge Houston"
             className="h-[58px] w-[58px] object-contain block"
           />

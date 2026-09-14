@@ -8,6 +8,6 @@ export const venueCriteria = [
 ];
 
 export const venuePhotos = [
-  { src: 'public/Pictures/Student Center South.jpg', alt: 'Large open student centre hall with tables', caption: 'Previous Houston Local Event venue — archive.' },
-  { src: 'public/Pictures/StudentCenterNorth.jpg', alt: 'University student centre exterior', caption: 'Previous Houston Local Event venue — archive.' }
+  { src: '/Pictures/Student Center South.jpg', alt: 'Large open student centre hall with tables', caption: 'Previous Houston Local Event venue — archive.' },
+  { src: '/Pictures/StudentCenterNorth.jpg', alt: 'University student centre exterior', caption: 'Previous Houston Local Event venue — archive.' }
 ];

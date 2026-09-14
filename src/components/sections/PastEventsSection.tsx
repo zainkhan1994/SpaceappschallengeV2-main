@@ -98,7 +98,7 @@ export const PastEventsSection: React.FC = () => {
         <ScrollReveal className="mt-11">
           <figure className="m-0">
             <img
-              src="public/Pictures/TheGrowthofNASASpaceApps.png"
+              src="/Pictures/TheGrowthofNASASpaceApps.png"
               alt="Chart showing the growth of NASA Space Apps participation over time"
               className="w-full h-auto rounded-2xl border border-white/16 block"
             />

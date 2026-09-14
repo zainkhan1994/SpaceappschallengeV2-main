@@ -37,12 +37,12 @@ export const awards: GlobalAward[] = [
 ];
 
 export const artworkList: AwardArt[] = [
-  { name: 'Best Use of Science', slug: 'science', cut: 'public/awards/science-cut.png', full: 'public/awards/science-full.png' },
-  { name: 'Best Use of Technology', slug: 'technology', cut: 'public/awards/technology-cut.png', full: 'public/awards/technology-full.png' },
-  { name: 'Best Use of Storytelling', slug: 'storytelling', cut: 'public/awards/storytelling-cut.png', full: 'public/awards/storytelling-full.png' },
-  { name: 'Art & Technology', slug: 'art-tech', cut: 'public/awards/art-tech-cut.png', full: 'public/awards/art-tech-full.png' },
-  { name: 'Most Inspirational', slug: 'inspirational', cut: 'public/awards/inspirational-cut.png', full: 'public/awards/inspirational-full.png' },
-  { name: 'Local Impact', slug: 'local-impact', cut: 'public/awards/local-impact-cut.png', full: 'public/awards/local-impact-full.png' },
-  { name: 'Best Mission Concept', slug: 'mission', cut: 'public/awards/mission-cut.png', full: 'public/awards/mission-full.png' },
-  { name: 'Global Community', slug: 'community', cut: 'public/awards/community-cut.png', full: 'public/awards/community-full.png' }
+  { name: 'Best Use of Science', slug: 'science', cut: '/awards/science-cut.png', full: '/awards/science-full.png' },
+  { name: 'Best Use of Technology', slug: 'technology', cut: '/awards/technology-cut.png', full: '/awards/technology-full.png' },
+  { name: 'Best Use of Storytelling', slug: 'storytelling', cut: '/awards/storytelling-cut.png', full: '/awards/storytelling-full.png' },
+  { name: 'Art & Technology', slug: 'art-tech', cut: '/awards/art-tech-cut.png', full: '/awards/art-tech-full.png' },
+  { name: 'Most Inspirational', slug: 'inspirational', cut: '/awards/inspirational-cut.png', full: '/awards/inspirational-full.png' },
+  { name: 'Local Impact', slug: 'local-impact', cut: '/awards/local-impact-cut.png', full: '/awards/local-impact-full.png' },
+  { name: 'Best Mission Concept', slug: 'mission', cut: '/awards/mission-cut.png', full: '/awards/mission-full.png' },
+  { name: 'Global Community', slug: 'community', cut: '/awards/community-cut.png', full: '/awards/community-full.png' }
 ];
