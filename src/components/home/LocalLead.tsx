@@ -7,24 +7,35 @@ export const LocalLead: React.FC = () => {
     <section data-screen-label="Local Lead" className="max-w-[1320px] mx-auto py-[clamp(64px,8vw,120px)] px-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-[clamp(24px,4vw,44px)]">
         <ScrollReveal>
-          <div className="h-full border border-[rgba(46,150,245,0.4)] rounded-2xl p-[clamp(26px,4vw,42px)] bg-gradient-to-br from-[rgba(46,150,245,0.14)] to-[rgba(7,23,63,0.5)]">
-            <div className="font-['Fira_Sans_Condensed',sans-serif] text-[13px] font-extrabold tracking-widest uppercase text-[#EAFE07] mb-4">
-              First time at a hackathon?
+          <div className="h-full border border-[rgba(46,150,245,0.4)] rounded-2xl p-[clamp(26px,4vw,42px)] bg-gradient-to-br from-[rgba(46,150,245,0.14)] to-[rgba(7,23,63,0.5)] flex flex-col justify-between">
+            <div>
+              <div className="font-['Fira_Sans_Condensed',sans-serif] text-[13px] font-extrabold tracking-widest uppercase text-[#EAFE07] mb-4">
+                First time at a hackathon?
+              </div>
+              <h2 className="m-0 mb-4 font-['Overpass',sans-serif] font-black text-[clamp(26px,3.2vw,40px)] leading-tight uppercase text-white">
+                Talk to your Local Lead
+              </h2>
+              <p className="m-0 text-[18px] leading-relaxed text-white/85 font-light">
+                Not sure where to begin, how to form a team, or which challenge to pick? Book a one-on-one with Houston's Local Lead, Zain Khan — or send us a message directly.
+              </p>
             </div>
-            <h2 className="m-0 mb-4 font-['Overpass',sans-serif] font-black text-[clamp(26px,3.2vw,40px)] leading-tight uppercase text-white">
-              Talk to your Local Lead
-            </h2>
-            <p className="m-0 text-[18px] leading-relaxed text-white/85">
-              Not sure where to begin, how to form a team, or which challenge to pick? Book a one-on-one with Houston's Local Lead, Zain Khan — whether you're brand new or just need a little guidance.
-            </p>
-            <a
-              href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3NhJFzIf_7Oc7zIWx-XDhPqiPl3R4W8NQbN3Bj21nk2AUQYBNoZbl5SsQrDcg2OaS0SG8xX7db?gv=true"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-5.5 inline-block px-7.5 py-4 rounded-xl bg-[#2E96F5] text-[#04122F] font-extrabold text-[18px] shadow-[0_8px_32px_rgba(46,150,245,0.35)] transition-all hover:bg-[#5FB4FF] hover:-translate-y-0.5"
-            >
-              Book a 1:1 appointment
-            </a>
+            
+            <div className="mt-6 flex flex-wrap gap-3.5 items-center">
+              <a
+                href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3NhJFzIf_7Oc7zIWx-XDhPqiPl3R4W8NQbN3Bj21nk2AUQYBNoZbl5SsQrDcg2OaS0SG8xX7db?gv=true"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-7 py-3.5 rounded-xl bg-[#2E96F5] text-[#04122F] font-extrabold text-[17px] shadow-[0_8px_32px_rgba(46,150,245,0.35)] transition-all hover:bg-[#5FB4FF] hover:-translate-y-0.5"
+              >
+                Book a 1:1 appointment
+              </a>
+              <a
+                href="mailto:zain@nasaspaceappschallenge.org?subject=Space%20Apps%20Houston%20Inquiry"
+                className="px-6 py-3.5 rounded-xl border border-white/35 text-white font-bold text-[17px] transition-all hover:border-[#EAFE07] hover:text-[#EAFE07]"
+              >
+                Email the Houston team
+              </a>
+            </div>
           </div>
         </ScrollReveal>
 
@@ -39,7 +50,7 @@ export const LocalLead: React.FC = () => {
                   <summary className="cursor-pointer text-[18px] font-bold text-white list-none select-none">
                     {f.q}
                   </summary>
-                  <p className="mt-3 m-0 text-[16px] leading-relaxed text-white/78">{f.a}</p>
+                  <p className="mt-3 m-0 text-[16px] leading-relaxed text-white/78 font-light">{f.a}</p>
                 </details>
               ))}
             </div>

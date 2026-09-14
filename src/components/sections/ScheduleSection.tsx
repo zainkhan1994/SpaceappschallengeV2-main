@@ -19,21 +19,26 @@ export const ScheduleSection: React.FC = () => {
         </p>
       </section>
 
-      {/* Timeline List */}
+      {/* Timeline List matching media_1789430093394.png design */}
       <section className="max-w-[1000px] mx-auto px-6 pb-[clamp(56px,7vw,96px)]">
-        <ol className="list-none m-0 p-0 grid gap-3">
+        <ol className="list-none m-0 p-0 grid gap-4">
           {keyDates.map((d, i) => (
             <ScrollReveal key={i}>
-              <li className="flex flex-wrap gap-5 items-start border border-white/13 rounded-2xl p-5.5 md:p-6.5 bg-white/[0.03]" style={{ borderLeftWidth: '3px', borderLeftColor: d.accent }}>
-                <span className="min-w-[190px] flex flex-col gap-1">
-                  <span className="text-[13px] font-semibold tracking-widest uppercase text-white/50">{d.day}</span>
-                  <span className="font-['Fira_Sans_Condensed',sans-serif] font-extrabold text-[22px] tracking-tight" style={{ color: d.accent }}>{d.date}</span>
-                  <span className="text-[14px] font-semibold tabular-nums text-white/60">{d.time}</span>
-                </span>
-                <span className="flex-1 min-w-[260px]">
-                  <span className="block text-[20px] font-extrabold text-white mb-1.5">{d.title}</span>
-                  <span className="block text-[16px] leading-relaxed text-white/75">{d.desc}</span>
-                </span>
+              <li
+                className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start border border-white/14 rounded-2xl p-5 md:p-6 bg-[#050A1C]/80 backdrop-blur-md shadow-lg transition-all duration-300 hover:border-white/30"
+                style={{ borderLeftWidth: '4px', borderLeftColor: d.accent }}
+              >
+                <div className="min-w-[180px] flex flex-col gap-0.5">
+                  <span className="text-[12px] font-bold tracking-widest uppercase text-white/50">{d.day}</span>
+                  <span className="font-['Overpass',sans-serif] font-black text-[22px] sm:text-[24px] tracking-tight leading-snug" style={{ color: d.accent }}>
+                    {d.date}
+                  </span>
+                  <span className="text-[13px] font-semibold tabular-nums text-white/60">{d.time}</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="m-0 text-[19px] sm:text-[21px] font-extrabold text-white mb-1.5 leading-snug">{d.title}</h3>
+                  <p className="m-0 text-[15px] leading-relaxed text-white/78 font-light">{d.desc}</p>
+                </div>
               </li>
             </ScrollReveal>
           ))}
@@ -42,10 +47,10 @@ export const ScheduleSection: React.FC = () => {
         <ScrollReveal className="mt-7">
           <div className="border border-[rgba(234,254,7,0.35)] rounded-2xl p-6.5 bg-[rgba(234,254,7,0.06)]">
             <div className="font-['Fira_Sans_Condensed',sans-serif] text-[13px] font-extrabold tracking-widest uppercase text-[#EAFE07] mb-2.5">
-              Coming soon
+              Houston Event Agenda
             </div>
-            <p className="m-0 text-[17px] leading-relaxed text-white/85">
-              The Houston event-day agenda — check-in times, workshops, meals, demo slots and judging — will be published here and on the official Local Event page once the venue and schedule are set.
+            <p className="m-0 text-[17px] leading-relaxed text-white/85 font-light">
+              The Houston event-day agenda — check-in times, workshops, meals, demo slots and judging — will be published here and on the official Local Event page once the venue and schedule are finalized.
             </p>
           </div>
         </ScrollReveal>

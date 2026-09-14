@@ -16,7 +16,7 @@ export const FAQSection: React.FC = () => {
         </h1>
         <p className="mt-6.5 m-0 max-w-[700px] text-[20px] leading-relaxed text-white/80 font-light">
           Answers drawn from the official 2026 program guidance. Still stuck?{' '}
-          <a href="#/contact" className="text-[#2E96F5] hover:text-[#EAFE07]">
+          <a href="mailto:zain@nasaspaceappschallenge.org?subject=Space%20Apps%20Houston%20Inquiry" className="text-[#2E96F5] hover:text-[#EAFE07] underline">
             Email the Houston team
           </a>
           .
@@ -47,7 +47,7 @@ export const FAQSection: React.FC = () => {
           </div>
         ))}
 
-        <ScrollReveal>
+        <ScrollReveal className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6">
           <a
             href="https://www.spaceappschallenge.org/resources/-faq/"
             target="_blank"
@@ -55,6 +55,12 @@ export const FAQSection: React.FC = () => {
             className="text-[18px] font-bold text-[#2E96F5] hover:text-[#EAFE07]"
           >
             Read the global Space Apps FAQ →
+          </a>
+          <a
+            href="mailto:zain@nasaspaceappschallenge.org?subject=Space%20Apps%20Houston%20Inquiry"
+            className="px-6 py-3 rounded-xl bg-[#2E96F5] text-[#04122F] font-bold text-[16px] hover:bg-[#5FB4FF]"
+          >
+            Email the Houston team
           </a>
         </ScrollReveal>
       </section>
