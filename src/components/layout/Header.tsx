@@ -31,18 +31,18 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, nextLabel, nextWhe
   return (
     <header className="sticky top-0 z-[80] bg-[rgba(5,10,28,0.9)] backdrop-blur-md border-b border-[rgba(46,150,245,0.26)]">
       <div className="max-w-[1320px] mx-auto px-6 py-3 flex items-center justify-between gap-5">
-        <a href="#/" className="flex items-center gap-3 text-white flex-none">
+        <a href="#/" className="flex items-center gap-3.5 text-white flex-none py-1 group">
           <img
             src="/sac-logo-houston-transparent.png"
             alt="NASA Space Apps Challenge Houston"
-            className="h-[58px] w-[58px] object-contain block"
+            className="h-[76px] md:h-[88px] w-auto object-contain block drop-shadow-[0_0_14px_rgba(234,254,7,0.35)] transition-transform duration-300 group-hover:scale-105"
           />
           <span className="flex flex-col leading-tight">
-            <span className="font-['Fira_Sans_Condensed',sans-serif] font-extrabold text-[16px] tracking-wider uppercase">
+            <span className="font-['Fira_Sans_Condensed',sans-serif] font-extrabold text-[18px] md:text-[20px] tracking-wider uppercase">
               Space Apps Houston
             </span>
+            <span className="text-[14px] md:text-[15px] font-bold tracking-[0.24em] text-[#EAFE07]">2026</span>
           </span>
-          <span className="text-[15px] font-semibold tracking-[0.24em] text-[#EAFE07]">2026</span>
         </a>
 
         {/* Desktop Nav */}

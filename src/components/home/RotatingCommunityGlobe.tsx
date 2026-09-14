@@ -3,72 +3,147 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Sphere, Html, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
-export interface LocationPin {
+export interface AgencyPin {
   id: string;
   name: string;
-  locationLabel: string;
+  country: string;
+  abbr: string;
   coordinates: [number, number]; // [lat, lng]
-  photo: string;
+  logo: string;
   description: string;
+  url: string;
 }
 
-// Exact 2024 event photos & key local/global locations
-const pinsData: LocationPin[] = [
+const spaceAgenciesData: AgencyPin[] = [
   {
-    id: 'houston',
-    name: 'Houston, Texas',
-    locationLabel: 'Space Apps Houston Lead',
-    coordinates: [29.7604, -95.3698],
-    photo: '/Pictures/ZainProfilePicture.JPG',
-    description: 'Houston Event Hub — 80+ Builders & Innovators'
+    id: 'nasa',
+    name: 'National Aeronautics and Space Administration',
+    country: 'United States',
+    abbr: 'NASA',
+    coordinates: [37.0902, -95.7129],
+    logo: '/nasa-logo.png',
+    description: 'Lead agency for NASA Space Apps Challenge globally.',
+    url: 'https://www.nasa.gov/'
   },
   {
-    id: 'chicago',
-    name: 'Chicago, Illinois',
-    locationLabel: 'Chicago Local Event 2024',
-    coordinates: [41.8781, -87.6298],
-    photo: '/Pictures/17.png',
-    description: 'Space Apps 2024 Participant Team at Work'
+    id: 'esa',
+    name: 'European Space Agency',
+    country: 'Europe',
+    abbr: 'ESA',
+    coordinates: [46.8182, 8.2275],
+    logo: '/esa-logo.png',
+    description: 'Europe’s gateway to space and open Earth observation data.',
+    url: 'https://www.esa.int/'
   },
   {
-    id: 'katy',
-    name: 'Katy, Texas',
-    locationLabel: 'Katy Hackathon Team',
-    coordinates: [29.7858, -95.8244],
-    photo: '/Pictures/18.png',
-    description: 'Greater Houston 2024 Hackathon Builders'
+    id: 'jaxa',
+    name: 'Japan Aerospace Exploration Agency',
+    country: 'Japan',
+    abbr: 'JAXA',
+    coordinates: [36.2048, 138.2529],
+    logo: '/jaxa-logo.png',
+    description: 'Advances Earth observation and space exploration missions.',
+    url: 'https://global.jaxa.jp/'
   },
   {
-    id: 'sugarland',
-    name: 'Sugar Land, Texas',
-    locationLabel: 'FarmVis Team',
-    coordinates: [29.6197, -95.6349],
-    photo: '/Pictures/Farmvis.png',
-    description: 'FarmVis Agricultural Data Innovation'
+    id: 'isro',
+    name: 'Indian Space Research Organisation',
+    country: 'India',
+    abbr: 'ISRO',
+    coordinates: [20.5937, 78.9629],
+    logo: '/isro-logo.png',
+    description: 'Harvesting benefits of outer space for India and humankind.',
+    url: 'https://www.isro.gov.in/'
   },
   {
-    id: 'woodlands',
-    name: 'The Woodlands, Texas',
-    locationLabel: 'Woodlands Community',
-    coordinates: [30.1658, -95.4613],
-    photo: '/Pictures/0E27520C-5137-4126-8FCC-2EFCA60A9E28_1_105_c.jpeg',
-    description: 'Greater Houston Community Participants'
+    id: 'uksa',
+    name: 'UK Space Agency',
+    country: 'United Kingdom',
+    abbr: 'UKSA',
+    coordinates: [55.3781, -3.4360],
+    logo: '/uksa-logo.png',
+    description: 'Catalyses investment and champions space science & innovation.',
+    url: 'https://www.gov.uk/government/organisations/uk-space-agency'
   },
   {
-    id: 'london',
-    name: 'London, UK',
-    locationLabel: 'London Global Hub',
-    coordinates: [51.5074, -0.1278],
-    photo: '/Pictures/3E68B75C-2753-41C0-B656-F094FF86537F_1_105_c.jpeg',
-    description: 'European Partner Community'
+    id: 'mbrsc',
+    name: 'Mohammed Bin Rashid Space Centre',
+    country: 'UAE',
+    abbr: 'MBRSC',
+    coordinates: [23.4241, 53.8478],
+    logo: '/mbrsc-logo.png',
+    description: 'Leading hub for space exploration and Earth observation in UAE.',
+    url: 'https://www.mbrsc.ae/'
   },
   {
-    id: 'tokyo',
-    name: 'Tokyo, Japan',
-    locationLabel: 'Tokyo Global Hub',
-    coordinates: [35.6762, 139.6503],
-    photo: '/Pictures/6DDF95C2-C266-4423-9E35-CA7797CFB6AC_1_105_c.jpeg',
-    description: 'Asia-Pacific Space Apps Collaborators'
+    id: 'aeb',
+    name: 'Brazilian Space Agency',
+    country: 'Brazil',
+    abbr: 'AEB',
+    coordinates: [-14.2350, -51.9253],
+    logo: '/aeb-logo.png',
+    description: 'Promotes technological innovation and space science in Latin America.',
+    url: 'https://www.gov.br/aeb/'
+  },
+  {
+    id: 'csa',
+    name: 'Canadian Space Agency',
+    country: 'Canada',
+    abbr: 'CSA',
+    coordinates: [56.1304, -106.3468],
+    logo: '/canadian-space-agency-logo.png',
+    description: 'Promotes space exploration, innovation and open data.',
+    url: 'https://www.asc-csa.gc.ca/'
+  },
+  {
+    id: 'asi',
+    name: 'Italian Space Agency',
+    country: 'Italy',
+    abbr: 'ASI',
+    coordinates: [41.8719, 12.5674],
+    logo: '/asi-italy-logo.png',
+    description: 'Coordinates scientific research, Earth observation and innovation.',
+    url: 'https://www.asi.it/'
+  },
+  {
+    id: 'nssa',
+    name: 'National Space Science Agency',
+    country: 'Bahrain',
+    abbr: 'BSA',
+    coordinates: [25.9304, 50.6378],
+    logo: '/bahrain-space-agency-logo.png',
+    description: 'Promotes space technologies for national growth and research.',
+    url: 'https://www.nssa.gov.bh/'
+  },
+  {
+    id: 'aep',
+    name: 'Paraguayan Space Agency',
+    country: 'Paraguay',
+    abbr: 'AEP',
+    coordinates: [-23.4425, -58.4438],
+    logo: '/paraguay-space-agency-logo.png',
+    description: 'Champions open innovation and international space collaboration.',
+    url: 'https://www.aep.gov.py/'
+  },
+  {
+    id: 'sansa',
+    name: 'South African National Space Agency',
+    country: 'South Africa',
+    abbr: 'SANSA',
+    coordinates: [-30.5595, 22.9375],
+    logo: '/sansa-logo.png',
+    description: 'Drives space science, Earth observation and technological advancement.',
+    url: 'https://www.sansa.org.za/'
+  },
+  {
+    id: 'tua',
+    name: 'Turkish Space Agency',
+    country: 'Türkiye',
+    abbr: 'TUA',
+    coordinates: [38.9637, 35.2433],
+    logo: '/turkish-space-agency-logo.png',
+    description: 'Supports development and dissemination of space science and tech.',
+    url: 'https://www.tua.gov.tr/'
   }
 ];
 
@@ -84,20 +159,20 @@ function latLngToVector3(lat: number, lng: number, radius: number = 1.27): THREE
   );
 }
 
-interface PhotoPinProps {
-  pin: LocationPin;
+interface AgencyPinMarkerProps {
+  agency: AgencyPin;
   isActive: boolean;
-  onSelect: (pin: LocationPin) => void;
+  onSelect: (agency: AgencyPin) => void;
 }
 
-function PhotoPinMarker({ pin, isActive, onSelect }: PhotoPinProps) {
+function AgencyPinMarker({ agency, isActive, onSelect }: AgencyPinMarkerProps) {
   const groupRef = useRef<THREE.Group>(null);
   const [visible, setVisible] = useState(true);
   const [hovered, setHovered] = useState(false);
 
   const localPos = useMemo(
-    () => latLngToVector3(pin.coordinates[0], pin.coordinates[1], 1.27),
-    [pin.coordinates]
+    () => latLngToVector3(agency.coordinates[0], agency.coordinates[1], 1.27),
+    [agency.coordinates]
   );
 
   const tempVec = useMemo(() => new THREE.Vector3(), []);
@@ -105,7 +180,7 @@ function PhotoPinMarker({ pin, isActive, onSelect }: PhotoPinProps) {
   useFrame(({ camera }) => {
     if (groupRef.current) {
       groupRef.current.getWorldPosition(tempVec);
-      // Occlusion check: hide pins behind globe horizon
+      // Hide pins on back of sphere horizon
       const dot = tempVec.dot(camera.position);
       const isFront = dot > 0.35;
       if (isFront !== visible) {
@@ -124,7 +199,7 @@ function PhotoPinMarker({ pin, isActive, onSelect }: PhotoPinProps) {
         <meshBasicMaterial color={isActive || hovered ? "#EAFE07" : "#2E96F5"} />
       </mesh>
 
-      {/* HTML Teardrop Photo Pin Drop without text labels */}
+      {/* HTML Pin Drop displaying Space Agency Logo */}
       <Html
         center
         distanceFactor={6.5}
@@ -139,7 +214,7 @@ function PhotoPinMarker({ pin, isActive, onSelect }: PhotoPinProps) {
         <div
           onClick={(e) => {
             e.stopPropagation();
-            onSelect(pin);
+            onSelect(agency);
           }}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
@@ -147,34 +222,36 @@ function PhotoPinMarker({ pin, isActive, onSelect }: PhotoPinProps) {
             hovered || isActive ? 'scale-125 z-50' : 'scale-90 opacity-90 hover:opacity-100'
           }`}
         >
-          {/* Yellow Teardrop Photo Pin Drop */}
+          {/* Teardrop Pin Container with Agency Logo inside */}
           <div className="relative flex flex-col items-center">
-            {/* Circular Photo Frame */}
+            {/* Circular Logo Frame */}
             <div
-              className={`w-8 h-8 md:w-10 md:h-10 rounded-full p-[2px] transition-all duration-300 shadow-md ${
+              className={`w-9 h-9 md:w-10 md:h-10 rounded-full p-[3px] bg-white flex items-center justify-center transition-all duration-300 shadow-md ${
                 hovered || isActive
-                  ? 'bg-[#EAFE07] ring-4 ring-[#EAFE07]/40 shadow-[0_0_18px_#EAFE07]'
-                  : 'bg-[#EAFE07]'
+                  ? 'ring-4 ring-[#EAFE07] shadow-[0_0_20px_#EAFE07]'
+                  : 'ring-2 ring-[#2E96F5]'
               }`}
             >
               <img
-                src={pin.photo}
-                alt={pin.name}
-                className="w-full h-full object-cover rounded-full bg-[#050A1C]"
+                src={agency.logo}
+                alt={agency.name}
+                className="w-full h-full object-contain rounded-full"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = '/sac-logo-houston-transparent.png';
                 }}
               />
             </div>
 
-            {/* Downward Yellow Pin Point Teardrop Tip */}
-            <div className="w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[8px] border-t-[#EAFE07] -mt-[1px]" />
+            {/* Downward Pointer Tip */}
+            <div className={`w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[8px] -mt-[1px] ${
+              hovered || isActive ? 'border-t-[#EAFE07]' : 'border-t-[#2E96F5]'
+            }`} />
           </div>
 
-          {/* Clean Hover Tooltip */}
+          {/* Hover Tooltip with Agency Abbr & Country */}
           {hovered && !isActive && (
             <div className="absolute -top-7 bg-[#050A1C]/95 text-white border border-[#EAFE07]/50 px-2 py-0.5 rounded text-[10px] font-['Fira_Sans_Condensed',sans-serif] font-bold uppercase tracking-wider whitespace-nowrap shadow-lg">
-              {pin.name}
+              {agency.abbr} ({agency.country})
             </div>
           )}
         </div>
@@ -184,11 +261,11 @@ function PhotoPinMarker({ pin, isActive, onSelect }: PhotoPinProps) {
 }
 
 function GlobeContent({
-  activePinId,
-  onSelectPin
+  activeAgencyId,
+  onSelectAgency
 }: {
-  activePinId: string | null;
-  onSelectPin: (pin: LocationPin) => void;
+  activeAgencyId: string | null;
+  onSelectAgency: (agency: AgencyPin) => void;
 }) {
   const globeGroupRef = useRef<THREE.Group>(null);
 
@@ -205,7 +282,7 @@ function GlobeContent({
         <meshBasicMaterial color="#2E96F5" transparent opacity={0.08} side={THREE.BackSide} />
       </Sphere>
 
-      {/* Main Globe Sphere - Zoomed Out Proportionately */}
+      {/* Globe Sphere */}
       <Sphere args={[1.25, 64, 64]}>
         <meshStandardMaterial
           color="#081A38"
@@ -215,7 +292,7 @@ function GlobeContent({
         />
       </Sphere>
 
-      {/* Latitude / Longitude Grid Wireframe */}
+      {/* Grid Wireframe */}
       <Sphere args={[1.254, 32, 24]}>
         <meshBasicMaterial color="#2E96F5" wireframe transparent opacity={0.16} />
       </Sphere>
@@ -226,13 +303,13 @@ function GlobeContent({
         <meshBasicMaterial color="#EAFE07" transparent opacity={0.3} side={THREE.DoubleSide} />
       </mesh>
 
-      {/* Pin Markers */}
-      {pinsData.map((pin) => (
-        <PhotoPinMarker
-          key={pin.id}
-          pin={pin}
-          isActive={activePinId === pin.id}
-          onSelect={onSelectPin}
+      {/* Space Agency Pins */}
+      {spaceAgenciesData.map((agency) => (
+        <AgencyPinMarker
+          key={agency.id}
+          agency={agency}
+          isActive={activeAgencyId === agency.id}
+          onSelect={onSelectAgency}
         />
       ))}
     </group>
@@ -240,19 +317,19 @@ function GlobeContent({
 }
 
 export const RotatingCommunityGlobe: React.FC = () => {
-  const [selectedPin, setSelectedPin] = useState<LocationPin | null>(pinsData[0]);
+  const [selectedAgency, setSelectedAgency] = useState<AgencyPin | null>(spaceAgenciesData[0]);
 
   return (
     <div className="relative w-full h-[460px] md:h-[520px] lg:h-[560px] rounded-2xl overflow-hidden bg-[radial-gradient(ellipse_at_center,#0A1C3E_0%,#050A1C_85%)] border border-[#2E96F5]/30 shadow-[0_0_40px_rgba(46,150,245,0.12)]">
-      {/* 3D Canvas - Camera set to distance 7.0 (Zoomed OUT) */}
+      {/* 3D Canvas */}
       <Canvas camera={{ position: [0, 0, 7.0], fov: 38 }}>
         <ambientLight intensity={0.9} />
         <directionalLight position={[10, 10, 8]} intensity={1.3} color="#ffffff" />
         <pointLight position={[-10, -8, -6]} intensity={0.5} color="#2E96F5" />
 
         <GlobeContent
-          activePinId={selectedPin?.id || null}
-          onSelectPin={(pin) => setSelectedPin(pin)}
+          activeAgencyId={selectedAgency?.id || null}
+          onSelectAgency={(agency) => setSelectedAgency(agency)}
         />
 
         <OrbitControls
@@ -264,27 +341,29 @@ export const RotatingCommunityGlobe: React.FC = () => {
         />
       </Canvas>
 
-      {/* Selected Location Details Card Overlay */}
-      {selectedPin && (
-        <div className="absolute bottom-4 left-4 right-4 md:left-6 md:right-auto md:max-w-[320px] bg-[#050A1C]/92 backdrop-blur-md border border-[#EAFE07]/40 rounded-xl p-3 shadow-2xl z-20 transition-all duration-300">
+      {/* Selected Space Agency Info Card Overlay */}
+      {selectedAgency && (
+        <div className="absolute bottom-4 left-4 right-4 md:left-6 md:right-auto md:max-w-[340px] bg-[#050A1C]/92 backdrop-blur-md border border-[#EAFE07]/40 rounded-xl p-3.5 shadow-2xl z-20 transition-all duration-300">
           <div className="flex items-center gap-3">
-            <img
-              src={selectedPin.photo}
-              alt={selectedPin.name}
-              className="w-10 h-10 rounded-full object-cover border-2 border-[#EAFE07] flex-none"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = '/sac-logo-houston-transparent.png';
-              }}
-            />
+            <div className="w-12 h-12 rounded-full p-1 bg-white flex items-center justify-center flex-none border-2 border-[#EAFE07] shadow-sm">
+              <img
+                src={selectedAgency.logo}
+                alt={selectedAgency.name}
+                className="max-h-full max-w-full object-contain"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/sac-logo-houston-transparent.png';
+                }}
+              />
+            </div>
             <div>
               <div className="font-['Fira_Sans_Condensed',sans-serif] text-[10px] font-bold tracking-widest text-[#EAFE07] uppercase">
-                {selectedPin.locationLabel}
+                {selectedAgency.abbr} · {selectedAgency.country}
               </div>
-              <h4 className="font-['Overpass',sans-serif] font-black text-white text-[15px] m-0">
-                {selectedPin.name}
+              <h4 className="font-['Overpass',sans-serif] font-black text-white text-[14px] leading-snug m-0">
+                {selectedAgency.name}
               </h4>
               <p className="text-[12px] text-white/80 m-0 font-light mt-0.5 leading-tight">
-                {selectedPin.description}
+                {selectedAgency.description}
               </p>
             </div>
           </div>
@@ -293,7 +372,7 @@ export const RotatingCommunityGlobe: React.FC = () => {
 
       {/* Interaction Tag */}
       <div className="absolute top-4 left-4 bg-[#050A1C]/80 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-[#2E96F5]/30 text-[11px] font-['Fira_Sans_Condensed',sans-serif] font-bold tracking-wider text-[#2E96F5] uppercase">
-        🌍 Drag to rotate globe · Click photo pins to explore
+        🌍 Drag globe · Click space agency logos to explore
       </div>
     </div>
   );
