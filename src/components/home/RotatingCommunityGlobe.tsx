@@ -16,71 +16,71 @@ const pinsData: LocationPin[] = [
   {
     id: 'houston',
     name: 'Houston, Texas',
-    locationLabel: 'HOUSTON, TEXAS LOCAL EVENT',
+    locationLabel: 'Space Apps Houston Hub',
     coordinates: [29.7604, -95.3698],
     photo: '/Pictures/ZainProfilePicture.JPG',
-    description: 'Home of Space Apps Houston — 80+ Builders & Innovators'
+    description: 'Home of Space Apps Houston — 80+ Local Builders & Innovators'
   },
   {
     id: 'katy',
     name: 'Katy, Texas',
-    locationLabel: 'KATY, TX LOCAL EVENT',
+    locationLabel: 'Katy Event Team',
     coordinates: [29.7858, -95.8244],
-    photo: '/Pictures/KATY.png',
-    description: 'Greater Houston Hackathon Team'
+    photo: '/Pictures/17.png',
+    description: 'Greater Houston Hackathon Builders'
   },
   {
     id: 'sugarland',
     name: 'Sugar Land, Texas',
-    locationLabel: 'SUGAR LAND, TX LOCAL EVENT',
+    locationLabel: 'Sugar Land Team',
     coordinates: [29.6197, -95.6349],
     photo: '/Pictures/Farmvis.png',
-    description: 'FarmVis Agricultural Innovation Team'
+    description: 'FarmVis Agricultural & Space Tech Team'
+  },
+  {
+    id: 'woodlands',
+    name: 'The Woodlands, Texas',
+    locationLabel: 'Woodlands Community',
+    coordinates: [30.1658, -95.4613],
+    photo: '/Pictures/18.png',
+    description: 'North Houston Hackathon Participants'
+  },
+  {
+    id: 'austin',
+    name: 'Austin, Texas',
+    locationLabel: 'Austin Regional Hub',
+    coordinates: [30.2672, -97.7431],
+    photo: '/Pictures/0E27520C-5137-4126-8FCC-2EFCA60A9E28_1_105_c.jpeg',
+    description: 'Texas Regional Innovation Developers'
   },
   {
     id: 'chicago',
     name: 'Chicago, Illinois',
-    locationLabel: 'CHICAGO, ILLINOIS LOCAL EVENT',
+    locationLabel: 'Chicago Local Event',
     coordinates: [41.8781, -87.6298],
-    photo: '/Pictures/17.png',
+    photo: '/Pictures/3E68B75C-2753-41C0-B656-F094FF86537F_1_105_c.jpeg',
     description: 'Midwest Regional Space Apps Team'
-  },
-  {
-    id: 'san-jose',
-    name: 'San Jose, California',
-    locationLabel: 'BAY AREA, CA LOCAL EVENT',
-    coordinates: [37.3382, -121.8863],
-    photo: '/Pictures/18.png',
-    description: 'West Coast Developer Community'
   },
   {
     id: 'london',
     name: 'London, UK',
-    locationLabel: 'LONDON, UK LOCAL EVENT',
+    locationLabel: 'London Local Event',
     coordinates: [51.5074, -0.1278],
-    photo: '/Pictures/5 Posts.png',
-    description: 'European Space Apps Challenge Community'
+    photo: '/Pictures/6DDF95C2-C266-4423-9E35-CA7797CFB6AC_1_105_c.jpeg',
+    description: 'Global Space Apps Community Hub'
   },
   {
     id: 'tokyo',
     name: 'Tokyo, Japan',
-    locationLabel: 'TOKYO, JAPAN LOCAL EVENT',
+    locationLabel: 'Tokyo Local Event',
     coordinates: [35.6762, 139.6503],
-    photo: '/Pictures/Savethedate.jpeg',
-    description: 'JAXA & Space Apps Tokyo Collaborators'
-  },
-  {
-    id: 'sao-paulo',
-    name: 'São Paulo, Brazil',
-    locationLabel: 'SÃO PAULO, BRAZIL LOCAL EVENT',
-    coordinates: [-23.5505, -46.6333],
-    photo: '/Pictures/Partner.jpeg',
-    description: 'Latin America Space Innovation Hub'
+    photo: '/Pictures/87E262A3-47F8-4EAA-B83F-2801E207728B_1_105_c.jpeg',
+    description: 'Asia-Pacific Innovation Collaborators'
   }
 ];
 
 // Convert lat/lng to 3D Cartesian coordinates on sphere surface
-function latLngToVector3(lat: number, lng: number, radius: number = 1.8): THREE.Vector3 {
+function latLngToVector3(lat: number, lng: number, radius: number = 1.82): THREE.Vector3 {
   const phi = (90 - lat) * (Math.PI / 180);
   const theta = (lng + 180) * (Math.PI / 180);
 
@@ -91,107 +91,77 @@ function latLngToVector3(lat: number, lng: number, radius: number = 1.8): THREE.
   );
 }
 
-// 3D Rotating Globe mesh with wireframe and inner core
-function GlobeMesh() {
-  const globeGroupRef = useRef<THREE.Group>(null);
-  const atmosphereRef = useRef<THREE.Mesh>(null);
-
-  useFrame((_, delta) => {
-    if (globeGroupRef.current) {
-      globeGroupRef.current.rotation.y += delta * 0.12;
-    }
-  });
-
-  return (
-    <group ref={globeGroupRef}>
-      {/* Outer Atmosphere Glow */}
-      <Sphere ref={atmosphereRef} args={[1.86, 48, 48]} position={[0, 0, 0]}>
-        <meshBasicMaterial
-          color="#2E96F5"
-          transparent
-          opacity={0.12}
-          side={THREE.BackSide}
-        />
-      </Sphere>
-
-      {/* Main Globe Sphere */}
-      <Sphere args={[1.8, 64, 64]} position={[0, 0, 0]}>
-        <meshStandardMaterial
-          color="#091E42"
-          emissive="#061229"
-          roughness={0.6}
-          metalness={0.4}
-        />
-      </Sphere>
-
-      {/* Latitude / Longitude Wireframe Grid */}
-      <Sphere args={[1.805, 32, 24]} position={[0, 0, 0]}>
-        <meshBasicMaterial
-          color="#2E96F5"
-          wireframe
-          transparent
-          opacity={0.22}
-        />
-      </Sphere>
-
-      {/* Equatorial Highlight Ring */}
-      <mesh rotation={[Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[1.808, 1.815, 64]} />
-        <meshBasicMaterial color="#EAFE07" transparent opacity={0.35} side={THREE.DoubleSide} />
-      </mesh>
-    </group>
-  );
-}
-
-interface PhotoPinMarkerProps {
+interface PhotoPinProps {
   pin: LocationPin;
-  activePinId: string | null;
+  isActive: boolean;
   onSelect: (pin: LocationPin) => void;
 }
 
-function PhotoPinMarker({ pin, activePinId, onSelect }: PhotoPinMarkerProps) {
+function PhotoPinMarker({ pin, isActive, onSelect }: PhotoPinProps) {
+  const groupRef = useRef<THREE.Group>(null);
+  const [visible, setVisible] = useState(true);
   const [hovered, setHovered] = useState(false);
-  const isActive = activePinId === pin.id;
 
-  const position = useMemo(
+  const localPos = useMemo(
     () => latLngToVector3(pin.coordinates[0], pin.coordinates[1], 1.82),
     [pin.coordinates]
   );
 
+  const tempVec = useMemo(() => new THREE.Vector3(), []);
+
+  useFrame(({ camera }) => {
+    if (groupRef.current) {
+      groupRef.current.getWorldPosition(tempVec);
+      // Check if pin is on the front side facing camera
+      const dot = tempVec.dot(camera.position);
+      const isFront = dot > 0.35;
+      if (isFront !== visible) {
+        setVisible(isFront);
+      }
+    }
+  });
+
+  if (!visible) return <group ref={groupRef} position={localPos} />;
+
   return (
-    <group position={position}>
-      {/* Surface marker dot */}
+    <group ref={groupRef} position={localPos}>
+      {/* Surface dot */}
       <mesh>
-        <sphereGeometry args={[0.03, 16, 16]} />
-        <meshBasicMaterial color="#EAFE07" />
+        <sphereGeometry args={[0.025, 12, 12]} />
+        <meshBasicMaterial color={isActive || hovered ? "#EAFE07" : "#2E96F5"} />
       </mesh>
 
-      {/* HTML Teardrop Pin Drop (matching media_1789426410614.jpg) */}
+      {/* HTML Teardrop Photo Pin Drop without text labels */}
       <Html
-        distanceFactor={6}
-        position={[0, 0.05, 0]}
         center
+        distanceFactor={7}
+        position={[0, 0.04, 0]}
         style={{
-          transition: 'all 0.3s ease',
           pointerEvents: 'auto',
           cursor: 'pointer',
-          zIndex: isActive || hovered ? 100 : 10
+          zIndex: isActive || hovered ? 100 : 10,
+          transition: 'transform 0.2s ease, opacity 0.2s ease'
         }}
       >
         <div
-          onClick={() => onSelect(pin)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onSelect(pin);
+          }}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
-          className={`flex flex-col items-center group transition-transform duration-300 ${
-            hovered || isActive ? 'scale-125 z-50' : 'scale-90 hover:scale-105'
+          className={`flex flex-col items-center group transition-transform duration-250 ${
+            hovered || isActive ? 'scale-125 z-50' : 'scale-90 opacity-90 hover:opacity-100'
           }`}
         >
-          {/* Pin Drop Teardrop Container */}
+          {/* Circular Photo Pin Drop with Yellow Teardrop Tip */}
           <div className="relative flex flex-col items-center">
-            {/* Top Photo Head Circle */}
+            {/* Circle Photo Frame */}
             <div
-              className={`relative w-14 h-14 md:w-16 md:h-16 rounded-full p-[3px] bg-[#EAFE07] shadow-[0_0_18px_rgba(234,254,7,0.75)] transition-all duration-300 ${
-                hovered || isActive ? 'ring-4 ring-[#EAFE07]/50 shadow-[0_0_30px_#EAFE07]' : ''
+              className={`w-9 h-9 md:w-11 md:h-11 rounded-full p-[2.5px] transition-all duration-300 shadow-md ${
+                hovered || isActive
+                  ? 'bg-[#EAFE07] ring-4 ring-[#EAFE07]/40 shadow-[0_0_20px_#EAFE07]'
+                  : 'bg-[#EAFE07] hover:bg-[#EAFE07]'
               }`}
             >
               <img
@@ -204,16 +174,74 @@ function PhotoPinMarker({ pin, activePinId, onSelect }: PhotoPinMarkerProps) {
               />
             </div>
 
-            {/* Downward Yellow Pin Point Triangle */}
-            <div className="w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[14px] border-t-[#EAFE07] -mt-[2px]" />
-
-            {/* Location Badge Card inside pin base */}
-            <div className="bg-[#EAFE07] text-[#050A1C] px-2.5 py-1 rounded-md shadow-md mt-1 font-['Fira_Sans_Condensed',sans-serif] font-black text-[10px] md:text-[11px] tracking-wide uppercase whitespace-nowrap text-center max-w-[170px] truncate">
-              {pin.locationLabel}
-            </div>
+            {/* Downward Yellow Pin Point Teardrop Tip */}
+            <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[9px] border-t-[#EAFE07] -mt-[1px]" />
           </div>
+
+          {/* Optional Sleek Hover Tooltip */}
+          {hovered && !isActive && (
+            <div className="absolute -top-7 bg-[#050A1C]/95 text-white border border-[#EAFE07]/50 px-2 py-0.5 rounded text-[10px] font-['Fira_Sans_Condensed',sans-serif] font-bold uppercase tracking-wider whitespace-nowrap shadow-lg">
+              {pin.name}
+            </div>
+          )}
         </div>
       </Html>
+    </group>
+  );
+}
+
+function GlobeContent({
+  activePinId,
+  onSelectPin
+}: {
+  activePinId: string | null;
+  onSelectPin: (pin: LocationPin) => void;
+}) {
+  const globeGroupRef = useRef<THREE.Group>(null);
+
+  useFrame((_, delta) => {
+    if (globeGroupRef.current) {
+      globeGroupRef.current.rotation.y += delta * 0.1;
+    }
+  });
+
+  return (
+    <group ref={globeGroupRef}>
+      {/* Atmosphere Glow */}
+      <Sphere args={[1.86, 48, 48]}>
+        <meshBasicMaterial color="#2E96F5" transparent opacity={0.08} side={THREE.BackSide} />
+      </Sphere>
+
+      {/* Globe Sphere */}
+      <Sphere args={[1.8, 64, 64]}>
+        <meshStandardMaterial
+          color="#081A38"
+          emissive="#040D21"
+          roughness={0.7}
+          metalness={0.3}
+        />
+      </Sphere>
+
+      {/* Grid Wireframe */}
+      <Sphere args={[1.804, 32, 24]}>
+        <meshBasicMaterial color="#2E96F5" wireframe transparent opacity={0.18} />
+      </Sphere>
+
+      {/* Latitude Highlight Ring */}
+      <mesh rotation={[Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[1.806, 1.812, 64]} />
+        <meshBasicMaterial color="#EAFE07" transparent opacity={0.3} side={THREE.DoubleSide} />
+      </mesh>
+
+      {/* Pin Markers */}
+      {pinsData.map((pin) => (
+        <PhotoPinMarker
+          key={pin.id}
+          pin={pin}
+          isActive={activePinId === pin.id}
+          onSelect={onSelectPin}
+        />
+      ))}
     </group>
   );
 }
@@ -222,60 +250,57 @@ export const RotatingCommunityGlobe: React.FC = () => {
   const [selectedPin, setSelectedPin] = useState<LocationPin | null>(pinsData[0]);
 
   return (
-    <div className="relative w-full h-[480px] md:h-[560px] lg:h-[620px] rounded-2xl overflow-hidden bg-[radial-gradient(ellipse_at_center,#0A1C3E_0%,#050A1C_75%)] border border-[#2E96F5]/30 shadow-[0_0_50px_rgba(46,150,245,0.15)]">
-      {/* Three.js Canvas */}
-      <Canvas camera={{ position: [0, 0, 4.2], fov: 45 }}>
-        <ambientLight intensity={0.8} />
-        <directionalLight position={[10, 10, 8]} intensity={1.4} color="#ffffff" />
-        <pointLight position={[-10, -8, -6]} intensity={0.6} color="#2E96F5" />
+    <div className="relative w-full h-[460px] md:h-[520px] lg:h-[580px] rounded-2xl overflow-hidden bg-[radial-gradient(ellipse_at_center,#0A1C3E_0%,#050A1C_85%)] border border-[#2E96F5]/30 shadow-[0_0_40px_rgba(46,150,245,0.12)]">
+      {/* 3D Canvas */}
+      <Canvas camera={{ position: [0, 0, 4.3], fov: 45 }}>
+        <ambientLight intensity={0.9} />
+        <directionalLight position={[10, 10, 8]} intensity={1.3} color="#ffffff" />
+        <pointLight position={[-10, -8, -6]} intensity={0.5} color="#2E96F5" />
 
-        <GlobeMesh />
-
-        {pinsData.map((pin) => (
-          <PhotoPinMarker
-            key={pin.id}
-            pin={pin}
-            activePinId={selectedPin?.id || null}
-            onSelect={(p) => setSelectedPin(p)}
-          />
-        ))}
+        <GlobeContent
+          activePinId={selectedPin?.id || null}
+          onSelectPin={(pin) => setSelectedPin(pin)}
+        />
 
         <OrbitControls
           enableZoom={false}
           enablePan={false}
           rotateSpeed={0.5}
           autoRotate
-          autoRotateSpeed={0.8}
+          autoRotateSpeed={0.6}
         />
       </Canvas>
 
-      {/* Selected Location Details Card Overlay */}
+      {/* Selected Location Details Overlay Card */}
       {selectedPin && (
-        <div className="absolute bottom-4 left-4 right-4 md:left-6 md:right-auto md:max-w-[340px] bg-[#050A1C]/90 backdrop-blur-md border border-[#EAFE07]/40 rounded-xl p-4 shadow-xl z-20 transition-all duration-300">
-          <div className="flex items-center gap-3 mb-2">
+        <div className="absolute bottom-4 left-4 right-4 md:left-6 md:right-auto md:max-w-[340px] bg-[#050A1C]/92 backdrop-blur-md border border-[#EAFE07]/40 rounded-xl p-3.5 shadow-2xl z-20 transition-all duration-300">
+          <div className="flex items-center gap-3">
             <img
               src={selectedPin.photo}
               alt={selectedPin.name}
-              className="w-12 h-12 rounded-full object-cover border-2 border-[#EAFE07]"
+              className="w-11 h-11 rounded-full object-cover border-2 border-[#EAFE07] flex-none"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = '/sac-logo-houston-transparent.png';
+              }}
             />
             <div>
               <div className="font-['Fira_Sans_Condensed',sans-serif] text-[11px] font-bold tracking-widest text-[#EAFE07] uppercase">
                 {selectedPin.locationLabel}
               </div>
-              <h4 className="font-['Overpass',sans-serif] font-black text-white text-[16px] m-0">
+              <h4 className="font-['Overpass',sans-serif] font-black text-white text-[15px] m-0">
                 {selectedPin.name}
               </h4>
+              <p className="text-[12px] text-white/80 m-0 font-light mt-0.5 leading-tight">
+                {selectedPin.description}
+              </p>
             </div>
           </div>
-          <p className="text-[13px] text-white/80 m-0 font-light leading-snug">
-            {selectedPin.description}
-          </p>
         </div>
       )}
 
-      {/* Canvas Instruction Tag */}
+      {/* Interaction Tag */}
       <div className="absolute top-4 left-4 bg-[#050A1C]/80 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-[#2E96F5]/30 text-[11px] font-['Fira_Sans_Condensed',sans-serif] font-bold tracking-wider text-[#2E96F5] uppercase">
-        🌍 Drag to rotate globe · Click pins to explore
+        🌍 Drag to rotate globe · Click photo pins to explore
       </div>
     </div>
   );
