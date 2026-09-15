@@ -278,7 +278,7 @@ const Series: React.FC = () => {
             </>
           ) : (
             <>
-              <p className="tt-mono m-0 text-[11px] text-[#2E96F5]">Eight talks, eight stages</p>
+              <p className="tt-mono m-0 text-[11px] text-[#2E96F5]">Eight of the talks so far</p>
               <p className="tt-body m-0 mt-3 text-[15px] leading-[1.65] text-white/75">
                 Every stage of this rocket is a talk that already happened. Hover or tap one to see who spoke,
                 when, and what they talked about.
