@@ -231,3 +231,15 @@ html, body {
     transform: none;
   }
 }
+
+/* Hero banner video: never show the browser's own play button or overlay.
+   iOS shows a large play button when Low Power Mode blocks autoplay — the
+   poster frame shows instead, and the video starts on the first touch. */
+.hero-video::-webkit-media-controls,
+.hero-video::-webkit-media-controls-panel,
+.hero-video::-webkit-media-controls-overlay-play-button,
+.hero-video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+  opacity: 0 !important;
+}

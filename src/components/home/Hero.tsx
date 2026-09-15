@@ -1,5 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 
+const HERO_VIDEO = '/videos/save-the-date.mp4';
+
 export const Hero: React.FC = () => {
   const heroRef = useRef<HTMLElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -16,6 +18,16 @@ export const Hero: React.FC = () => {
     video.defaultMuted = true;
     video.setAttribute('muted', '');
     video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
+    video.setAttribute('disablepictureinpicture', '');
+    video.setAttribute('disableremoteplayback', '');
+
+    // Attach the source only once the element is already muted, so the
+    // browser's autoplay check never sees an unmuted video.
+    if (!video.getAttribute('src')) {
+      video.src = HERO_VIDEO;
+      video.load();
+    }
 
     const tryPlay = () => {
       if (!video.paused) return;
@@ -99,11 +111,11 @@ export const Hero: React.FC = () => {
         loop
         playsInline
         preload="auto"
+        poster="/videos/save-the-date-poster.jpg"
         aria-hidden="true"
-        className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
-      >
-        <source src="/videos/save-the-date.mp4" type="video/mp4" />
-      </video>
+        tabIndex={-1}
+        className="hero-video absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+      />
 
       <div className="absolute inset-0 z-[1] pointer-events-none bg-[radial-gradient(ellipse_70%_60%_at_50%_46%,rgba(2,6,15,0.35),rgba(2,6,15,0.5)_60%,rgba(2,6,15,0.75)_100%)]" />
 
