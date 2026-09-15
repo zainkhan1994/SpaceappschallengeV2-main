@@ -88,7 +88,7 @@ export const Hero: React.FC = () => {
       ref={heroRef}
       data-screen-label="Hero"
       aria-label="NASA Space Apps Challenge Houston 2026"
-      className="relative overflow-hidden h-[clamp(360px,52vh,640px)] bg-[#02060F]"
+      className="relative overflow-hidden aspect-video md:aspect-auto md:h-[clamp(360px,52vh,640px)] bg-[#02060F]"
     >
       <h1 className="sr-only">NASA Space Apps Challenge Houston 2026</h1>
 
