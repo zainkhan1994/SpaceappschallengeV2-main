@@ -32,18 +32,8 @@ import GetInvolvedNasaSection from './components/sections/GetInvolvedNasaSection
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
-const milestones = [
-  { label: 'Challenge Summaries + Team Formation', when: 'Sep 17', t: '2026-09-17T09:00:00-05:00' },
-  { label: 'Full Challenge Statements', when: 'Oct 28', t: '2026-10-28T09:00:00-05:00' },
-  { label: 'Space Apps Connect opens', when: 'Nov 2', t: '2026-11-02T09:00:00-06:00' },
-  { label: 'Hack weekend begins', when: 'Nov 14', t: '2026-11-14T09:00:00-06:00' }
-];
-
 const App: React.FC = () => {
   const [route, setRoute] = useState<string>('/');
-  const [nextLabel, setNextLabel] = useState<string>('Challenge Summaries + Team Formation');
-  const [nextWhen, setNextWhen] = useState<string>('Sep 17');
-  const [barClock, setBarClock] = useState<{ k: string; v: string | number }[]>([]);
   const [heroClock, setHeroClock] = useState<{ k: string; v: string | number }[]>([]);
 
   useEffect(() => {
@@ -74,21 +64,6 @@ const App: React.FC = () => {
 
     const tick = () => {
       const now = Date.now();
-      const next =
-        milestones.find((m) => new Date(m.t).getTime() > now) ||
-        milestones[milestones.length - 1];
-
-      setNextLabel(next.label);
-      setNextWhen(next.when);
-
-      const barSplit = split(Math.max(0, new Date(next.t).getTime() - now));
-      setBarClock([
-        { k: 'd', v: barSplit.d },
-        { k: 'h', v: pad(barSplit.h) },
-        { k: 'm', v: pad(barSplit.m) },
-        { k: 's', v: pad(barSplit.s) }
-      ]);
-
       const mainSplit = split(Math.max(0, new Date('2026-11-14T09:00:00-06:00').getTime() - now));
       setHeroClock([
         { k: 'Days', v: mainSplit.d },
@@ -115,7 +90,7 @@ const App: React.FC = () => {
           {route === '/' && (
             <div>
               <Hero />
-              <CountdownBar clock={heroClock} nextLabel={nextLabel} nextWhen={nextWhen} nextClock={barClock} />
+              <CountdownBar clock={heroClock} />
               <WhatIsSpaceApps />
               <FrontDoorToNASA />
               <HoustonGrowth />
