@@ -14,14 +14,14 @@ export const VenueSection: React.FC = () => {
           <br />
           <span className="text-[#2E96F5]">venue coming soon</span>
         </h1>
-        <p className="mt-6.5 m-0 max-w-[720px] text-[20px] leading-relaxed text-white/80 font-light">
+        <p className="mt-[1.625rem] m-0 max-w-[720px] text-[20px] leading-relaxed text-white/80 font-light">
           Space Apps Houston 2026 is a hybrid Local Event — in person in Houston, with virtual participation available. The venue is confirmed by September 30, 2026 — this page will carry the address, parking, and accessibility details as soon as it's signed.
         </p>
         <a
           href="https://www.spaceappschallenge.org/2026/local-events/houston/"
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-7.5 inline-block px-8 py-4.5 rounded-xl bg-[#2E96F5] text-[#04122F] font-extrabold text-[19px] shadow-[0_8px_32px_rgba(46,150,245,0.35)] transition-all hover:bg-[#5FB4FF]"
+          className="mt-[1.875rem] inline-block px-8 py-[1.125rem] rounded-xl bg-[#2E96F5] text-[#04122F] font-extrabold text-[19px] shadow-[0_8px_32px_rgba(46,150,245,0.35)] transition-all hover:bg-[#5FB4FF]"
         >
           Register
         </a>
@@ -41,7 +41,7 @@ export const VenueSection: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {venueCriteria.map((v, i) => (
             <ScrollReveal key={i}>
-              <div className="h-full border border-[rgba(46,150,245,0.25)] rounded-2xl p-6.5 bg-white/[0.03]">
+              <div className="h-full border border-[rgba(46,150,245,0.25)] rounded-2xl p-[1.625rem] bg-white/[0.03]">
                 <h3 className="m-0 mb-2.5 font-['Fira_Sans_Condensed',sans-serif] font-extrabold text-[20px] uppercase tracking-wide text-[#2E96F5]">
                   {v.title}
                 </h3>
@@ -72,7 +72,7 @@ export const VenueSection: React.FC = () => {
             </p>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4.5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[1.125rem]">
             {venuePhotos.map((p, i) => (
               <ScrollReveal key={i}>
                 <figure className="m-0">

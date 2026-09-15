@@ -14,7 +14,7 @@ export const ScheduleSection: React.FC = () => {
           <br />
           <span className="text-[#2E96F5]">2026</span>
         </h1>
-        <p className="mt-6.5 m-0 max-w-[700px] text-[20px] leading-relaxed text-white/80 font-light">
+        <p className="mt-[1.625rem] m-0 max-w-[700px] text-[20px] leading-relaxed text-white/80 font-light">
           Program milestones confirmed by the global Space Apps organizing team. The hour-by-hour Houston agenda is published closer to the event.
         </p>
       </section>
@@ -45,7 +45,7 @@ export const ScheduleSection: React.FC = () => {
         </ol>
 
         <ScrollReveal className="mt-7">
-          <div className="border border-[rgba(234,254,7,0.35)] rounded-2xl p-6.5 bg-[rgba(234,254,7,0.06)]">
+          <div className="border border-[rgba(234,254,7,0.35)] rounded-2xl p-[1.625rem] bg-[rgba(234,254,7,0.06)]">
             <div className="font-['Fira_Sans_Condensed',sans-serif] text-[13px] font-extrabold tracking-widest uppercase text-[#EAFE07] mb-2.5">
               Houston Event Agenda
             </div>

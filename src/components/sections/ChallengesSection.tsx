@@ -16,7 +16,7 @@ export const ChallengesSection: React.FC = () => {
           <br />
           <span className="text-[#2E96F5]">aren't out yet</span>
         </h1>
-        <p className="mt-6.5 m-0 max-w-[720px] text-[20px] leading-relaxed text-white/80 font-light">
+        <p className="mt-[1.625rem] m-0 max-w-[720px] text-[20px] leading-relaxed text-white/80 font-light">
           Challenges are problem statements written by NASA Subject Matter Experts to engage the creativity and problem-solving skills of participants. They're released in two stages ahead of the hackathon.
         </p>
       </section>
@@ -146,7 +146,7 @@ export const ChallengesSection: React.FC = () => {
 
       {/* Renamed Houston Awards Section */}
       <section data-screen-label="Award artwork" className="max-w-[1320px] mx-auto pb-[clamp(64px,8vw,116px)] px-6">
-        <ScrollReveal className="flex flex-wrap items-baseline gap-2.5 sm:gap-4.5 mb-3">
+        <ScrollReveal className="flex flex-wrap items-baseline gap-2.5 sm:gap-[1.125rem] mb-3">
           <h2 className="m-0 font-['Overpass',sans-serif] font-black text-[clamp(28px,3.6vw,46px)] uppercase text-white">
             Houston <span className="text-[#2E96F5]">Awards</span>
           </h2>

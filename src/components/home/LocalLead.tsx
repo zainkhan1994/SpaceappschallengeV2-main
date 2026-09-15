@@ -46,7 +46,7 @@ export const LocalLead: React.FC = () => {
             </h2>
             <div className="grid gap-2.5 mt-5">
               {faqPreview.map((f, i) => (
-                <details key={i} className="border border-white/14 rounded-xl bg-white/[0.03] p-4.5">
+                <details key={i} className="border border-white/14 rounded-xl bg-white/[0.03] p-[1.125rem]">
                   <summary className="cursor-pointer text-[18px] font-bold text-white list-none select-none">
                     {f.q}
                   </summary>
@@ -54,7 +54,7 @@ export const LocalLead: React.FC = () => {
                 </details>
               ))}
             </div>
-            <div className="mt-5.5">
+            <div className="mt-[1.375rem]">
               <a href="#/faq" className="text-[18px] font-bold text-[#2E96F5] hover:text-[#EAFE07]">
                 All frequently asked questions →
               </a>

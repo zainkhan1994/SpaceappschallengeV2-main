@@ -1,20 +1,66 @@
 import { FooterCol } from '../types';
 
-export const navDesktopItems: { label: string; href: string; route: string }[] = [
-  { label: 'About', href: '#/about', route: '/about' },
-  { label: 'Challenges', href: '#/challenges', route: '/challenges' },
-  { label: 'Schedule', href: '#/schedule', route: '/schedule' },
-  { label: 'Venue', href: '#/venue', route: '/venue' },
-  { label: 'Resources', href: '#/resources', route: '/resources' },
-  { label: 'FAQ', href: '#/faq', route: '/faq' },
-  { label: 'Partners', href: '#/partners', route: '/partners' }
+export interface NavLink {
+  label: string;
+  href: string;
+}
+
+export interface NavChild extends NavLink {
+  children?: NavLink[];
+}
+
+export interface NavTop extends NavLink {
+  children?: NavChild[];
+}
+
+export const primaryNav: NavTop[] = [
+  { label: 'Home', href: '#/' },
+  {
+    label: 'About Houston',
+    href: '#/about',
+    children: [
+      { label: 'About Space Apps Houston', href: '#/about' },
+      { label: 'Meet the Team', href: '#/about' },
+      { label: 'Venue', href: '#/venue' },
+      { label: 'Past Events', href: '#/past-events' },
+      { label: 'Contact', href: '#/contact' }
+    ]
+  },
+  {
+    label: 'Hackathon',
+    href: '#/challenges',
+    children: [
+      { label: 'Challenges', href: '#/challenges' },
+      { label: 'Schedule', href: '#/schedule' },
+      {
+        label: 'Resources',
+        href: '#/resources',
+        children: [
+          { label: 'Participant Guides', href: '#/resources' },
+          { label: 'NASA Data & Tools', href: '#/resources' }
+        ]
+      },
+      { label: 'FAQ', href: '#/faq' }
+    ]
+  },
+  {
+    label: 'Get Involved',
+    href: '#/partners',
+    children: [
+      { label: 'Get Involved with NASA', href: '#/' },
+      { label: 'NASA Tech Talks', href: 'https://www.spaceappschallenge.org/' },
+      { label: 'Partners', href: '#/partners' }
+    ]
+  }
 ];
 
-export const navExtraItems: { label: string; href: string; route: string }[] = [
-  { label: 'Home', href: '#/', route: '/' },
-  { label: 'Past Events', href: '#/past-events', route: '/past-events' },
-  { label: 'Contact', href: '#/contact', route: '/contact' }
-];
+/** Every route these nav entries point to, used to highlight the active top-level item. */
+export const navRoutesByTopLabel: Record<string, string[]> = {
+  Home: ['/'],
+  'About Houston': ['/about', '/venue', '/past-events', '/contact'],
+  Hackathon: ['/challenges', '/schedule', '/resources', '/faq'],
+  'Get Involved': ['/', '/partners']
+};
 
 export const footerCols: FooterCol[] = [
   {

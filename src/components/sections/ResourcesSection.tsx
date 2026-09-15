@@ -14,7 +14,7 @@ export const ResourcesSection: React.FC = () => {
           <br />
           <span className="text-[#2E96F5]">guides &amp; data</span>
         </h1>
-        <p className="mt-6.5 m-0 max-w-[700px] text-[20px] leading-relaxed text-white/80 font-light">
+        <p className="mt-[1.625rem] m-0 max-w-[700px] text-[20px] leading-relaxed text-white/80 font-light">
           Everything you need before the weekend — official guides from NASA Space Apps, plus the open data you'll be building with.
         </p>
       </section>

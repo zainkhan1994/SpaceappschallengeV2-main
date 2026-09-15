@@ -23,7 +23,7 @@ export const ContactSection: React.FC = () => {
               <h2 className="m-0 mb-6 font-['Overpass',sans-serif] font-black text-[clamp(22px,2.8vw,32px)] uppercase text-white">
                 Reach us
               </h2>
-              <dl className="m-0 grid gap-5.5">
+              <dl className="m-0 grid gap-[1.375rem]">
                 <div>
                   <dt className="text-[12px] font-semibold tracking-widest uppercase text-white/55">
                     Main contact · Local Lead
@@ -93,11 +93,11 @@ export const ContactSection: React.FC = () => {
                 href={contactDetails.localLead.bookingUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5.5 inline-block px-7.5 py-4 rounded-xl bg-[#2E96F5] text-[#04122F] font-extrabold text-[18px] hover:bg-[#5FB4FF]"
+                className="mt-[1.375rem] inline-block px-[1.875rem] py-4 rounded-xl bg-[#2E96F5] text-[#04122F] font-extrabold text-[18px] hover:bg-[#5FB4FF]"
               >
                 Book an appointment
               </a>
-              <p className="mt-5.5 m-0 text-[15px] text-white/60">
+              <p className="mt-[1.375rem] m-0 text-[15px] text-white/60">
                 Space Apps Houston is organized by volunteers. We are not NASA employees and cannot answer questions about NASA programs generally.
               </p>
             </div>

@@ -14,7 +14,7 @@ export const FAQSection: React.FC = () => {
           <br />
           <span className="text-[#2E96F5]">questions</span>
         </h1>
-        <p className="mt-6.5 m-0 max-w-[700px] text-[20px] leading-relaxed text-white/80 font-light">
+        <p className="mt-[1.625rem] m-0 max-w-[700px] text-[20px] leading-relaxed text-white/80 font-light">
           Answers drawn from the official 2026 program guidance. Still stuck?{' '}
           <a href="mailto:zain@nasaspaceappschallenge.org?subject=Space%20Apps%20Houston%20Inquiry" className="text-[#2E96F5] hover:text-[#EAFE07] underline">
             Email the Houston team
@@ -27,7 +27,7 @@ export const FAQSection: React.FC = () => {
         {faqGroups.map((group, idx) => (
           <div key={idx} className="mb-11">
             <ScrollReveal>
-              <h2 className="m-0 mb-4.5 font-['Overpass',sans-serif] font-black text-[clamp(22px,2.8vw,32px)] uppercase text-[#EAFE07]">
+              <h2 className="m-0 mb-[1.125rem] font-['Overpass',sans-serif] font-black text-[clamp(22px,2.8vw,32px)] uppercase text-[#EAFE07]">
                 {group.title}
               </h2>
             </ScrollReveal>
@@ -35,7 +35,7 @@ export const FAQSection: React.FC = () => {
             <div className="grid gap-3">
               {group.items.map((f, i) => (
                 <ScrollReveal key={i}>
-                  <details className="border border-white/14 rounded-xl bg-white/[0.03] p-5.5 md:p-6.5">
+                  <details className="border border-white/14 rounded-xl bg-white/[0.03] p-[1.375rem] md:p-[1.625rem]">
                     <summary className="cursor-pointer text-[19px] font-bold text-white list-none select-none">
                       {f.q}
                     </summary>

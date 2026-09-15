@@ -14,14 +14,14 @@ export const PartnersSection: React.FC = () => {
           <br />
           <span className="text-[#2E96F5]">possible</span>
         </h1>
-        <p className="mt-6.5 m-0 max-w-[720px] text-[20px] leading-relaxed text-white/80 font-light">
+        <p className="mt-[1.625rem] m-0 max-w-[720px] text-[20px] leading-relaxed text-white/80 font-light">
           Space Apps is led by NASA in collaboration with space agencies worldwide, who contribute open data and join the judging process. Local events are supported by Local Collaborators in their own city.
         </p>
       </section>
 
       {/* 16 Space Agency Partners Grid */}
       <section className="max-w-[1320px] mx-auto px-6 pb-[clamp(56px,7vw,96px)]">
-        <ScrollReveal className="flex flex-wrap items-baseline gap-2.5 sm:gap-4.5 mb-4.5">
+        <ScrollReveal className="flex flex-wrap items-baseline gap-2.5 sm:gap-[1.125rem] mb-[1.125rem]">
           <h2 className="m-0 font-['Overpass',sans-serif] font-black text-[clamp(24px,3vw,36px)] uppercase text-white">
             2026 Space Agency Partners
           </h2>
@@ -31,12 +31,12 @@ export const PartnersSection: React.FC = () => {
         </ScrollReveal>
 
         <ScrollReveal>
-          <p className="m-0 mb-8.5 max-w-[860px] text-[18px] leading-relaxed text-white/78 font-light">
+          <p className="m-0 mb-[2.125rem] max-w-[860px] text-[18px] leading-relaxed text-white/78 font-light">
             NASA Space Apps is proud to partner with 16 Space Agency Partners from around the world, connecting cities and countries during the Challenge. Alongside NASA’s free and open data, Space Agency Partners provide additional space-based data for participants to use.
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4.5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[1.125rem]">
           {agencies.map((a, i) => (
             <ScrollReveal key={i}>
               <div className="flex flex-col gap-3.5 border border-white/13 rounded-2xl p-6 bg-white/[0.035] transition-all duration-300 hover:border-[#2E96F5] hover:bg-[rgba(46,150,245,0.08)] h-full">
@@ -91,7 +91,7 @@ export const PartnersSection: React.FC = () => {
           <ScrollReveal className="mt-6">
             <div className="border border-[rgba(46,150,245,0.35)] rounded-2xl p-[clamp(26px,4vw,40px)] bg-gradient-to-br from-[rgba(46,150,245,0.12)] to-[rgba(7,23,63,0.5)]">
               <h3 className="m-0 mb-3.5 text-[24px] font-extrabold text-white">Support Space Apps Houston</h3>
-              <p className="m-0 mb-4.5 text-[17px] leading-relaxed text-white/85">
+              <p className="m-0 mb-[1.125rem] text-[17px] leading-relaxed text-white/85">
                 Every Local Event is free for participants — supporters are what make that possible. There are ten ways to help:
               </p>
               <div className="flex flex-wrap gap-2.5">
@@ -106,7 +106,7 @@ export const PartnersSection: React.FC = () => {
               </div>
               <a
                 href="mailto:zain@nasaspaceappschallenge.org?subject=Space%20Apps%20Houston%202026%20sponsorship"
-                className="mt-4.5 inline-block px-7.5 py-4 rounded-xl bg-[#2E96F5] text-[#04122F] font-extrabold text-[18px] hover:bg-[#5FB4FF]"
+                className="mt-[1.125rem] inline-block px-[1.875rem] py-4 rounded-xl bg-[#2E96F5] text-[#04122F] font-extrabold text-[18px] hover:bg-[#5FB4FF]"
               >
                 Talk to us about sponsoring
               </a>

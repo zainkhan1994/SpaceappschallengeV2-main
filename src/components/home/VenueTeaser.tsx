@@ -22,7 +22,7 @@ export const VenueTeaser: React.FC = () => {
                 Address, parking, and accessibility details will be published here once the venue is confirmed.
               </p>
             </div>
-            <div className="mt-5.5">
+            <div className="mt-[1.375rem]">
               <a href="#/venue" className="text-[18px] font-bold text-[#2E96F5] hover:text-[#EAFE07]">
                 What we're looking for in a venue →
               </a>
@@ -36,13 +36,13 @@ export const VenueTeaser: React.FC = () => {
               <span>Site survey</span>
               <span className="text-[#EAFE07]">Status: pending</span>
             </div>
-            <div className="mt-6.5 font-['Fira_Sans_Condensed',sans-serif] font-extrabold text-[clamp(30px,4vw,50px)] leading-none uppercase text-white">
+            <div className="mt-[1.625rem] font-['Fira_Sans_Condensed',sans-serif] font-extrabold text-[clamp(30px,4vw,50px)] leading-none uppercase text-white">
               Houston, TX
             </div>
             <div className="mt-2.5 text-[16px] tabular-nums text-[#2E96F5] tracking-wider">
               29.7604° N &nbsp;95.3698° W &nbsp;·&nbsp; HOU
             </div>
-            <div className="mt-6.5 grid gap-2.5">
+            <div className="mt-[1.625rem] grid gap-2.5">
               {siteSurvey.map((s, i) => (
                 <div key={i} className="flex items-baseline gap-3 border-t border-white/10 pt-2.5">
                   <span className="flex-none w-2.25 h-2.25 rounded-full" style={{ backgroundColor: s.dot }} />

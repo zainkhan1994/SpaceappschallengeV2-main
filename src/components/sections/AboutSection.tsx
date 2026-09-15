@@ -9,15 +9,18 @@ export const AboutSection: React.FC = () => {
   const [isTeamWide, setIsTeamWide] = useState(true);
 
   useEffect(() => {
-    const handleResize = () => {
-      const wide = window.innerWidth >= 1280;
-      setIsTeamWide(wide);
-      if (!wide) setSelectedNode(null);
+    // Whether this device can meaningfully hover (a mouse/trackpad), not the
+    // viewport width — a hover-capable laptop at 1000px should still get the
+    // near-node panel, and a touch tablet at 1300px still shouldn't.
+    const query = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const apply = () => {
+      setIsTeamWide(query.matches);
+      if (!query.matches) setSelectedNode(null);
     };
 
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    apply();
+    query.addEventListener('change', apply);
+    return () => query.removeEventListener('change', apply);
   }, []);
 
   const activePerson: TeamNode | null =
@@ -34,13 +37,13 @@ export const AboutSection: React.FC = () => {
           <br />
           <span className="text-[#2E96F5]">everyone in Houston</span>
         </h1>
-        <p className="mt-6.5 m-0 max-w-[700px] text-[20px] leading-relaxed text-white/80 font-light">
+        <p className="mt-[1.625rem] m-0 max-w-[700px] text-[20px] leading-relaxed text-white/80 font-light">
           The NASA International Space Apps Challenge is the largest annual global hackathon. Space Apps Houston is the official Local Event for our city — free to attend, open to the public, and organized by volunteers.
         </p>
       </section>
 
       <section className="max-w-[1320px] mx-auto px-6 pb-[clamp(56px,7vw,104px)]">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4.5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[1.125rem]">
           {basics.map((b, i) => (
             <ScrollReveal key={i}>
               <div className="h-full border border-[rgba(46,150,245,0.3)] rounded-2xl p-7 bg-gradient-to-br from-[rgba(46,150,245,0.12)] to-[rgba(7,23,63,0.45)]">
@@ -65,7 +68,7 @@ export const AboutSection: React.FC = () => {
             <div className="grid gap-3.5">
               {audiences.map((a, i) => (
                 <ScrollReveal key={i}>
-                  <div className="border border-[rgba(46,150,245,0.18)] rounded-xl p-5.5 bg-white/[0.03]">
+                  <div className="border border-[rgba(46,150,245,0.18)] rounded-xl p-[1.375rem] bg-white/[0.03]">
                     <h3 className="m-0 mb-2 text-[19px] font-bold text-white">{a.title}</h3>
                     <p className="m-0 text-[16px] leading-relaxed text-white/75">{a.desc}</p>
                   </div>
@@ -76,7 +79,7 @@ export const AboutSection: React.FC = () => {
 
           <ScrollReveal>
             <div className="border border-[rgba(46,150,245,0.35)] rounded-2xl p-[clamp(26px,4vw,40px)] bg-gradient-to-br from-[rgba(46,150,245,0.12)] to-[rgba(7,23,63,0.5)] self-start">
-              <h2 className="m-0 mb-5.5 font-['Overpass',sans-serif] font-black text-[clamp(24px,3vw,34px)] uppercase text-white">
+              <h2 className="m-0 mb-[1.375rem] font-['Overpass',sans-serif] font-black text-[clamp(24px,3vw,34px)] uppercase text-white">
                 What you'll take away
               </h2>
               <ul className="list-none m-0 p-0 grid gap-3.5">
@@ -176,7 +179,7 @@ export const AboutSection: React.FC = () => {
                     >
                       <span
                         aria-hidden="true"
-                        className={`absolute left-1/2 top-1/2 -ml-5.5 -mt-5.5 w-11 h-11 rounded-full border border-[rgba(234,254,7,0.5)] transition-all duration-300 ${
+                        className={`absolute left-1/2 top-1/2 -ml-[1.375rem] -mt-[1.375rem] w-11 h-11 rounded-full border border-[rgba(234,254,7,0.5)] transition-all duration-300 ${
                           on ? 'scale-100 opacity-100' : 'scale-60 opacity-0'
                         }`}
                       />
@@ -193,7 +196,7 @@ export const AboutSection: React.FC = () => {
                     {/* Connecting line and side detail panel */}
                     {isTeamWide && on && (
                       <div
-                        className={`absolute w-[250px] p-4.5 border border-[rgba(234,254,7,0.42)] rounded-2xl bg-[rgba(6,16,41,0.94)] shadow-[0_18px_60px_rgba(0,0,0,0.6)] text-left z-[8] transition-all duration-300 ${
+                        className={`absolute w-[250px] p-[1.125rem] border border-[rgba(234,254,7,0.42)] rounded-2xl bg-[rgba(6,16,41,0.94)] shadow-[0_18px_60px_rgba(0,0,0,0.6)] text-left z-[8] transition-all duration-300 ${
                           p.side === 'l'
                             ? 'top-1/2 -translate-y-1/2 right-[86px]'
                             : p.side === 'r'
@@ -211,9 +214,6 @@ export const AboutSection: React.FC = () => {
                           <div className="mt-3 pt-3 border-t border-white/14 text-[14px] leading-relaxed text-white/80">
                             {p.expertise}
                           </div>
-                        )}
-                        {p.loves && (
-                          <div className="mt-2 text-[14px] leading-relaxed text-[#9ecdff]">{p.loves}</div>
                         )}
                         {!p.expertise && (
                           <div className="mt-3 pt-3 border-t border-white/14 text-[13px] text-white/50">
@@ -241,9 +241,6 @@ export const AboutSection: React.FC = () => {
                 <div className="mt-3 pt-3 border-t border-white/14 text-[14px] leading-relaxed text-white/80">
                   {activePerson.expertise}
                 </div>
-              )}
-              {activePerson.loves && (
-                <div className="mt-2 text-[14px] leading-relaxed text-[#9ecdff]">{activePerson.loves}</div>
               )}
             </div>
           )}

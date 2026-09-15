@@ -114,14 +114,6 @@ export const agencies: AgencyPartner[] = [
     url: 'https://www.spaceappschallenge.org/2026/space-agency-partners/'
   },
   {
-    name: 'Spanish Space Agency',
-    abbr: 'AEE',
-    country: 'Spain',
-    logo: '/spanish-space-agency-logo.png',
-    desc: 'Works to make space part of everyone’s future—promoting research, supporting innovation, and encouraging young minds.',
-    url: 'https://www.aee.gob.es/'
-  },
-  {
     name: 'Turkish Space Agency',
     abbr: 'TUA',
     country: 'Türkiye',

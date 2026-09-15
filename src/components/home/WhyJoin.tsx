@@ -15,11 +15,11 @@ export const WhyJoin: React.FC = () => {
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4.5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[1.125rem]">
           {benefits.map((b, i) => (
             <ScrollReveal key={i}>
               <div className="relative overflow-hidden border border-white/14 rounded-2xl p-7 bg-white/[0.03] transition-all duration-400 hover:-translate-y-1.5 hover:bg-[rgba(46,150,245,0.09)] hover:border-[rgba(46,150,245,0.5)]">
-                <div className="absolute -top-8.5 -right-8.5 w-[110px] h-[110px] rounded-full border border-dashed border-[rgba(46,150,245,0.3)] animate-[spin_26s_linear_infinite]">
+                <div className="absolute -top-[2.125rem] -right-[2.125rem] w-[110px] h-[110px] rounded-full border border-dashed border-[rgba(46,150,245,0.3)] animate-[spin_26s_linear_infinite]">
                   <div className="absolute -top-1 left-1/2 w-2 h-2 rounded-full" style={{ backgroundColor: b.dot }} />
                 </div>
                 <h3 className="m-0 mb-3 font-['Fira_Sans_Condensed',sans-serif] font-extrabold text-[22px] uppercase tracking-wide" style={{ color: b.dot }}>

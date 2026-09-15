@@ -7,7 +7,7 @@ export const HoustonGrowth: React.FC = () => {
     <section data-screen-label="Houston growth" className="relative overflow-hidden py-[clamp(70px,8vw,124px)] px-6">
       <div className="max-w-[1320px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-[clamp(34px,5vw,72px)] items-center">
         <div>
-          <div className="font-['Fira_Sans_Condensed',sans-serif] text-[13px] font-extrabold tracking-widest uppercase text-[#EAFE07] mb-4.5">
+          <div className="font-['Fira_Sans_Condensed',sans-serif] text-[13px] font-extrabold tracking-widest uppercase text-[#EAFE07] mb-[1.125rem]">
             Community Growth &amp; Global Footprint
           </div>
           <ScrollReveal>

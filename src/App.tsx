@@ -12,6 +12,8 @@ import HoustonGrowth from './components/home/HoustonGrowth';
 import WhyJoin from './components/home/WhyJoin';
 import ParticipantJourney from './components/home/ParticipantJourney';
 import GetInvolved from './components/home/GetInvolved';
+import NasaTechTalks from './components/home/NasaTechTalks';
+import AllOpportunities from './components/home/AllOpportunities';
 import ChallengesTeaser from './components/home/ChallengesTeaser';
 import VenueTeaser from './components/home/VenueTeaser';
 import PartnersTeaser from './components/home/PartnersTeaser';
@@ -125,6 +127,8 @@ const App: React.FC = () => {
               <HoustonGrowth />
               <WhyJoin />
               <ParticipantJourney />
+              <NasaTechTalks />
+              <AllOpportunities />
               <GetInvolved />
               <ChallengesTeaser />
               <VenueTeaser />

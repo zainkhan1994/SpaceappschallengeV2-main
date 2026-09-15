@@ -52,7 +52,7 @@ export const GlobalCommunity: React.FC = () => {
           <h2 className="m-0 mb-2.5 text-center font-['Overpass',sans-serif] font-black text-[clamp(26px,3.4vw,44px)] uppercase text-white">
             The global community
           </h2>
-          <p className="mt-0 mx-auto mb-14.5 max-w-[620px] text-center text-[17px] text-white/65 font-light">
+          <p className="mt-0 mx-auto mb-[3.625rem] max-w-[620px] text-center text-[17px] text-white/65 font-light">
             Figures from the 2024 challenge — the most recent published totals.{' '}
             <span className="text-[#EAFE07]">Pending verification against NASA's current published numbers.</span>
           </p>

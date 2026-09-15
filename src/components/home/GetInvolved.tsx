@@ -1,6 +1,10 @@
 import React from 'react';
+import { Rocket, Users, ClipboardCheck, HeartHandshake, Handshake, ArrowRight } from 'lucide-react';
 import { ScrollReveal } from '../ui/ScrollReveal';
 import { pathways } from '../../data/homeData';
+
+const icons = [Rocket, Users, ClipboardCheck, HeartHandshake, Handshake];
+const accents = ['#E43700', '#2E96F5', '#E43700', '#2E96F5', '#E43700'];
 
 export const GetInvolved: React.FC = () => {
   return (
@@ -8,52 +12,77 @@ export const GetInvolved: React.FC = () => {
       data-screen-label="Get Involved"
       className="relative py-[clamp(70px,8vw,124px)] px-6 bg-gradient-to-b from-transparent via-[rgba(228,55,0,0.08)] to-transparent"
     >
-      <div className="max-w-[1180px] mx-auto">
-        <div className="font-['Fira_Sans_Condensed',sans-serif] text-[13px] font-extrabold tracking-widest uppercase text-[#EAFE07] mb-4.5">
-          Five ways in
-        </div>
+      <div className="max-w-[1320px] mx-auto">
         <ScrollReveal>
-          <h2 className="m-0 mb-4 font-['Overpass',sans-serif] font-black text-[clamp(30px,4.2vw,56px)] leading-tight uppercase text-white">
-            Get <span className="text-[#2E96F5]">involved</span>
-          </h2>
+          <div className="flex flex-wrap items-end justify-between gap-4 mb-3">
+            <div>
+              <div className="flex items-center gap-2 font-['Fira_Sans_Condensed',sans-serif] text-[13px] font-extrabold tracking-widest uppercase text-[#2E96F5] mb-2.5">
+                <span aria-hidden="true" className="w-2 h-2 rounded-full border-2 border-[#E43700]" />
+                Explore opportunities
+              </div>
+              <h2 className="m-0 font-['Overpass',sans-serif] font-black text-[clamp(30px,4.2vw,56px)] leading-tight uppercase text-white">
+                Choose <span className="text-[#E43700]">your path</span>
+              </h2>
+            </div>
+            <div className="hidden sm:block text-right font-['Fira_Sans_Condensed',sans-serif] text-[12px] font-bold tracking-widest uppercase text-white/40 leading-relaxed">
+              Five ways in.
+              <br />
+              One Houston weekend.
+            </div>
+          </div>
           <p className="m-0 mb-[clamp(34px,4vw,52px)] max-w-[680px] text-[19px] leading-relaxed text-white/80 font-light">
-            Open one to see what the role involves.
+            Open a path to see what the role involves.
           </p>
         </ScrollReveal>
 
-        <div className="grid gap-0 border-t border-white/14">
-          {pathways.map((p, i) => (
-            <ScrollReveal key={i}>
-              <details className="group border-b border-white/14 py-[clamp(20px,2.4vw,30px)] px-1 transition-colors duration-300 hover:bg-[rgba(46,150,245,0.06)]">
-                <summary className="cursor-pointer list-none flex items-center gap-[clamp(16px,2.4vw,30px)] select-none">
-                  <span className="flex-none font-['Fira_Sans_Condensed',sans-serif] font-extrabold text-[clamp(15px,1.5vw,18px)] tracking-wider text-white/35 tabular-nums">
-                    {p.num}
-                  </span>
-                  <span
-                    className="flex-1 min-w-0 font-['Overpass',sans-serif] font-black text-[clamp(24px,3.4vw,44px)] leading-tight uppercase"
-                    style={{ color: p.accent }}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {pathways.map((p, i) => {
+            const Icon = icons[i % icons.length];
+            const accent = accents[i % accents.length];
+            return (
+              <ScrollReveal key={i} className="h-full">
+                <a
+                  href={p.href}
+                  target={p.href.startsWith('http') || p.href.startsWith('mailto') ? '_blank' : undefined}
+                  rel="noopener noreferrer"
+                  aria-label={p.cta}
+                  className="group relative flex flex-col h-full rounded-2xl border overflow-hidden bg-[rgba(5,10,28,0.6)] transition-all duration-300 hover:-translate-y-1"
+                  style={{ borderColor: `${accent}40` }}
+                >
+                  <div
+                    className="relative h-[140px] flex items-center justify-center overflow-hidden"
+                    style={{ background: `radial-gradient(circle at 50% 30%, ${accent}30, rgba(5,10,28,0.9) 75%)` }}
                   >
-                    {p.title}
-                  </span>
-                  <span className="flex-none text-[15px] font-semibold text-white/50">{p.tag}</span>
-                </summary>
-                <div className="pt-4 pb-1 pl-[clamp(38px,5vw,66px)] max-w-[820px]">
-                  <p className="m-0 text-[18px] leading-relaxed text-white/84">{p.desc}</p>
-                  <p className="mt-3 m-0 text-[17px] leading-relaxed font-semibold" style={{ color: p.accent }}>
-                    {p.goal}
-                  </p>
-                  <a
-                    href={p.href}
-                    target={p.href.startsWith('http') || p.href.startsWith('mailto') ? '_blank' : undefined}
-                    rel="noopener noreferrer"
-                    className="mt-4.5 inline-block text-[17px] font-bold text-[#2E96F5] hover:text-[#EAFE07]"
-                  >
-                    {p.cta} →
-                  </a>
-                </div>
-              </details>
-            </ScrollReveal>
-          ))}
+                    <span
+                      className="absolute top-3 left-3 font-['Fira_Sans_Condensed',sans-serif] font-extrabold text-[13px] tracking-wider border rounded-md px-2 py-0.5"
+                      style={{ color: accent, borderColor: accent }}
+                    >
+                      {p.num}
+                    </span>
+                    <Icon aria-hidden="true" size={52} strokeWidth={1.4} style={{ color: accent }} className="opacity-90 transition-transform duration-300 group-hover:scale-110" />
+                  </div>
+
+                  <div className="flex flex-col flex-1 p-5">
+                    <h3 className="m-0 mb-2 font-['Overpass',sans-serif] font-black text-[19px] leading-tight uppercase text-white">
+                      {p.title}
+                    </h3>
+                    <p className="m-0 text-[14px] leading-relaxed text-white/70 flex-1">{p.desc}</p>
+                    <p className="mt-3 mb-0 text-[13px] leading-relaxed font-semibold" style={{ color: accent }}>
+                      {p.goal}
+                    </p>
+
+                    <span
+                      aria-hidden="true"
+                      className="mt-4 inline-flex items-center justify-center w-9 h-9 rounded-full border self-end transition-colors duration-300"
+                      style={{ borderColor: accent, color: accent }}
+                    >
+                      <ArrowRight size={16} />
+                    </span>
+                  </div>
+                </a>
+              </ScrollReveal>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -14,18 +14,18 @@ export const FinalCTA: React.FC = () => {
           <p className="mt-6 mx-auto mb-0 max-w-[600px] text-[20px] leading-relaxed text-white/82 font-light">
             November 14–15, 2026 in Houston. Free to attend, teams of 1–6, all skill levels.
           </p>
-          <div className="mt-8.5 flex flex-wrap gap-4 justify-center">
+          <div className="mt-[2.125rem] flex flex-wrap gap-4 justify-center">
             <a
               href="https://www.spaceappschallenge.org/2026/local-events/houston/"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-11 py-4.5 rounded-xl bg-[#2E96F5] text-[#04122F] font-extrabold text-[20px] shadow-[0_10px_40px_rgba(46,150,245,0.4)] transition-all hover:bg-[#5FB4FF] hover:-translate-y-0.5"
+              className="px-11 py-[1.125rem] rounded-xl bg-[#2E96F5] text-[#04122F] font-extrabold text-[20px] shadow-[0_10px_40px_rgba(46,150,245,0.4)] transition-all hover:bg-[#5FB4FF] hover:-translate-y-0.5"
             >
               Register
             </a>
             <a
               href="mailto:zain@nasaspaceappschallenge.org"
-              className="px-8 py-4.5 rounded-xl border border-white/35 text-white font-bold text-[20px] transition-all hover:border-[#EAFE07] hover:text-[#EAFE07]"
+              className="px-8 py-[1.125rem] rounded-xl border border-white/35 text-white font-bold text-[20px] transition-all hover:border-[#EAFE07] hover:text-[#EAFE07]"
             >
               Email the Houston team
             </a>

@@ -53,7 +53,7 @@ export const PastEventsSection: React.FC = () => {
           <br />
           <span className="text-[#2E96F5]">&amp; winners</span>
         </h1>
-        <p className="mt-6.5 m-0 max-w-[720px] text-[20px] leading-relaxed text-white/80 font-light">
+        <p className="mt-[1.625rem] m-0 max-w-[720px] text-[20px] leading-relaxed text-white/80 font-light">
           Celebrating Houston's space innovators, event videos, and historical achievements.
         </p>
       </section>
@@ -140,10 +140,10 @@ export const PastEventsSection: React.FC = () => {
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4.5">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-[1.125rem]">
           {pastStats.map((s, i) => (
             <ScrollReveal key={i}>
-              <div className="border border-white/13 rounded-2xl p-6.5 bg-white/[0.03]">
+              <div className="border border-white/13 rounded-2xl p-[1.625rem] bg-white/[0.03]">
                 <div className="font-['Overpass',sans-serif] font-black text-[clamp(30px,3.4vw,44px)] leading-none text-[#2E96F5] tabular-nums">
                   <span data-count={s.n}>0</span>
                 </div>
