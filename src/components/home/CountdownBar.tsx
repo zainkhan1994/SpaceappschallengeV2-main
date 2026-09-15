@@ -84,7 +84,7 @@ export const CountdownBar: React.FC<CountdownBarProps> = ({ clock }) => {
       <div className="max-w-[1320px] mx-auto border border-[rgba(46,150,245,0.25)] rounded-3xl bg-[rgba(7,23,63,0.55)] p-[clamp(24px,4vw,44px)]">
         <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-[clamp(28px,4vw,48px)]">
           <div className="min-w-0 text-center lg:self-center">
-            <h2 className="m-0 font-['Overpass',sans-serif] font-black text-[clamp(30px,4vw,46px)] leading-tight uppercase text-white">
+            <h2 className="m-0 font-['Overpass',sans-serif] font-black text-[clamp(20px,2.3vw,28px)] leading-tight uppercase text-white">
               <span className="whitespace-nowrap">November 14–15,</span>{' '}
               <span className="whitespace-nowrap text-[#EAFE07]">2026</span>
             </h2>
