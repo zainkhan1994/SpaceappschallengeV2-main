@@ -40,6 +40,16 @@ export const journey = [
   { num: '07', when: 'November', title: 'Take the registrant survey', desc: 'Quick feedback that shapes next year’s event — and closes out your participation.' }
 ];
 
+/** The six-stop route drawn by the scroll-driven Participant Journey. */
+export const journeyRoute = [
+  { num: '01', title: 'Register', desc: 'Create your profile and join the global community.' },
+  { num: '02', title: 'Find a team', desc: 'Join a team or meet new collaborators in Houston and beyond.' },
+  { num: '03', title: 'Choose a challenge', desc: 'Explore NASA’s real-world challenges and pick the one that inspires you.' },
+  { num: '04', title: 'Build your solution', desc: 'Create, iterate, and bring your idea to life with your team.' },
+  { num: '05', title: 'Submit', desc: 'Share your project before the deadline.' },
+  { num: '06', title: 'Complete a survey', desc: 'Tell us about your experience and help us grow the community.' }
+];
+
 export const pathways: ParticipantPathway[] = [
   { num: '01', accent: '#2E96F5', title: 'Participate', tag: 'Teams of 1–6', desc: 'Spend the weekend building a real project against a NASA challenge, in person in Houston or virtually. Every skill level is welcome, and you can come with a team or form one on site.', goal: 'Free to attend, no experience required.', href: 'https://www.spaceappschallenge.org/2026/local-events/houston/', cta: 'Register on the official site' },
   { num: '02', accent: '#EAFE07', title: 'Mentor', tag: 'Goal: 15+ mentors', desc: 'Mentors float between teams and unblock them: coding help, finding and using NASA data, tooling, design feedback, project submission mechanics, pitch practice, and simply keeping teams moving when they stall.', goal: "We're aiming for 15+ mentors across NASA, aerospace, software and data science.", href: 'mailto:zain@nasaspaceappschallenge.org?subject=Mentoring%20at%20Space%20Apps%20Houston%202026', cta: 'Volunteer as a mentor' },

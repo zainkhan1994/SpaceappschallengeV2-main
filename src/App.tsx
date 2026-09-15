@@ -104,7 +104,7 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#050A1C] text-white font-['Fira_Sans',sans-serif] overflow-x-hidden selection:bg-[#EAFE07] selection:text-[#050A1C]">
+    <div className="relative min-h-screen bg-[#050A1C] text-white font-['Fira_Sans',sans-serif] overflow-x-clip selection:bg-[#EAFE07] selection:text-[#050A1C]">
       <SkipLink />
       <StarfieldCanvas density={200} />
 
