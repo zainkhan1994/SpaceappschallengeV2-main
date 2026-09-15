@@ -45,10 +45,10 @@ export const primaryNav: NavTop[] = [
   },
   {
     label: 'Get Involved',
-    href: '#/partners',
+    href: '#/get-involved',
     children: [
-      { label: 'Get Involved with NASA', href: '#/' },
-      { label: 'NASA Tech Talks', href: 'https://www.spaceappschallenge.org/' },
+      { label: 'Get Involved with NASA', href: '#/get-involved' },
+      { label: 'NASA Tech Talks', href: '#/get-involved' },
       { label: 'Partners', href: '#/partners' }
     ]
   }
@@ -59,7 +59,7 @@ export const navRoutesByTopLabel: Record<string, string[]> = {
   Home: ['/'],
   'About Houston': ['/about', '/venue', '/past-events', '/contact'],
   Hackathon: ['/challenges', '/schedule', '/resources', '/faq'],
-  'Get Involved': ['/', '/partners']
+  'Get Involved': ['/get-involved', '/partners']
 };
 
 export const footerCols: FooterCol[] = [
@@ -76,6 +76,7 @@ export const footerCols: FooterCol[] = [
   {
     title: 'Participants',
     links: [
+      { label: 'Get involved with NASA', href: '#/get-involved' },
       { label: 'Resources & guides', href: '#/resources' },
       { label: 'FAQ', href: '#/faq' },
       { label: 'Past events', href: '#/past-events' },

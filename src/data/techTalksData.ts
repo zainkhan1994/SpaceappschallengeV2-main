@@ -6,6 +6,9 @@ export interface TechTalk {
   speaker: string;
   role?: string;
   desc?: string;
+  /** Session time, e.g. "6:00 PM – 7:00 PM CDT". */
+  time?: string;
+  venue?: string;
   status: 'normal' | 'canceled' | 'upcoming';
 }
 
@@ -182,9 +185,30 @@ export const techTalks2026: TechTalk[] = [
   {
     month: 'AUG',
     day: '27',
-    short: 'Upcoming',
-    title: 'NASA Tech Talks',
+    short: 'Space Humanities',
+    title: "NASA Tech Talks: Rice University's Space Humanities Initiative",
     speaker: '',
+    venue: 'The Ion',
+    status: 'normal'
+  },
+  {
+    month: 'SEP',
+    day: '24',
+    short: 'Upcoming',
+    title: 'NASA Tech Talks at The Ion',
+    speaker: '',
+    time: 'Thursday · 6:00 PM – 7:00 PM CDT',
+    venue: 'The Ion',
+    status: 'upcoming'
+  },
+  {
+    month: 'OCT',
+    day: '22',
+    short: 'Upcoming',
+    title: 'NASA Tech Talks at The Ion',
+    speaker: '',
+    time: 'Thursday · 6:00 PM – 7:00 PM CDT',
+    venue: 'The Ion',
     status: 'upcoming'
   }
 ];

@@ -42,8 +42,13 @@ const Panel: React.FC<{ talk: FlatNode }> = ({ talk }) => {
       <h3 className="mt-1.5 m-0 font-['Overpass',sans-serif] font-black text-[clamp(19px,2.2vw,24px)] leading-tight text-white">
         {talk.title}
       </h3>
+      {(talk.time || talk.venue) && (
+        <div className="mt-2 text-[14px] font-semibold text-white/70">
+          {[talk.time, talk.venue].filter(Boolean).join(' · ')}
+        </div>
+      )}
       {talk.status === 'upcoming' ? (
-        <p className="mt-2.5 m-0 text-[15px] text-white/55">Details to be announced.</p>
+        <p className="mt-2.5 m-0 text-[15px] text-white/55">Speaker and topic to be announced.</p>
       ) : (
         <>
           {talk.speaker && <div className="mt-2.5 text-[16px] font-bold text-white/90">{talk.speaker}</div>}
@@ -165,7 +170,10 @@ const Track: React.FC<{
 
 export const NasaTechTalks: React.FC = () => {
   const allNodes = useMemo(flatten, []);
-  const [activeKey, setActiveKey] = useState<string | null>(null);
+  // Open on the next scheduled talk so upcoming dates are visible without hovering.
+  const [activeKey, setActiveKey] = useState<string | null>(
+    () => allNodes.find((n) => n.status === 'upcoming')?.key ?? null
+  );
   const nodeRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const timelineRef = useRef<HTMLDivElement | null>(null);

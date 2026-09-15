@@ -2,6 +2,45 @@ import React, { useRef, useEffect } from 'react';
 
 export const Hero: React.FC = () => {
   const heroRef = useRef<HTMLElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  // Start the banner video immediately. React doesn't write the `muted`
+  // attribute to the DOM, and some browsers (Safari/iOS) block autoplay without
+  // it, so set it explicitly and call play() ourselves, retrying once the media
+  // is ready, when the tab becomes visible, and on the first interaction.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = true;
+    video.defaultMuted = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+
+    const tryPlay = () => {
+      if (!video.paused) return;
+      video.play().catch(() => {});
+    };
+
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') tryPlay();
+    };
+
+    const interactionEvents = ['pointerdown', 'touchstart', 'keydown', 'scroll'] as const;
+
+    tryPlay();
+    video.addEventListener('loadeddata', tryPlay);
+    video.addEventListener('canplay', tryPlay);
+    document.addEventListener('visibilitychange', onVisible);
+    interactionEvents.forEach((e) => window.addEventListener(e, tryPlay, { once: true, passive: true }));
+
+    return () => {
+      video.removeEventListener('loadeddata', tryPlay);
+      video.removeEventListener('canplay', tryPlay);
+      document.removeEventListener('visibilitychange', onVisible);
+      interactionEvents.forEach((e) => window.removeEventListener(e, tryPlay));
+    };
+  }, []);
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -54,6 +93,7 @@ export const Hero: React.FC = () => {
       <h1 className="sr-only">NASA Space Apps Challenge Houston 2026</h1>
 
       <video
+        ref={videoRef}
         autoPlay
         muted
         loop

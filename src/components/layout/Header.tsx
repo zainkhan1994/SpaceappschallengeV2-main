@@ -3,9 +3,6 @@ import { primaryNav, navRoutesByTopLabel } from '../../data/navigation';
 
 interface HeaderProps {
   currentRoute: string;
-  nextLabel: string;
-  nextWhen: string;
-  barClock: { k: string; v: string | number }[];
 }
 
 const stripHash = (href: string) => href.replace(/^#/, '');
@@ -27,7 +24,7 @@ const ChevronRight: React.FC = () => (
   </svg>
 );
 
-export const Header: React.FC<HeaderProps> = ({ currentRoute, nextLabel, nextWhen, barClock }) => {
+export const Header: React.FC<HeaderProps> = ({ currentRoute }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isNarrow, setIsNarrow] = useState(false);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -260,43 +257,6 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, nextLabel, nextWhe
             {menuOpen ? '✕' : '☰'}
           </button>
         )}
-      </div>
-
-      {/* Countdown Announcement Sub-bar */}
-      <div className="border-t border-[rgba(46,150,245,0.2)] bg-gradient-to-r from-[rgba(46,150,245,0.14)] via-[rgba(5,10,28,0.2)] to-[rgba(234,254,7,0.1)]">
-        <div className="max-w-[1320px] mx-auto px-6 py-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-center sm:text-left">
-          <div className="flex items-center gap-2.5 min-w-0">
-            <span
-              aria-hidden="true"
-              className="w-1.75 h-1.75 rounded-full bg-[#EAFE07] shadow-[0_0_10px_#EAFE07] animate-pulse flex-none"
-            />
-            <span className="font-['Fira_Sans_Condensed',sans-serif] text-[12px] font-extrabold tracking-[0.24em] uppercase text-white/60 flex-none whitespace-nowrap">
-              Next up
-            </span>
-            <span className="text-[14px] font-bold text-white">{nextLabel}</span>
-            <span className="text-[13px] text-white/55 flex-none">{nextWhen}</span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            {barClock.map((c, i) => (
-              <span key={i} className="flex items-baseline gap-1">
-                <span className="font-['Fira_Sans_Condensed',sans-serif] font-extrabold text-[17px] tabular-nums text-[#EAFE07]">
-                  {c.v}
-                </span>
-                <span className="font-['Fira_Sans_Condensed',sans-serif] text-[11px] font-bold tracking-wider uppercase text-white/50">
-                  {c.k}
-                </span>
-              </span>
-            ))}
-          </div>
-
-          <a
-            href="#/schedule"
-            className="font-['Fira_Sans_Condensed',sans-serif] text-[12px] font-bold tracking-widest uppercase text-[#2E96F5] hover:text-[#EAFE07]"
-          >
-            All key dates →
-          </a>
-        </div>
       </div>
 
       {/* Mobile Menu Accordion */}

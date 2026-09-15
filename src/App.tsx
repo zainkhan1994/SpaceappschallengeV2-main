@@ -12,8 +12,6 @@ import HoustonGrowth from './components/home/HoustonGrowth';
 import WhyJoin from './components/home/WhyJoin';
 import ParticipantJourney from './components/home/ParticipantJourney';
 import GetInvolved from './components/home/GetInvolved';
-import NasaTechTalks from './components/home/NasaTechTalks';
-import AllOpportunities from './components/home/AllOpportunities';
 import ChallengesTeaser from './components/home/ChallengesTeaser';
 import VenueTeaser from './components/home/VenueTeaser';
 import PartnersTeaser from './components/home/PartnersTeaser';
@@ -30,6 +28,7 @@ import FAQSection from './components/sections/FAQSection';
 import PartnersSection from './components/sections/PartnersSection';
 import PastEventsSection from './components/sections/PastEventsSection';
 import ContactSection from './components/sections/ContactSection';
+import GetInvolvedNasaSection from './components/sections/GetInvolvedNasaSection';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
@@ -110,25 +109,18 @@ const App: React.FC = () => {
       <StarfieldCanvas density={200} />
 
       <div className="relative z-10">
-        <Header
-          currentRoute={route}
-          nextLabel={nextLabel}
-          nextWhen={nextWhen}
-          barClock={barClock}
-        />
+        <Header currentRoute={route} />
 
         <main id="main">
           {route === '/' && (
             <div>
               <Hero />
-              <CountdownBar clock={heroClock} />
+              <CountdownBar clock={heroClock} nextLabel={nextLabel} nextWhen={nextWhen} nextClock={barClock} />
               <WhatIsSpaceApps />
               <FrontDoorToNASA />
               <HoustonGrowth />
               <WhyJoin />
               <ParticipantJourney />
-              <NasaTechTalks />
-              <AllOpportunities />
               <GetInvolved />
               <ChallengesTeaser />
               <VenueTeaser />
@@ -148,6 +140,7 @@ const App: React.FC = () => {
           {route === '/partners' && <PartnersSection />}
           {route === '/past-events' && <PastEventsSection />}
           {route === '/contact' && <ContactSection />}
+          {route === '/get-involved' && <GetInvolvedNasaSection />}
         </main>
 
         <Footer />

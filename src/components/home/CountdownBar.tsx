@@ -2,9 +2,12 @@ import React from 'react';
 
 interface CountdownBarProps {
   clock: { k: string; v: string | number }[];
+  nextLabel: string;
+  nextWhen: string;
+  nextClock: { k: string; v: string | number }[];
 }
 
-export const CountdownBar: React.FC<CountdownBarProps> = ({ clock }) => {
+export const CountdownBar: React.FC<CountdownBarProps> = ({ clock, nextLabel, nextWhen, nextClock }) => {
   return (
     <section data-screen-label="Countdown" className="px-6 py-[clamp(32px,5vw,56px)]">
       <div className="max-w-[1320px] mx-auto border border-[rgba(46,150,245,0.25)] rounded-3xl bg-[rgba(7,23,63,0.55)] p-[clamp(24px,4vw,44px)]">
@@ -60,6 +63,37 @@ export const CountdownBar: React.FC<CountdownBarProps> = ({ clock }) => {
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* Next milestone */}
+            <div className="mt-5 pt-5 border-t border-white/10">
+              <div className="flex items-baseline justify-between gap-3">
+                <span className="font-['Fira_Sans_Condensed',sans-serif] text-[12px] font-extrabold tracking-[0.24em] uppercase text-white/60">
+                  Next up
+                </span>
+                <span className="text-[13px] text-white/55 flex-none">{nextWhen}</span>
+              </div>
+              <div className="mt-1.5 text-[16px] font-bold leading-snug text-white">{nextLabel}</div>
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+                <div className="flex items-center gap-2.5">
+                  {nextClock.map((c, i) => (
+                    <span key={i} className="flex items-baseline gap-1">
+                      <span className="font-['Fira_Sans_Condensed',sans-serif] font-extrabold text-[20px] tabular-nums text-[#EAFE07]">
+                        {c.v}
+                      </span>
+                      <span className="font-['Fira_Sans_Condensed',sans-serif] text-[11px] font-bold tracking-wider uppercase text-white/50">
+                        {c.k}
+                      </span>
+                    </span>
+                  ))}
+                </div>
+                <a
+                  href="#/schedule"
+                  className="font-['Fira_Sans_Condensed',sans-serif] text-[12px] font-bold tracking-widest uppercase text-[#2E96F5] hover:text-[#EAFE07]"
+                >
+                  All key dates →
+                </a>
+              </div>
             </div>
           </div>
         </div>
