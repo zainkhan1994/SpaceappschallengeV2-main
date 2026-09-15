@@ -42,7 +42,7 @@ export const OpportunitiesSection: React.FC = () => {
                 </p>
               </div>
               <a
-                href="#/get-involved"
+                href="#/tech-talks"
                 className="group inline-flex items-center gap-2.5 px-7 py-[1.125rem] rounded-xl bg-[#2E96F5] text-[#04122F] font-extrabold text-[17px] shadow-[0_8px_32px_rgba(46,150,245,0.32)] transition-colors duration-300 hover:bg-[#5FB4FF]"
               >
                 See NASA Tech Talks

@@ -29,6 +29,7 @@ import PastEventsSection from './components/sections/PastEventsSection';
 import ContactSection from './components/sections/ContactSection';
 import GetInvolvedNasaSection from './components/sections/GetInvolvedNasaSection';
 import OpportunitiesSection from './components/sections/OpportunitiesSection';
+import TechTalksSection from './components/sections/TechTalksSection';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
@@ -78,13 +79,16 @@ const App: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
+  // The Tech Talks page is a full-bleed takeover with its own back link instead of the site header.
+  const takeover = route === '/tech-talks';
+
   return (
     <div className="relative min-h-screen bg-[#050A1C] text-white font-['Fira_Sans',sans-serif] overflow-x-clip selection:bg-[#EAFE07] selection:text-[#050A1C]">
       <SkipLink />
-      <StarfieldCanvas density={200} />
+      {!takeover && <StarfieldCanvas density={200} />}
 
       <div className="relative z-10">
-        <Header currentRoute={route} />
+        {!takeover && <Header currentRoute={route} />}
 
         <main id="main">
           {route === '/' && (
@@ -116,6 +120,7 @@ const App: React.FC = () => {
           {route === '/contact' && <ContactSection />}
           {route === '/get-involved' && <GetInvolvedNasaSection />}
           {route === '/opportunities' && <OpportunitiesSection />}
+          {route === '/tech-talks' && <TechTalksSection />}
         </main>
 
         <Footer />

@@ -48,7 +48,7 @@ export const primaryNav: NavTop[] = [
     href: '#/get-involved',
     children: [
       { label: 'Get Involved with NASA', href: '#/get-involved' },
-      { label: 'NASA Tech Talks', href: '#/get-involved' },
+      { label: 'NASA Tech Talks', href: '#/tech-talks' },
       { label: 'NASA Opportunities', href: '#/opportunities' },
       { label: 'Partners', href: '#/partners' }
     ]
@@ -60,7 +60,7 @@ export const navRoutesByTopLabel: Record<string, string[]> = {
   Home: ['/'],
   'About Houston': ['/about', '/venue', '/past-events', '/contact'],
   Hackathon: ['/challenges', '/schedule', '/resources', '/faq'],
-  'Get Involved': ['/get-involved', '/opportunities', '/partners']
+  'Get Involved': ['/get-involved', '/tech-talks', '/opportunities', '/partners']
 };
 
 export const footerCols: FooterCol[] = [
