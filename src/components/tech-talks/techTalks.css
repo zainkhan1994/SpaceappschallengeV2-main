@@ -1,29 +1,48 @@
-@import url('https://fonts.googleapis.com/css2?family=Poiret+One&family=Roboto+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Overpass:wght@300;400;600;700;800;900&family=Fira+Sans:wght@200;300;400;500;600&family=Fira+Sans+Condensed:wght@400;500;700&display=swap');
 
+/* Space Apps Houston brand system: Overpass for display, Fira Sans for everything else,
+   near-black space palette with the three brand accents. */
 .tt {
-  --tt-lime: #dfff4f;
-  --tt-off: #f5f4f3;
-  --tt-ink: #0e0e0e;
-  --tt-lav: #cfc7f5;
+  --tt-yellow: #eafe07;
+  --tt-blue: #2e96f5;
+  --tt-red: #e43700;
+  --tt-bg: #04070f;
+  --tt-navy: #050a1c;
   position: relative;
-  background: var(--tt-off);
-  color: var(--tt-ink);
-  font-family: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: var(--tt-bg);
+  color: #fff;
+  font-family: 'Fira Sans', system-ui, sans-serif;
 }
 
 .tt-display {
-  font-family: 'Poiret One', 'Josefin Sans', 'Century Gothic', sans-serif;
+  font-family: 'Overpass', 'Fira Sans', sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.9;
+  letter-spacing: -0.015em;
+}
+.tt-display-lite {
+  font-family: 'Overpass', 'Fira Sans', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1.04;
+  letter-spacing: -0.005em;
+}
+/* wide-tracked caps, the label voice from the brand key art */
+.tt-mono {
+  font-family: 'Fira Sans', system-ui, sans-serif;
   font-weight: 400;
   text-transform: uppercase;
-  line-height: 0.98;
-  letter-spacing: 0.01em;
-  -webkit-text-stroke: 0.012em currentColor;
+  letter-spacing: 0.22em;
 }
-
-.tt-mono {
-  font-family: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
+.tt-body {
+  font-family: 'Fira Sans', system-ui, sans-serif;
+  font-weight: 300;
+  letter-spacing: 0;
+}
+.tt-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px #fff;
 }
 
 /* staged progress: --s = start, --k = speed */
@@ -39,7 +58,6 @@
   overflow: hidden;
 }
 
-/* ---------- back link ---------- */
 .tt-back {
   position: fixed;
   z-index: 60;
@@ -59,78 +77,109 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 22px;
+  padding: 14px 26px;
   border-radius: 999px;
-  border: 1px solid currentColor;
+  border: 1px solid rgba(255, 255, 255, 0.5);
   font-size: 13px;
-  background: transparent;
-  color: inherit;
+  background: rgba(5, 10, 28, 0.4);
+  color: #fff;
   cursor: pointer;
   text-decoration: none;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
 }
-.tt-pill:hover { background: var(--tt-lime); color: #0e0e0e; border-color: var(--tt-lime); }
+.tt-pill:hover {
+  background: var(--tt-yellow);
+  border-color: var(--tt-yellow);
+  color: #04070f;
+  box-shadow: 0 0 34px rgba(234, 254, 7, 0.45);
+}
 
-/* ---------- hero ---------- */
+/* ---------- hero: astronaut descends onto the Moon ---------- */
 .tt-hero {
-  height: 230vh;
-  background: linear-gradient(180deg, #000 0%, #0b1513 14%, #24403a 28%, #8c93b6 42%, #d6d0f4 56%, #ebe7f8 78%, var(--tt-off) 100%);
+  height: 240vh;
+  background: radial-gradient(120% 70% at 50% 0%, #0b1330 0%, #05070f 55%, #000 100%);
+}
+.tt-stars {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(1.4px 1.4px at 12% 18%, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(1.2px 1.2px at 28% 42%, rgba(255, 255, 255, 0.65), transparent),
+    radial-gradient(1.6px 1.6px at 46% 12%, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1.1px 1.1px at 63% 32%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1.5px 1.5px at 78% 16%, rgba(255, 255, 255, 0.85), transparent),
+    radial-gradient(1.2px 1.2px at 88% 48%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1.3px 1.3px at 8% 62%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1.1px 1.1px at 36% 70%, rgba(255, 255, 255, 0.45), transparent),
+    radial-gradient(1.4px 1.4px at 70% 64%, rgba(255, 255, 255, 0.5), transparent);
 }
 .tt-hero-copy {
   position: absolute;
   inset: 0;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: calc(env(safe-area-inset-top, 0px) + 12svh) 20px 0;
+  padding: calc(env(safe-area-inset-top, 0px) + 11svh) 20px 0;
   text-align: center;
-  color: #fff;
-  transform: translateY(calc(var(--p, 0) * -34svh));
-  opacity: calc(1 - var(--p, 0) * 2.4);
+  transform: translateY(calc(var(--p, 0) * -30svh));
+  opacity: calc(1 - var(--p, 0) * 2.6);
+}
+.tt-moon {
+  position: absolute;
+  z-index: 1;
+  inset: auto 0 0 0;
+  height: 42svh;
+  background: url('/tech-talks/moon-surface.jpg') center 30% / cover no-repeat;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 26%);
+  mask-image: linear-gradient(180deg, transparent, #000 26%);
+  transform: translateY(calc((1 - var(--p, 0)) * 7svh));
 }
 .tt-hero-astro {
   position: absolute;
+  z-index: 2;
   left: 50%;
-  bottom: -2svh;
-  height: min(84svh, 940px);
+  bottom: 13svh;
+  height: min(62svh, 720px);
   width: auto;
   max-width: none;
-  transform: translate(-50%, calc((1 - var(--p, 0)) * 58svh));
-  filter: drop-shadow(0 30px 60px rgba(40, 30, 90, 0.25));
+  transform: translate(-50%, calc((1 - var(--p, 0)) * -108svh)) rotate(calc((1 - var(--p, 0)) * -6deg));
+  filter: drop-shadow(0 24px 50px rgba(0, 0, 0, 0.75));
   will-change: transform;
 }
-.tt-clouds {
+.tt-touchdown {
   position: absolute;
-  inset: auto 0 0 0;
-  height: 70svh;
-  pointer-events: none;
-  opacity: clamp(0, calc(var(--p, 0) * 1.7 - 0.15), 1);
-  transform: translateY(calc((1 - var(--p, 0)) * 24svh));
-}
-.tt-cloud {
-  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: 11svh;
+  width: min(62vw, 620px);
+  height: 12svh;
+  translate: -50% 0;
   border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.98), rgba(246, 243, 255, 0.85) 42%, rgba(214, 206, 246, 0.45) 70%, transparent);
-  filter: blur(10px);
-  animation: tt-drift 18s ease-in-out infinite alternate;
+  background: radial-gradient(closest-side, rgba(234, 254, 7, 0.28), rgba(46, 150, 245, 0.16) 45%, transparent 75%);
+  opacity: clamp(0, calc(var(--p, 0) * 2.6 - 1.5), 1);
 }
-.tt-cloud.is-shade {
-  background: radial-gradient(closest-side, rgba(176, 166, 226, 0.75), rgba(200, 192, 240, 0.4) 60%, transparent);
-}
-.tt-clouds::after {
-  content: '';
+.tt-dust {
   position: absolute;
-  inset: auto 0 0 0;
-  height: 30%;
-  background: linear-gradient(to top, var(--tt-off), rgba(245, 244, 243, 0));
+  z-index: 2;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(216, 214, 208, 0.5), rgba(180, 178, 172, 0.22) 55%, transparent);
+  filter: blur(7px);
+  opacity: clamp(0, calc(var(--p, 0) * 3 - 2), 1);
+  animation: tt-puff 5s ease-in-out infinite alternate;
 }
-@keyframes tt-drift {
-  from { translate: -2% 0; }
-  to { translate: 2% -3%; }
+@keyframes tt-puff {
+  from { translate: -4% 0; scale: 0.94; }
+  to { translate: 4% -8%; scale: 1.06; }
+}
+.tt-ribbons {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.85;
 }
 
 /* ---------- stacked words ---------- */
-.tt-words { height: 210vh; background: var(--tt-off); }
+.tt-words { height: 210vh; background: linear-gradient(180deg, #000 0%, #05070f 40%, #04070f 100%); }
 .tt-word {
   display: block;
   opacity: var(--q);
@@ -142,22 +191,25 @@
   position: relative;
   min-height: 140vh;
   overflow: hidden;
-  background: linear-gradient(180deg, var(--tt-off) 0%, #000 24%, #000 72%, var(--tt-lav) 100%);
+  background: linear-gradient(180deg, #04070f 0%, #000 30%, #000 70%, #050a1c 100%);
 }
 .tt-globe {
   position: absolute;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(151, 195, 255, 0.5);
   transform: translateY(calc((0.5 - var(--p, 0)) * var(--sp, 30vh)));
 }
 
-/* ---------- the series / rocket ---------- */
-.tt-series { height: 230vh; background: linear-gradient(180deg, var(--tt-lav), #d9d2f7); }
+/* ---------- the series + rocket of speakers ---------- */
+.tt-series {
+  height: 240vh;
+  background: radial-gradient(90% 60% at 50% 100%, rgba(46, 150, 245, 0.22) 0%, transparent 70%), linear-gradient(180deg, #050a1c 0%, #04091a 60%, #04070f 100%);
+}
 .tt-rocket {
   position: absolute;
   left: 50%;
-  bottom: 12svh;
-  width: min(1180px, 94vw);
-  height: clamp(54px, 8vw, 116px);
+  bottom: 13svh;
+  width: min(1240px, 94vw);
+  height: clamp(58px, 8vw, 116px);
   transform: translateX(-50%);
   display: flex;
   align-items: center;
@@ -168,17 +220,25 @@
   position: relative;
   height: 100%;
   flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
   transform: translateX(calc((1 - var(--q)) * var(--o, 0vw))) translateY(calc((1 - var(--q)) * var(--y, 0px)))
     rotate(calc((1 - var(--q)) * var(--r, 0deg)));
   will-change: transform;
 }
-.tt-metal {
+.tt-hull {
+  position: absolute;
+  inset: 24% 0;
   background: linear-gradient(180deg, #fafafa 0%, #bcbcbc 16%, #ffffff 30%, #6a6a6a 54%, #dadada 72%, #3a3a3a 90%, #9d9d9d 100%);
+  transition: filter 0.3s;
 }
-.tt-metal-dark {
+.tt-hull.is-dark {
+  inset: 0;
   background: linear-gradient(180deg, #d9d9d9 0%, #7a7a7a 20%, #efefef 36%, #333 58%, #aaa 76%, #1c1c1c 100%);
 }
-.tt-ring::after {
+.tt-hull::after {
   content: '';
   position: absolute;
   right: -3px;
@@ -186,24 +246,74 @@
   bottom: 4%;
   width: 4px;
   border-radius: 3px;
-  background: var(--tt-lime);
-  box-shadow: 0 0 14px 2px rgba(223, 255, 79, 0.8);
+  background: var(--tt-yellow);
+  box-shadow: 0 0 14px 2px rgba(234, 254, 7, 0.75);
+  transition: box-shadow 0.3s, background-color 0.3s;
 }
-.tt-windows {
-  background-image: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.55) 0 2px, transparent 2px 18px);
-  background-size: 100% 36%;
-  background-position: center;
-  background-repeat: no-repeat;
+.tt-part:hover .tt-hull,
+.tt-part:focus-visible .tt-hull,
+.tt-part[data-active='true'] .tt-hull { filter: brightness(1.25) saturate(1.1); }
+.tt-part:hover .tt-hull::after,
+.tt-part:focus-visible .tt-hull::after,
+.tt-part[data-active='true'] .tt-hull::after {
+  background: #fff;
+  box-shadow: 0 0 22px 6px rgba(234, 254, 7, 0.95);
+}
+.tt-part:focus-visible { outline: 2px solid var(--tt-yellow); outline-offset: 6px; }
+
+/* speaker name tags hanging off each stage */
+.tt-stage-tag {
+  position: absolute;
+  left: 50%;
+  width: 132px;
+  translate: -50% 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.72);
+  transition: color 0.3s;
+}
+.tt-stage-tag.is-up { bottom: calc(100% + 4px); }
+.tt-stage-tag.is-down { top: calc(100% + 4px); flex-direction: column-reverse; }
+.tt-stage-tag i {
+  display: block;
+  width: 1px;
+  height: 26px;
+  background: rgba(255, 255, 255, 0.45);
+}
+.tt-part:hover .tt-stage-tag,
+.tt-part:focus-visible .tt-stage-tag,
+.tt-part[data-active='true'] .tt-stage-tag { color: var(--tt-yellow); }
+.tt-part:hover .tt-stage-tag i,
+.tt-part[data-active='true'] .tt-stage-tag i { background: var(--tt-yellow); }
+@media (min-width: 768px) {
+  .tt-stage-tag { display: flex; }
 }
 
-/* ---------- what happens (grid + chrome spheres) ---------- */
+.tt-card {
+  position: absolute;
+  left: 50%;
+  bottom: 30svh;
+  width: min(660px, 92vw);
+  translate: -50% 0;
+  border: 1px solid rgba(46, 150, 245, 0.38);
+  background: rgba(4, 9, 24, 0.88);
+  backdrop-filter: blur(6px);
+  padding: clamp(18px, 2.4vw, 28px);
+  transition: opacity 0.3s;
+}
+
+/* ---------- what happens ---------- */
 .tt-dark {
   color: #fff;
-  background: linear-gradient(180deg, #000 0%, #0e1b18 26%, #221d45 70%, #2c2659 100%);
+  background: linear-gradient(180deg, #04070f 0%, #04101f 28%, #062044 72%, #072a55 100%);
 }
 .tt-grid {
-  background-image: linear-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+  background-image: linear-gradient(rgba(46, 150, 245, 0.22) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46, 150, 245, 0.22) 1px, transparent 1px);
   background-size: 64px 64px;
   -webkit-mask-image: linear-gradient(180deg, transparent, #000 14%, #000 86%, transparent);
   mask-image: linear-gradient(180deg, transparent, #000 14%, #000 86%, transparent);
@@ -266,49 +376,52 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: var(--tt-lime);
-  box-shadow: 0 0 12px 3px rgba(223, 255, 79, 0.7);
+  background: var(--tt-yellow);
+  box-shadow: 0 0 12px 3px rgba(234, 254, 7, 0.7);
 }
 
 /* ---------- deep dives ---------- */
 .tt-asteroid { rotate: calc(var(--p, 0) * 160deg); }
-.tt-box { border: 1px solid rgba(255, 255, 255, 0.55); }
-.tt-link-line { width: 1px; height: 36px; margin: 0 auto; background: rgba(255, 255, 255, 0.55); }
+.tt-box { border: 1px solid rgba(255, 255, 255, 0.35); }
+.tt-link-line { width: 1px; height: 36px; margin: 0 auto; background: rgba(255, 255, 255, 0.35); }
 
 /* ---------- counters ---------- */
-.tt-counters { background: linear-gradient(180deg, #000 0%, #4f6f67 12%, #7fa598 42%, #b4e4d2 76%, #cdf7e6 100%); }
-.tt-sparkle { filter: drop-shadow(0 0 10px rgba(223, 255, 79, 0.95)); animation: tt-twinkle 3.4s ease-in-out infinite; }
+.tt-counters { background: linear-gradient(180deg, #000 0%, #041428 26%, #062247 64%, #04070f 100%); }
+.tt-sparkle { filter: drop-shadow(0 0 10px rgba(234, 254, 7, 0.95)); animation: tt-twinkle 3.4s ease-in-out infinite; }
 @keyframes tt-twinkle {
   0%, 100% { transform: scale(1) rotate(0deg); }
   50% { transform: scale(0.82) rotate(20deg); }
 }
 
 /* ---------- horizontal statement ---------- */
-.tt-horizon { height: 320vh; background: linear-gradient(180deg, #cdf7e6 0%, #d7cff6 14%, #e4def8 100%); }
+.tt-horizon { height: 320vh; background: linear-gradient(180deg, #04070f 0%, #050a1c 40%, #04070f 100%); }
 .tt-sweep {
   position: absolute;
   top: 50%;
   left: 0;
   white-space: nowrap;
-  font-size: clamp(110px, 21vw, 330px);
+  font-size: clamp(88px, 17vw, 260px);
   transform: translate(calc((1 - var(--p, 0)) * 100vw - var(--p, 0) * 100%), -50%);
   will-change: transform;
 }
-.tt-glow-globe { color: #fff; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 30px rgba(255, 255, 255, 0.6)); }
+.tt-glow-globe {
+  color: #9fc6ff;
+  filter: drop-shadow(0 0 10px rgba(46, 150, 245, 0.85)) drop-shadow(0 0 34px rgba(46, 150, 245, 0.5));
+}
 
 /* ---------- constellation ---------- */
-.tt-nebula { background: #05040a; color: #fff; }
+.tt-nebula { background: #04070f; color: #fff; }
 .tt-trace { clip-path: inset(0 calc((1 - clamp(0, calc(var(--p, 0) * 1.9 - 0.35), 1)) * 100%) 0 0); }
 .tt-trace-v { clip-path: inset(0 0 calc((1 - clamp(0, calc(var(--p, 0) * 1.9 - 0.35), 1)) * 100%) 0); }
-.tt-star-next { box-shadow: 0 0 0 6px rgba(223, 255, 79, 0.18), 0 0 22px 6px rgba(223, 255, 79, 0.75); }
+.tt-star-next { box-shadow: 0 0 0 6px rgba(234, 254, 7, 0.18), 0 0 22px 6px rgba(234, 254, 7, 0.75); }
 
 /* ---------- archive ---------- */
-.tt-tab[aria-selected='true'] { background: var(--tt-ink); color: #fff; }
+.tt-tab[aria-selected='true'] { background: var(--tt-yellow); color: #04070f; border-color: var(--tt-yellow); }
 .tt-row { transition: background-color 0.3s; }
-.tt-row:hover { background: rgba(207, 199, 245, 0.35); }
+.tt-row:hover { background: rgba(46, 150, 245, 0.1); }
 
 /* ---------- blur lines ---------- */
-.tt-focus { height: 240vh; background: linear-gradient(180deg, var(--tt-off) 0%, #d9d1f7 38%, #cfc7f5 70%, #e7f9df 100%); }
+.tt-focus { height: 240vh; background: linear-gradient(180deg, #04070f 0%, #050a1c 45%, #000 100%); }
 .tt-focus-line {
   --o: clamp(0, calc((var(--p, 0) - var(--s, 0) - 0.3) * 4), 1);
   display: block;
@@ -322,15 +435,15 @@
   width: clamp(220px, 34vw, 430px);
   aspect-ratio: 1;
   border-radius: 50%;
-  background: var(--tt-lime);
-  color: #0e0e0e;
-  box-shadow: 0 0 60px 14px rgba(223, 255, 79, 0.5), 0 0 140px 40px rgba(223, 255, 79, 0.22);
+  background: var(--tt-yellow);
+  color: #04070f;
+  box-shadow: 0 0 60px 14px rgba(234, 254, 7, 0.45), 0 0 140px 40px rgba(234, 254, 7, 0.2);
   display: grid;
   place-items: center;
   text-decoration: none;
   transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s;
 }
-.tt-orb:hover { transform: scale(1.05); box-shadow: 0 0 80px 22px rgba(223, 255, 79, 0.6), 0 0 180px 60px rgba(223, 255, 79, 0.28); }
+.tt-orb:hover { transform: scale(1.05); box-shadow: 0 0 80px 22px rgba(234, 254, 7, 0.6), 0 0 180px 60px rgba(234, 254, 7, 0.26); }
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
@@ -338,9 +451,9 @@
   .tt-stick { position: relative; height: auto; min-height: 100svh; }
   .tt-hero .tt-stick { min-height: 150svh; }
   .tt-hero-copy { opacity: 1; transform: none; }
-  .tt-series .tt-stick { padding-bottom: 30svh; }
+  .tt-series .tt-stick { padding-bottom: 34svh; }
   .tt-horizon .tt-stick { min-height: 70svh; }
-  .tt-sweep { white-space: normal; font-size: clamp(56px, 11vw, 150px); transform: translateY(-50%); width: 100%; text-align: center; }
+  .tt-sweep { white-space: normal; font-size: clamp(48px, 10vw, 130px); transform: translateY(-50%); width: 100%; text-align: center; }
   .tt-focus-line { filter: none; opacity: 1; }
-  .tt-cloud, .tt-sparkle { animation: none; }
+  .tt-dust, .tt-sparkle { animation: none; }
 }
