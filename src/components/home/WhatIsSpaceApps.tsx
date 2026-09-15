@@ -1,86 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { ArrowRight, Users, Globe, Settings, BarChart3, Database, FileText, Code2, Rocket } from 'lucide-react';
+import React from 'react';
+import { Users, Globe, Settings, BarChart3, Database, FileText, Code2, Rocket } from 'lucide-react';
 import { ScrollReveal } from '../ui/ScrollReveal';
+import { PortalRow, PortalItem, rgba } from '../ui/PortalRow';
 
 const YELLOW = '#EAFE07';
 const BLUE = '#2E96F5';
 const RED = '#E43700';
-
-const rgba = (hex: string, a: number) => {
-  const n = parseInt(hex.slice(1), 16);
-  return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
-};
-
-type PortalKey = 'who' | 'when' | 'how' | 'why';
-
-interface Portal {
-  key: PortalKey;
-  num: string;
-  title: string;
-  short: string;
-  accent: string;
-  headline: [string, string];
-  detail: string;
-  chip: string;
-  Icon: typeof Users;
-  href: string;
-  cta: string;
-}
-
-const portals: Portal[] = [
-  {
-    key: 'who',
-    num: '01',
-    title: 'Who',
-    short: 'Everyone is welcome.',
-    accent: YELLOW,
-    headline: ['Everyone.', 'Teams of 1–6.'],
-    detail: 'Coders, scientists, designers, storytellers, educators, students, makers and builders — no matter their background, age, or skill level.',
-    chip: 'All minds welcome',
-    Icon: Users,
-    href: '#/faq',
-    cta: 'Who can join'
-  },
-  {
-    key: 'when',
-    num: '02',
-    title: 'When & Where',
-    short: 'One weekend, worldwide.',
-    accent: BLUE,
-    headline: ['November 14–15, 2026', 'Houston, Texas'],
-    detail: 'One of hundreds of in-person and virtual Local Events happening worldwide the same weekend.',
-    chip: 'A global event',
-    Icon: Globe,
-    href: '#/venue',
-    cta: 'Venue details'
-  },
-  {
-    key: 'how',
-    num: '03',
-    title: 'How',
-    short: 'Choose. Build. Make an impact.',
-    accent: BLUE,
-    headline: ['Choose. Build.', 'Make an impact.'],
-    detail: 'Challenges are authored by NASA Subject Matter Experts. You join a team, pick a challenge, and build across the weekend. Judges evaluate projects and NASA recognizes 10 Global Winners.',
-    chip: 'Real solutions',
-    Icon: Settings,
-    href: '#/challenges',
-    cta: 'See the challenges'
-  },
-  {
-    key: 'why',
-    num: '04',
-    title: 'Why',
-    short: 'Real problems. Brighter futures.',
-    accent: RED,
-    headline: ['Real problems.', 'Brighter futures.'],
-    detail: "Raise awareness of NASA's free and open data, inspire creativity and collaboration, and nurture an interest in STEM.",
-    chip: 'Lasting impact',
-    Icon: BarChart3,
-    href: '#/about',
-    cta: 'Why it matters'
-  }
-];
 
 /* ---------- Portal artwork ---------- */
 
@@ -258,165 +183,110 @@ const WhyArt: React.FC = () => {
   );
 };
 
-const ART: Record<PortalKey, React.FC> = { who: WhoArt, when: WhenArt, how: HowArt, why: WhyArt };
+const portals: PortalItem[] = [
+  {
+    key: 'who',
+    num: '01',
+    title: 'Who',
+    short: 'Everyone is welcome.',
+    accent: YELLOW,
+    headline: ['Everyone.', 'Teams of 1–6.'],
+    detail: 'Coders, scientists, designers, storytellers, educators, students, makers and builders — no matter their background, age, or skill level.',
+    chip: 'All minds welcome',
+    Icon: Users,
+    href: '#/faq',
+    cta: 'Who can join',
+    Art: WhoArt
+  },
+  {
+    key: 'when',
+    num: '02',
+    title: 'When & Where',
+    short: 'One weekend, worldwide.',
+    accent: BLUE,
+    headline: ['November 14–15, 2026', 'Houston, Texas'],
+    detail: 'One of hundreds of in-person and virtual Local Events happening worldwide the same weekend.',
+    chip: 'A global event',
+    Icon: Globe,
+    href: '#/venue',
+    cta: 'Venue details',
+    Art: WhenArt
+  },
+  {
+    key: 'how',
+    num: '03',
+    title: 'How',
+    short: 'Choose. Build. Make an impact.',
+    accent: BLUE,
+    headline: ['Choose. Build.', 'Make an impact.'],
+    detail: 'Challenges are authored by NASA Subject Matter Experts. You join a team, pick a challenge, and build across the weekend. Judges evaluate projects and NASA recognizes 10 Global Winners.',
+    chip: 'Real solutions',
+    Icon: Settings,
+    href: '#/challenges',
+    cta: 'See the challenges',
+    Art: HowArt
+  },
+  {
+    key: 'why',
+    num: '04',
+    title: 'Why',
+    short: 'Real problems. Brighter futures.',
+    accent: RED,
+    headline: ['Real problems.', 'Brighter futures.'],
+    detail: "Raise awareness of NASA's free and open data, inspire creativity and collaboration, and nurture an interest in STEM.",
+    chip: 'Lasting impact',
+    Icon: BarChart3,
+    href: '#/about',
+    cta: 'Why it matters',
+    Art: WhyArt
+  }
+];
 
 /* ---------- Section ---------- */
 
-const WIDE_QUERY = '(min-width: 1024px)';
-
-export const WhatIsSpaceApps: React.FC = () => {
-  const [wide, setWide] = useState(() => window.matchMedia(WIDE_QUERY).matches);
-  // Desktop rests with every portal equal; mobile opens on WHO so the artwork is visible.
-  const [active, setActive] = useState<number | null>(() => (window.matchMedia(WIDE_QUERY).matches ? null : 0));
-
-  useEffect(() => {
-    const q = window.matchMedia(WIDE_QUERY);
-    const onChange = () => {
-      setWide(q.matches);
-      setActive(q.matches ? null : 0);
-    };
-    q.addEventListener('change', onChange);
-    return () => q.removeEventListener('change', onChange);
-  }, []);
-
-  return (
-    <section data-screen-label="What is Space Apps" className="max-w-[1320px] mx-auto py-[clamp(64px,8vw,120px)] px-6">
-      <ScrollReveal>
-        <div className="flex flex-wrap items-start justify-between gap-8 mb-[clamp(32px,4vw,48px)]">
-          <div className="max-w-[760px]">
-            <h2 className="m-0 mb-3.5 font-['Overpass',sans-serif] font-black text-[clamp(30px,4.2vw,54px)] leading-tight uppercase text-white">
-              What is the
-              <br />
-              <span className="bg-[linear-gradient(90deg,#2E96F5_0%,#2E96F5_55%,#9AA8FF_80%,#E43700_100%)] bg-clip-text text-transparent">
-                Space Apps Challenge?
-              </span>
-            </h2>
-            <p className="m-0 max-w-[680px] text-[19px] leading-relaxed text-white/78 font-light">
-              The largest annual global hackathon — engaging NASA and Space Agency Partners' free and open data to address real-world challenges on Earth and in space. Houston is one of hundreds of Local Events happening the same weekend worldwide.
-            </p>
-          </div>
-          <div aria-hidden="true" className="hidden lg:block pt-2 font-['Fira_Sans_Condensed',sans-serif] text-[12px] font-semibold uppercase tracking-[0.3em] leading-[2] text-white/60">
-            People
+export const WhatIsSpaceApps: React.FC = () => (
+  <section data-screen-label="What is Space Apps" className="max-w-[1320px] mx-auto py-[clamp(64px,8vw,120px)] px-6">
+    <ScrollReveal>
+      <div className="flex flex-wrap items-start justify-between gap-8 mb-[clamp(32px,4vw,48px)]">
+        <div className="max-w-[760px]">
+          <h2 className="m-0 mb-3.5 font-['Overpass',sans-serif] font-black text-[clamp(30px,4.2vw,54px)] leading-tight uppercase text-white">
+            What is the
             <br />
-            Ideas
-            <br />
-            Data
-            <br />
-            Communities
-            <br />
-            Real impact
-            <div className="mt-2 w-8 h-px bg-white/30" />
-          </div>
+            <span className="bg-[linear-gradient(90deg,#2E96F5_0%,#2E96F5_55%,#9AA8FF_80%,#E43700_100%)] bg-clip-text text-transparent">
+              Space Apps Challenge?
+            </span>
+          </h2>
+          <p className="m-0 max-w-[680px] text-[19px] leading-relaxed text-white/78 font-light">
+            The largest annual global hackathon — engaging NASA and Space Agency Partners' free and open data to address real-world challenges on Earth and in space. Houston is one of hundreds of Local Events happening the same weekend worldwide.
+          </p>
         </div>
-      </ScrollReveal>
-
-      <ScrollReveal>
-        <div
-          className="flex flex-col lg:flex-row gap-3 lg:h-[clamp(480px,42vw,560px)]"
-          onMouseLeave={() => wide && setActive(null)}
-          onBlur={(e) => {
-            if (wide && !e.currentTarget.contains(e.relatedTarget as Node | null)) setActive(null);
-          }}
-        >
-          {portals.map((p, i) => {
-            const state = active === null ? 'idle' : active === i ? 'active' : 'compressed';
-            const isActive = state === 'active';
-            const Art = ART[p.key];
-            const Icon = p.Icon;
-            return (
-              <article
-                key={p.key}
-                data-state={state}
-                tabIndex={0}
-                aria-label={`${p.title}: ${p.headline.join(' ')}`}
-                // Every handler *sets* the open portal — none toggles — so hover,
-                // focus and tap can never fight each other.
-                onMouseEnter={() => wide && setActive(i)}
-                onFocus={() => setActive(i)}
-                onClick={() => setActive(i)}
-                className="wp-card relative overflow-hidden rounded-2xl border bg-[#060C1F] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-white/70 lg:min-w-0 transition-[flex-grow,height,border-color,box-shadow] duration-700 ease-[cubic-bezier(.2,.8,.2,1)]"
-                style={{
-                  flexGrow: wide ? (state === 'active' ? 2.4 : state === 'compressed' ? 0.75 : 1) : undefined,
-                  flexBasis: wide ? 0 : undefined,
-                  height: wide ? undefined : isActive ? 540 : 136,
-                  borderColor: isActive ? p.accent : 'rgba(46,150,245,0.24)',
-                  boxShadow: isActive ? `0 0 0 1px ${p.accent}, 0 0 42px ${rgba(p.accent, 0.35)}` : 'none'
-                }}
-              >
-                <div aria-hidden="true" className="absolute inset-0">
-                  <Art />
-                </div>
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,12,31,0.78)_0%,rgba(6,12,31,0.15)_30%,rgba(6,12,31,0.25)_50%,rgba(6,12,31,0.9)_76%,rgba(6,12,31,0.98)_100%)]"
-                />
-
-                <div className="relative z-10 flex items-start justify-between gap-3 p-[clamp(18px,1.8vw,26px)]">
-                  <div className="min-w-0">
-                    <div className="font-['Fira_Sans_Condensed',sans-serif] text-[15px] font-extrabold tracking-wider" style={{ color: p.accent }}>
-                      {p.num}
-                    </div>
-                    <h3 className="m-0 mt-1 font-['Overpass',sans-serif] font-black uppercase text-[clamp(17px,1.5vw,21px)] leading-tight text-white">
-                      {p.title}
-                    </h3>
-                  </div>
-                  <span
-                    aria-hidden="true"
-                    className={`flex-none grid place-items-center w-9 h-9 rounded-full border transition-transform duration-500 ${
-                      isActive ? '-rotate-45' : 'border-white/25 text-white/80'
-                    }`}
-                    style={isActive ? { borderColor: p.accent, color: p.accent } : undefined}
-                  >
-                    <ArrowRight size={16} />
-                  </span>
-                </div>
-
-                <div className="wp-idle absolute z-10 left-0 right-0 bottom-0 p-[clamp(18px,1.8vw,26px)]">
-                  <Icon aria-hidden="true" size={30} strokeWidth={1.4} className="hidden lg:block mb-3 text-white/45" />
-                  <p className="wp-short m-0 text-[15px] leading-snug text-white/70 transition-opacity duration-300">{p.short}</p>
-                </div>
-
-                <div className="wp-reveal absolute z-10 left-0 right-0 bottom-0 p-[clamp(20px,2vw,30px)]">
-                  <div className="lg:min-w-[440px] max-w-[560px]">
-                    <p className="m-0 font-['Overpass',sans-serif] font-black uppercase leading-[1.02] text-[clamp(24px,2.5vw,36px)] text-white">
-                      {p.headline[0]}
-                      <br />
-                      <span style={{ color: p.accent }}>{p.headline[1]}</span>
-                    </p>
-                    <p className="mt-3 mb-0 text-[15px] leading-relaxed text-white/80 max-w-[480px]">{p.detail}</p>
-                    <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                      <span className="inline-flex items-center gap-2.5 font-['Fira_Sans_Condensed',sans-serif] text-[11px] font-bold uppercase tracking-[0.22em] text-white/70">
-                        <Icon aria-hidden="true" size={18} strokeWidth={1.6} style={{ color: p.accent }} />
-                        {p.chip}
-                      </span>
-                      <a
-                        href={p.href}
-                        tabIndex={isActive ? 0 : -1}
-                        onClick={(e) => e.stopPropagation()}
-                        className="inline-flex items-center gap-2 rounded-full border px-4 py-2 font-['Fira_Sans_Condensed',sans-serif] text-[12px] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:bg-white/10"
-                        style={{ borderColor: p.accent }}
-                      >
-                        {p.cta}
-                        <ArrowRight aria-hidden="true" size={14} />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
+        <div aria-hidden="true" className="hidden lg:block pt-2 font-['Fira_Sans_Condensed',sans-serif] text-[12px] font-semibold uppercase tracking-[0.3em] leading-[2] text-white/60">
+          People
+          <br />
+          Ideas
+          <br />
+          Data
+          <br />
+          Communities
+          <br />
+          Real impact
+          <div className="mt-2 w-8 h-px bg-white/30" />
         </div>
-      </ScrollReveal>
-
-      <div aria-hidden="true" className="mt-[clamp(28px,3.5vw,44px)] flex items-center justify-center gap-5">
-        <span className="hidden sm:block h-px w-[clamp(32px,8vw,90px)] bg-white/20" />
-        <span className="font-['Fira_Sans_Condensed',sans-serif] text-[clamp(10px,1vw,13px)] font-semibold uppercase tracking-[0.22em] sm:tracking-[0.45em] text-white/60 text-center">
-          Same curiosity. A brighter tomorrow.
-        </span>
-        <span className="hidden sm:block h-px w-[clamp(32px,8vw,90px)] bg-white/20" />
       </div>
-    </section>
-  );
-};
+    </ScrollReveal>
+
+    <ScrollReveal>
+      <PortalRow items={portals} rowClassName="lg:h-[clamp(480px,42vw,560px)]" mobileClosed={136} mobileOpen={540} />
+    </ScrollReveal>
+
+    <div aria-hidden="true" className="mt-[clamp(28px,3.5vw,44px)] flex items-center justify-center gap-5">
+      <span className="hidden sm:block h-px w-[clamp(32px,8vw,90px)] bg-white/20" />
+      <span className="font-['Fira_Sans_Condensed',sans-serif] text-[clamp(10px,1vw,13px)] font-semibold uppercase tracking-[0.22em] sm:tracking-[0.45em] text-white/60 text-center">
+        Same curiosity. A brighter tomorrow.
+      </span>
+      <span className="hidden sm:block h-px w-[clamp(32px,8vw,90px)] bg-white/20" />
+    </div>
+  </section>
+);
 
 export default WhatIsSpaceApps;
