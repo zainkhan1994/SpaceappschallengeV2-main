@@ -289,14 +289,19 @@
 .tt-part[data-active='true'] .tt-stage-tag { color: var(--tt-yellow); }
 .tt-part:hover .tt-stage-tag i,
 .tt-part[data-active='true'] .tt-stage-tag i { background: var(--tt-yellow); }
+/* the end stages sit at the viewport edges, so their tags hug the edge instead of centring */
+.tt-part:first-child .tt-stage-tag { left: 0; translate: 0 0; align-items: flex-start; text-align: left; }
+.tt-part:last-child .tt-stage-tag { left: auto; right: 0; translate: 0 0; align-items: flex-end; text-align: right; }
 @media (min-width: 768px) {
   .tt-stage-tag { display: flex; }
 }
 
 .tt-card {
   position: absolute;
+  z-index: 4;
   left: 50%;
-  bottom: 30svh;
+  /* phones: sit low, clear of the statement. desktop: sit high, clear of the upper name tags. */
+  bottom: 26svh;
   width: min(660px, 92vw);
   translate: -50% 0;
   border: 1px solid rgba(46, 150, 245, 0.38);
@@ -304,6 +309,10 @@
   backdrop-filter: blur(6px);
   padding: clamp(18px, 2.4vw, 28px);
   transition: opacity 0.3s;
+}
+/* must come after the base rule above: same specificity, so source order decides */
+@media (min-width: 768px) {
+  .tt-card { bottom: 38svh; }
 }
 
 /* ---------- what happens ---------- */
