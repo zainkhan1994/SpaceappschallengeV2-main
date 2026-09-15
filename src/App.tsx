@@ -28,6 +28,7 @@ import PartnersSection from './components/sections/PartnersSection';
 import PastEventsSection from './components/sections/PastEventsSection';
 import ContactSection from './components/sections/ContactSection';
 import GetInvolvedNasaSection from './components/sections/GetInvolvedNasaSection';
+import OpportunitiesSection from './components/sections/OpportunitiesSection';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
@@ -114,6 +115,7 @@ const App: React.FC = () => {
           {route === '/past-events' && <PastEventsSection />}
           {route === '/contact' && <ContactSection />}
           {route === '/get-involved' && <GetInvolvedNasaSection />}
+          {route === '/opportunities' && <OpportunitiesSection />}
         </main>
 
         <Footer />

@@ -2,7 +2,6 @@ import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import BrighterTomorrowHero from '../get-involved/BrighterTomorrowHero';
 import NasaTechTalks from '../home/NasaTechTalks';
-import AllOpportunities from '../home/AllOpportunities';
 import { ScrollReveal } from '../ui/ScrollReveal';
 
 export const GetInvolvedNasaSection: React.FC = () => {
@@ -32,7 +31,6 @@ export const GetInvolvedNasaSection: React.FC = () => {
       </section>
 
       <NasaTechTalks />
-      <AllOpportunities />
 
       <section data-screen-label="Back to Houston" className="relative px-6 pb-[clamp(70px,8vw,124px)]">
         <div className="max-w-[1320px] mx-auto">
