@@ -7,14 +7,6 @@ export const basics = [
   { k: 'WHY', v: "Raise awareness of NASA's free and open data, inspire creativity and collaboration, and nurture an interest in STEM." }
 ];
 
-export const frontDoor = [
-  { num: '01', accent: '#2E96F5', title: 'NASA & JSC', desc: 'Time with NASA subject matter experts and the Johnson Space Center community that sits 25 miles down I-45.' },
-  { num: '02', accent: '#EAFE07', title: 'Internships', desc: 'Clear pointers to NASA and contractor internship pathways, and the people who can speak to them.' },
-  { num: '03', accent: '#EAFE07', title: 'Fellowships', desc: 'Awareness of fellowship and research programs that participants often do not know exist.' },
-  { num: '04', accent: '#E43700', title: 'Aerospace careers', desc: 'A first look at what engineering, data and mission-support roles actually involve day to day.' },
-  { num: '05', accent: '#2E96F5', title: 'Local ecosystem', desc: "Introductions into Houston's space startups, labs, universities and volunteer networks." }
-];
-
 export const growth = [
   { n: '12', label: 'First Houston event', accent: '#2E96F5', h: '150px', bar: '22px' },
   { n: '48', label: 'Following year', accent: '#EAFE07', h: '150px', bar: '74px' },

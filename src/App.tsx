@@ -7,11 +7,10 @@ import StarfieldCanvas from './components/ui/StarfieldCanvas';
 import Hero from './components/home/Hero';
 import CountdownBar from './components/home/CountdownBar';
 import WhatIsSpaceApps from './components/home/WhatIsSpaceApps';
-import FrontDoorToNASA from './components/home/FrontDoorToNASA';
 import HoustonGrowth from './components/home/HoustonGrowth';
 import WhyJoin from './components/home/WhyJoin';
 import ParticipantJourney from './components/home/ParticipantJourney';
-import GetInvolved from './components/home/GetInvolved';
+import FindYourPlace from './components/home/FindYourPlace';
 import ChallengesTeaser from './components/home/ChallengesTeaser';
 import VenueTeaser from './components/home/VenueTeaser';
 import PartnersTeaser from './components/home/PartnersTeaser';
@@ -92,11 +91,10 @@ const App: React.FC = () => {
               <Hero />
               <CountdownBar clock={heroClock} />
               <WhatIsSpaceApps />
-              <FrontDoorToNASA />
               <HoustonGrowth />
               <WhyJoin />
               <ParticipantJourney />
-              <GetInvolved />
+              <FindYourPlace />
               <ChallengesTeaser />
               <VenueTeaser />
               <PartnersTeaser />

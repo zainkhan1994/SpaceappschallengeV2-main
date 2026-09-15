@@ -4,9 +4,12 @@ import type { LucideIcon } from 'lucide-react';
 
 export const WIDE_QUERY = '(min-width: 1024px)';
 
-export const rgba = (hex: string, a: number) => {
-  const n = parseInt(hex.slice(1), 16);
-  return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
+/** Portal artwork that is just a photograph, revealed when the portal opens. */
+export const photoArt = (src: string, position = '50% 50%'): React.FC => {
+  const PhotoArt: React.FC = () => (
+    <img src={src} alt="" className="wp-photo absolute inset-0 w-full h-full object-cover" style={{ objectPosition: position }} />
+  );
+  return PhotoArt;
 };
 
 export const useMediaQuery = (query: string) => {
@@ -101,8 +104,7 @@ export const PortalRow: React.FC<PortalRowProps> = ({
               flexGrow: wide ? (state === 'active' ? activeGrow : state === 'compressed' ? compressedGrow : 1) : undefined,
               flexBasis: wide ? 0 : undefined,
               height: wide ? undefined : isActive ? mobileOpen : mobileClosed,
-              borderColor: isActive ? p.accent : 'rgba(46,150,245,0.24)',
-              boxShadow: isActive ? `0 0 0 1px ${p.accent}, 0 0 42px ${rgba(p.accent, 0.35)}` : 'none'
+              borderColor: isActive ? 'rgba(255,255,255,0.32)' : 'rgba(255,255,255,0.12)'
             }}
           >
             <div aria-hidden="true" className="absolute inset-0">

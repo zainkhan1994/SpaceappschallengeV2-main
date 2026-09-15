@@ -44,14 +44,14 @@ export const GetInvolvedNasaSection: React.FC = () => {
                 </h2>
                 <p className="mt-3 m-0 text-[17px] leading-relaxed text-white/75 font-light">
                   Participate, mentor, judge, volunteer or partner — the local roles are on the home
-                  page under Choose Your Path.
+                  page under Find Your Place.
                 </p>
               </div>
               <a
                 href="#/"
                 className="group inline-flex items-center gap-2.5 px-7 py-[1.125rem] rounded-xl bg-[#E43700] text-white font-extrabold text-[17px] shadow-[0_8px_32px_rgba(228,55,0,0.32)] transition-colors duration-300 hover:bg-[#FF5426]"
               >
-                Choose your path
+                Find your place
                 <ArrowRight
                   aria-hidden="true"
                   size={18}
