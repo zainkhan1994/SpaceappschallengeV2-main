@@ -1,14 +1,18 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Globe, Lightbulb, PenTool, Users } from 'lucide-react';
 import '../tech-talks/techTalks.css';
-import { useScrollProgress } from '../tech-talks/useScrollProgress';
+import { REDUCED_MOTION, useScrollProgress } from '../tech-talks/useScrollProgress';
 import { ScrollReveal } from '../ui/ScrollReveal';
 import { TechTalk, techTalks2023, techTalks2024, techTalks2025, techTalks2026 } from '../../data/techTalksData';
-import { techTalkCards } from '../../data/techTalkCards';
+import { challengePosters } from '../../data/challengePosters';
 
 // Imagery: stage, staircase, lunar horizon and Earth (hero) supplied by Space Apps Houston.
 // NASA, public domain (images.nasa.gov): Moon GSFC_20171208_Archive_e001861 (LRO) · Mars PIA00407 (Viking) ·
 // SLS Block 1B illustration B1B_Crew_OML · software jsc2022e090102 · mission planning jsc2026e019242 ·
-// hardware KSC-20260721-PH-JBS01_0014 · Artemis II crew patch jsc2025e034457 · Earth GSFC_20171208_Archive_e002131.
+// hardware KSC-20260721-PH-JBS01_0014 · Artemis II crew patch jsc2025e034457 · spacewalk iss038e020234 (join art).
+// Rotating globe rendered from NASA Visible Earth: Blue Marble Next Generation, Black Marble 2016, cloud_combined.
+// Houston skyline (join art): Carol M. Highsmith Archive, Library of Congress (no known restrictions).
+// Neon arcs, Space Apps Houston logo and challenge posters supplied by Space Apps Houston.
 
 type VarStyle = React.CSSProperties & Record<`--${string}`, string | number>;
 
@@ -82,7 +86,7 @@ const Hero: React.FC = () => {
   );
 };
 
-/* ---------------------------------------------------------------- 2. blur to focus (bottlenecks, and the closing frame) */
+/* ---------------------------------------------------------------- 2. the bottlenecks, blur to focus */
 
 const BlurLines: React.FC<{ lines: string[] }> = ({ lines }) => {
   const ref = useScrollProgress<HTMLElement>('pin');
@@ -186,35 +190,156 @@ const Sustain: React.FC = () => {
   );
 };
 
-/* ---------------------------------------------------------------- 4. call to action */
+/* ---------------------------------------------------------------- 4. take what you have learned */
 
-const Cta: React.FC = () => {
+const LEARNED = [
+  'Take what you have learned,',
+  'form a team,',
+  'and prove your solution in 48 hours',
+  'at the NASA International Space Apps Challenge.'
+];
+
+const Learned: React.FC = () => {
   const ref = useScrollProgress<HTMLElement>('pin');
+  const video = useRef<HTMLVideoElement>(null);
+  const [still] = useState(() => typeof window !== 'undefined' && window.matchMedia(REDUCED_MOTION).matches);
+
+  // play only while the section is on screen; browsers can leave an off-screen autoplay video paused
+  useEffect(() => {
+    const el = ref.current;
+    const v = video.current;
+    if (!el || !v || still) return;
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) v.play().catch(() => undefined);
+      else v.pause();
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [ref, still]);
+
   return (
-    <section ref={ref} className="tt-cta" aria-labelledby="tt-cta-title">
+    <section ref={ref} className="tt-learn" aria-labelledby="tt-learn-title">
       <div className="tt-stick">
-        <img className="tt-cta-earth" src={`${STORY}/earth-disk.webp`} alt="" loading="lazy" />
-        <h2 id="tt-cta-title" className="sr-only">
-          Join the NASA International Space Apps Challenge
+        <div className="tt-stars" aria-hidden="true" />
+        <video
+          ref={video}
+          className="tt-learn-globe"
+          autoPlay={!still}
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster={`${STORY}/globe-poster.jpg`}
+          aria-hidden="true"
+        >
+          <source src={`${STORY}/globe-900.mp4`} type="video/mp4" media="(min-width: 900px)" />
+          <source src={`${STORY}/globe-720.mp4`} type="video/mp4" />
+        </video>
+        <h2 id="tt-learn-title" className="tt-learn-text m-0">
+          {LEARNED.map((line, i) => (
+            <span
+              key={line}
+              className={`tt-q tt-learn-line${i === LEARNED.length - 1 ? ' is-accent' : ''}`}
+              style={{ '--s': 0.04 + i * 0.16, '--k': 6 } as VarStyle}
+            >
+              {line}{' '}
+            </span>
+          ))}
         </h2>
-        <p className="tt-display tt-sweep m-0" aria-hidden="true">
-          Join NASA Space Apps Challenge
-        </p>
-        <div className="tt-q tt-cta-copy" style={{ '--s': 0.42, '--k': 5 } as VarStyle}>
-          <p className="tt-cta-lede m-0">
-            Take what you have learned, form a team, and prove your solution in 48 hours at the NASA International Space
-            Apps Challenge.
-          </p>
-          <a href="#/" className="tt-pill tt-pill-solid tt-mono mt-8">
-            Join NASA Space Apps Houston <span aria-hidden="true">→</span>
-          </a>
-        </div>
       </div>
     </section>
   );
 };
 
-/* ---------------------------------------------------------------- 5. what happens */
+/* ---------------------------------------------------------------- 5. join Space Apps (two frames) */
+
+const JOIN_VERBS = [
+  { Icon: Users, label: 'Collaborate' },
+  { Icon: Lightbulb, label: 'Innovate' },
+  { Icon: Globe, label: 'Solve' },
+  { Icon: PenTool, label: 'Create' }
+];
+
+const Join: React.FC = () => {
+  const ref = useScrollProgress<HTMLElement>('pin');
+
+  // only the frame on screen can take focus or clicks
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const first = el.querySelector('.tt-join-frame.is-1');
+    const second = el.querySelector('.tt-join-frame.is-2');
+    let raf = 0;
+    const sync = () => {
+      raf = 0;
+      const onSecond = parseFloat(el.style.getPropertyValue('--p') || '0') >= 0.5;
+      first?.toggleAttribute('inert', onSecond);
+      second?.toggleAttribute('inert', !onSecond);
+    };
+    const schedule = () => {
+      if (!raf) raf = requestAnimationFrame(sync);
+    };
+    schedule();
+    window.addEventListener('scroll', schedule, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', schedule);
+      cancelAnimationFrame(raf);
+    };
+  }, [ref]);
+
+  return (
+    <section ref={ref} className="tt-join" aria-labelledby="tt-join-title">
+      <div className="tt-stick">
+        <picture>
+          <source media="(min-width: 900px)" srcSet={`${STORY}/cta-desktop.jpg`} />
+          <img className="tt-join-bg" src={`${STORY}/cta-mobile.jpg`} alt="" />
+        </picture>
+        <h2 id="tt-join-title" className="sr-only">
+          Join the NASA Space Apps Challenge
+        </h2>
+        <ul className="tt-join-list is-left tt-mono" aria-hidden="true">
+          <li>People</li>
+          <li>Ideas</li>
+          <li>Data</li>
+          <li>Community</li>
+        </ul>
+        <ul className="tt-join-list is-right tt-mono" aria-hidden="true">
+          <li>Local</li>
+          <li>Solutions</li>
+          <li>Global</li>
+          <li>Impact</li>
+        </ul>
+        <div className="tt-join-frame is-1" aria-hidden="true">
+          <p className="tt-join-title m-0">
+            Join the NASA
+            <br />
+            Space Apps
+            <br />
+            Challenge
+          </p>
+          <span className="tt-join-arrow">→</span>
+        </div>
+        <div className="tt-join-frame is-2">
+          <img className="tt-join-logo" src="/sac-logo-houston-transparent.png" alt="NASA Space Apps Houston" />
+          <p className="tt-join-meta tt-mono m-0">November 14–15, 2026 · 48 hours · Houston</p>
+          <a href="#/" className="tt-join-btn tt-mono">
+            Be part of it <span aria-hidden="true">→</span>
+          </a>
+        </div>
+        <ul className="tt-join-verbs m-0 list-none p-0">
+          {JOIN_VERBS.map(({ Icon, label }) => (
+            <li key={label}>
+              <Icon aria-hidden="true" strokeWidth={1.25} />
+              <span className="tt-mono">{label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+};
+
+/* ---------------------------------------------------------------- 6. what happens */
 
 const WhatHappens: React.FC = () => {
   const deck = useRef<HTMLDivElement>(null);
@@ -243,12 +368,12 @@ const WhatHappens: React.FC = () => {
         </ScrollReveal>
 
         <div className="mt-12 flex items-center justify-between gap-6">
-          <p className="tt-mono m-0 text-[11px] text-white/60">Swipe through the talks</p>
+          <p className="tt-mono m-0 text-[11px] text-white/60">Swipe through the challenges</p>
           <div className="tt-deck-nav">
-            <button type="button" onClick={() => nudge(-1)} aria-label="Previous talk">
+            <button type="button" onClick={() => nudge(-1)} aria-label="Previous challenge">
               ←
             </button>
-            <button type="button" onClick={() => nudge(1)} aria-label="Next talk">
+            <button type="button" onClick={() => nudge(1)} aria-label="Next challenge">
               →
             </button>
           </div>
@@ -258,60 +383,18 @@ const WhatHappens: React.FC = () => {
       <div className="relative mt-8">
         <div className="tt-grid absolute inset-0" aria-hidden="true" />
         <div ref={deck} className="tt-deck relative">
-          {techTalkCards.map((c) => {
-            const Tag = c.url ? 'a' : 'div';
-            return (
-              <Tag
-                key={c.slug}
-                className={`tt-card-item${c.art ? '' : ' is-type'}`}
-                {...(c.url ? { href: c.url, target: '_blank', rel: 'noopener noreferrer' } : {})}
-              >
-                {c.art && <img src={`/tech-talks/cards/${c.slug}.jpg`} alt="" loading="lazy" />}
-                <div className="tt-card-body">
-                  <div className="tt-card-top tt-mono">
-                    <span>
-                      NASA Tech Talks
-                      <br />
-                      Houston
-                    </span>
-                    <span>
-                      {c.month} {c.year}
-                    </span>
-                  </div>
-                  <p className="tt-card-kicker tt-mono">{c.kicker}</p>
-                  <h3 className="tt-card-title tt-display-lite normal-case">
-                    {c.top}
-                    <br />
-                    <span>{c.accent}</span>
-                    {c.end && (
-                      <>
-                        <br />
-                        {c.end}
-                      </>
-                    )}
-                  </h3>
-                  <p className="tt-card-desc tt-body">{c.desc}</p>
-                  {c.url && (
-                    <div className="tt-card-cta tt-mono">
-                      <i aria-hidden="true">→</i> View talk
-                    </div>
-                  )}
-                  <span className="tt-card-note tt-mono" aria-hidden="true">
-                    Same curiosity.
-                    <br />
-                    Bigger tomorrows.
-                  </span>
-                </div>
-              </Tag>
-            );
-          })}
+          {challengePosters.map((c) => (
+            <figure key={c.slug} className="tt-card-item m-0">
+              <img src={`/tech-talks/challenges/${c.slug}.webp`} alt={c.title} width={1122} height={1402} loading="lazy" />
+            </figure>
+          ))}
         </div>
       </div>
     </section>
   );
 };
 
-/* ---------------------------------------------------------------- 6. archive */
+/* ---------------------------------------------------------------- 7. archive */
 
 const years: { year: string; talks: TechTalk[] }[] = [
   { year: '2026', talks: techTalks2026 },
@@ -412,10 +495,10 @@ export const TechTalksSection: React.FC = () => (
     <Hero />
     <BlurLines lines={['and they have laid out', 'the operational', 'bottlenecks.']} />
     <Sustain />
-    <Cta />
+    <Learned />
+    <Join />
     <WhatHappens />
     <Archive />
-    <BlurLines lines={['Bring a question.', 'Bring a friend.', 'What will you ask?']} />
   </div>
 );
 
