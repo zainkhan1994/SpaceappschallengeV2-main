@@ -82,11 +82,10 @@ const Hero: React.FC = () => {
   );
 };
 
-/* ---------------------------------------------------------------- 2. the bottlenecks, blur to focus */
+/* ---------------------------------------------------------------- 2. blur to focus (bottlenecks, and the closing frame) */
 
-const Bottlenecks: React.FC = () => {
+const BlurLines: React.FC<{ lines: string[] }> = ({ lines }) => {
   const ref = useScrollProgress<HTMLElement>('pin');
-  const lines = ['and they have laid out', 'the operational', 'bottlenecks.'];
   return (
     <section ref={ref} className="tt-focus">
       <div className="tt-stick flex flex-col items-center justify-center px-5 text-center">
@@ -411,11 +410,12 @@ export const TechTalksSection: React.FC = () => (
       <span aria-hidden="true">←</span> Space Apps Houston
     </a>
     <Hero />
-    <Bottlenecks />
+    <BlurLines lines={['and they have laid out', 'the operational', 'bottlenecks.']} />
     <Sustain />
     <Cta />
     <WhatHappens />
     <Archive />
+    <BlurLines lines={['Bring a question.', 'Bring a friend.', 'What will you ask?']} />
   </div>
 );
 

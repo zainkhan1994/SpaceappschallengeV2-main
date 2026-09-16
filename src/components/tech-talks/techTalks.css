@@ -308,14 +308,12 @@
 .tt-fx-patch { height: clamp(90px, 17svh, 170px); width: auto; filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.5)); }
 .tt-fx-row {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 14px clamp(18px, 3vw, 36px);
-  max-width: 520px;
+  gap: clamp(14px, 3vw, 36px);
 }
 /* partner marks in one colour so no single agency shouts over the rest */
-.tt-fx-partner { height: clamp(28px, 5.4svh, 50px); width: auto; filter: brightness(0) invert(1); opacity: calc(var(--in) * 0.85); }
+.tt-fx-partner { height: clamp(22px, min(5.4svh, 7.4vw), 50px); width: auto; filter: brightness(0) invert(1); opacity: calc(var(--in) * 0.85); }
 .tt-sus-text {
   position: absolute;
   z-index: 3;
