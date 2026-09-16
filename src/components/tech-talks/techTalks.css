@@ -244,6 +244,12 @@
 @media (min-width: 900px) {
   .tt-flow-steps { padding-top: 26svh; gap: 5svh; }
 }
+/* short phones: tighten so the button never falls below the fold */
+@media (max-height: 720px) {
+  .tt-flow-steps { padding-top: 12svh; gap: 2.2svh; }
+  .tt-flow-step p { font-size: 15px; }
+  .tt-flow-arrow { margin-bottom: 4px; }
+}
 
 /* supplied photography behind later sections */
 .tt-sec-photo {
