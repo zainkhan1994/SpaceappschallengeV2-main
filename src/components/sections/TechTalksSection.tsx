@@ -3,6 +3,7 @@ import '../tech-talks/techTalks.css';
 import { REDUCED_MOTION, useScrollProgress } from '../tech-talks/useScrollProgress';
 import { ScrollReveal } from '../ui/ScrollReveal';
 import { TechTalk, techTalks2023, techTalks2024, techTalks2025, techTalks2026 } from '../../data/techTalksData';
+import { techTalkCards } from '../../data/techTalkCards';
 
 // Imagery: astronaut plate supplied by Space Apps Houston; Moon surface = Apollo 16 AS16-120-19187;
 // nebula = NASA/ESA/CSA/STScI Webb "Cosmic Cliffs" in the Carina Nebula (images.nasa.gov: carina_nebula).
@@ -393,69 +394,6 @@ const Series: React.FC = () => {
 
 /* ---------------------------------------------------------------- 5. what happens */
 
-/** One card per talk: NASA public-domain art, the talk's own words, and a link to its event page. */
-const cards: { art: string; year: string; kicker: string; top: string; accent: string; end?: string; talk: TechTalk }[] = [
-  {
-    art: 'humanities',
-    year: '2026',
-    kicker: 'People × Ideas × Worlds',
-    top: 'Rice University’s',
-    accent: 'Space Humanities',
-    end: 'Initiative',
-    talk: byMonth(techTalks2026, 'AUG')
-  },
-  {
-    art: 'sensorimotor',
-    year: '2026',
-    kicker: 'Body × Gravity × Performance',
-    top: 'Optimizing',
-    accent: 'Sensorimotor',
-    end: 'Performance',
-    talk: byMonth(techTalks2026, 'JUL')
-  },
-  {
-    art: 'education',
-    year: '2026',
-    kicker: 'Students × Faculty × NASA',
-    top: 'NASA',
-    accent: 'Education',
-    end: 'Highlights',
-    talk: byMonth(techTalks2026, 'JUN')
-  },
-  {
-    art: 'lifesupport',
-    year: '2025',
-    kicker: 'Air × Water × Life',
-    top: 'Ceramic Ion',
-    accent: 'Transport Membranes',
-    talk: byMonth(techTalks2025, 'SEP')
-  },
-  {
-    art: 'lunar',
-    year: '2025',
-    kicker: 'Suits × Habitats × Safety',
-    top: 'Lunar',
-    accent: 'Innovations',
-    talk: byMonth(techTalks2025, 'AUG')
-  },
-  {
-    art: 'biomanufacturing',
-    year: '2025',
-    kicker: 'Cells × Materials × Orbit',
-    top: 'In-Space',
-    accent: 'Biomanufacturing',
-    talk: byMonth(techTalks2025, 'JUL')
-  },
-  {
-    art: 'food',
-    year: '2025',
-    kicker: 'Crops × Meals × Missions',
-    top: 'Space Food',
-    accent: 'Systems',
-    talk: byMonth(techTalks2025, 'MAY')
-  }
-];
-
 const WhatHappens: React.FC = () => {
   const deck = useRef<HTMLDivElement>(null);
 
@@ -498,50 +436,53 @@ const WhatHappens: React.FC = () => {
       <div className="relative mt-8">
         <div className="tt-grid absolute inset-0" aria-hidden="true" />
         <div ref={deck} className="tt-deck relative">
-          {cards.map((c) => (
-            <a
-              key={c.art}
-              className="tt-card-item"
-              href={c.talk.url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={`/tech-talks/cards/${c.art}.jpg`} alt="" loading="lazy" />
-              <div className="tt-card-body">
-                <div className="tt-card-top tt-mono">
-                  <span>
-                    NASA Tech Talks
-                    <br />
-                    Houston
-                  </span>
-                  <span>
-                    {c.talk.month} {c.year}
-                  </span>
-                </div>
-                <p className="tt-card-kicker tt-mono">{c.kicker}</p>
-                <h3 className="tt-card-title tt-display-lite normal-case">
-                  {c.top}
-                  <br />
-                  <span>{c.accent}</span>
-                  {c.end && (
-                    <>
+          {techTalkCards.map((c) => {
+            const Tag = c.url ? 'a' : 'div';
+            return (
+              <Tag
+                key={c.slug}
+                className={`tt-card-item${c.art ? '' : ' is-type'}`}
+                {...(c.url ? { href: c.url, target: '_blank', rel: 'noopener noreferrer' } : {})}
+              >
+                {c.art && <img src={`/tech-talks/cards/${c.slug}.jpg`} alt="" loading="lazy" />}
+                <div className="tt-card-body">
+                  <div className="tt-card-top tt-mono">
+                    <span>
+                      NASA Tech Talks
                       <br />
-                      {c.end}
-                    </>
+                      Houston
+                    </span>
+                    <span>
+                      {c.month} {c.year}
+                    </span>
+                  </div>
+                  <p className="tt-card-kicker tt-mono">{c.kicker}</p>
+                  <h3 className="tt-card-title tt-display-lite normal-case">
+                    {c.top}
+                    <br />
+                    <span>{c.accent}</span>
+                    {c.end && (
+                      <>
+                        <br />
+                        {c.end}
+                      </>
+                    )}
+                  </h3>
+                  <p className="tt-card-desc tt-body">{c.desc}</p>
+                  {c.url && (
+                    <div className="tt-card-cta tt-mono">
+                      <i aria-hidden="true">→</i> View talk
+                    </div>
                   )}
-                </h3>
-                <p className="tt-card-desc tt-body">{c.talk.desc}</p>
-                <div className="tt-card-cta tt-mono">
-                  <i aria-hidden="true">→</i> View talk
+                  <span className="tt-card-note tt-mono" aria-hidden="true">
+                    Same curiosity.
+                    <br />
+                    Bigger tomorrows.
+                  </span>
                 </div>
-                <span className="tt-card-note tt-mono" aria-hidden="true">
-                  Same curiosity.
-                  <br />
-                  Bigger tomorrows.
-                </span>
-              </div>
-            </a>
-          ))}
+              </Tag>
+            );
+          })}
         </div>
       </div>
     </section>

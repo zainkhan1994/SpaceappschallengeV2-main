@@ -437,7 +437,7 @@
   position: relative;
   flex: none;
   width: min(80vw, 430px);
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 4 / 5;
   border-radius: 26px;
   overflow: hidden;
   scroll-snap-align: center;
@@ -526,6 +526,15 @@
   border-color: var(--tt-yellow);
   color: #04070f;
 }
+/* cards still waiting on art: type-led, never a broken image */
+.tt-card-item.is-type {
+  background: linear-gradient(155deg, #0b1430 0%, #0a1024 45%, #050a18 100%);
+}
+.tt-card-item.is-type::after {
+  background: radial-gradient(120% 80% at 80% 0%, rgba(46, 150, 245, 0.28) 0%, transparent 60%),
+    linear-gradient(180deg, rgba(4, 7, 15, 0.2) 0%, rgba(4, 7, 15, 0.55) 70%, rgba(4, 7, 15, 0.92) 100%);
+}
+.tt-card-item.is-type .tt-card-title { font-size: clamp(28px, 3.6vw, 44px); }
 .tt-card-note {
   position: absolute;
   right: clamp(18px, 2.4vw, 28px);
