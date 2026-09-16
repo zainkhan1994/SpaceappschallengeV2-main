@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import '../tech-talks/techTalks.css';
 import { REDUCED_MOTION, useScrollProgress } from '../tech-talks/useScrollProgress';
 import { ScrollReveal } from '../ui/ScrollReveal';
-import { TechTalk, techTalks2025, techTalks2026 } from '../../data/techTalksData';
+import { TechTalk, techTalks2023, techTalks2024, techTalks2025, techTalks2026 } from '../../data/techTalksData';
 
 // Imagery: astronaut plate supplied by Space Apps Houston; Moon surface = Apollo 16 AS16-120-19187;
 // nebula = NASA/ESA/CSA/STScI Webb "Cosmic Cliffs" in the Carina Nebula (images.nasa.gov: carina_nebula).
@@ -275,13 +275,23 @@ const Series: React.FC = () => {
                 {stage.talk.role ? ` · ${stage.talk.role}` : ''}
               </p>
               <p className="tt-body m-0 mt-4 text-[15px] leading-[1.65] text-white/80">{stage.talk.desc}</p>
+              {stage.talk.url && (
+                <a
+                  href={stage.talk.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="tt-mono mt-5 inline-block text-[10px] text-[#EAFE07] underline underline-offset-4"
+                >
+                  View on Ion District ↗
+                </a>
+              )}
             </>
           ) : (
             <>
               <p className="tt-mono m-0 text-[11px] text-[#2E96F5]">Eight of the talks so far</p>
               <p className="tt-body m-0 mt-3 text-[15px] leading-[1.65] text-white/75">
                 Every stage of this rocket is a talk that already happened. Hover or tap one to see who spoke,
-                when, and what they talked about.
+                when, and what they talked about — then click again to open the event page.
               </p>
             </>
           )}
@@ -300,7 +310,11 @@ const Series: React.FC = () => {
                 style={{ width: `${part.w}%`, '--o': `${part.o}vw`, '--y': `${part.y}px`, '--r': `${part.r}deg` } as VarStyle}
                 onMouseEnter={() => setActive(i)}
                 onFocus={() => setActive(i)}
-                onClick={() => setActive(active === i ? null : i)}
+                onClick={() => {
+                  // first click (or hover) selects the stage; clicking the selected one opens its event page
+                  if (active === i && s.talk.url) window.open(s.talk.url, '_blank', 'noopener,noreferrer');
+                  else setActive(i);
+                }}
               >
                 <span className={`tt-hull${part.dark ? ' is-dark' : ''}`} style={part.clip ? { clipPath: part.clip } : undefined} aria-hidden="true">
                   {part.windows && (
@@ -635,7 +649,9 @@ const Constellation: React.FC = () => {
 
 const years: { year: string; talks: TechTalk[] }[] = [
   { year: '2026', talks: techTalks2026 },
-  { year: '2025', talks: techTalks2025 }
+  { year: '2025', talks: techTalks2025 },
+  { year: '2024', talks: techTalks2024 },
+  { year: '2023', talks: techTalks2023 }
 ];
 
 const Archive: React.FC = () => {
@@ -674,7 +690,7 @@ const Archive: React.FC = () => {
             return (
               <li
                 key={`${year}-${t.month}`}
-                className="tt-row grid gap-x-8 gap-y-2 border-t border-white/10 px-2 py-6 md:grid-cols-[130px_minmax(0,1fr)_minmax(0,34%)] md:px-4"
+                className="tt-row relative grid gap-x-8 gap-y-2 border-t border-white/10 px-2 py-6 md:grid-cols-[130px_minmax(0,1fr)_minmax(0,34%)] md:px-4"
               >
                 <p className="tt-mono m-0 flex items-center gap-2.5 text-[12px] text-white/85">
                   {next && <span className="h-2.5 w-2.5 rounded-full bg-[#EAFE07] shadow-[0_0_10px_rgba(234,254,7,0.9)]" aria-hidden="true" />}
@@ -688,9 +704,29 @@ const Archive: React.FC = () => {
                     </p>
                   )}
                 </div>
-                <p className="tt-body m-0 text-[15px] leading-[1.7] text-white/65">
-                  {next ? `${t.time} · ${t.venue}. Topic to be announced.` : t.desc ?? ''}
-                </p>
+                <div>
+                  <p className="tt-body m-0 text-[15px] leading-[1.7] text-white/65">
+                    {next ? `${t.time} · ${t.venue}. Topic to be announced.` : t.desc ?? ''}
+                  </p>
+                  {t.url && (
+                    <span className="tt-mono mt-3 inline-block text-[10px] text-[#2E96F5]" aria-hidden="true">
+                      Ion District ↗
+                    </span>
+                  )}
+                </div>
+                {t.url && (
+                  /* the whole row is the link to that talk's Ion District page */
+                  <a
+                    href={t.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="absolute inset-0 rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#EAFE07]"
+                  >
+                    <span className="sr-only">
+                      {t.title} — {t.month} {t.day}, {year}. Opens the Ion District event page.
+                    </span>
+                  </a>
+                )}
               </li>
             );
           })}
