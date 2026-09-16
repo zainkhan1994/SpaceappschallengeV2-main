@@ -111,51 +111,73 @@ const Asteroid: React.FC<{ className?: string }> = ({ className }) => (
 
 /* ---------------------------------------------------------------- 1. hero */
 
-const dust = [
-  { l: 36, b: 10, w: 190, h: 46 },
-  { l: 52, b: 9, w: 230, h: 52 },
-  { l: 44, b: 13, w: 150, h: 40 },
-  { l: 30, b: 12, w: 120, h: 34 },
-  { l: 62, b: 12, w: 140, h: 38 }
-];
-
 const Hero: React.FC = () => {
   const ref = useScrollProgress<HTMLElement>('pin');
-  const toUpcoming = () => document.getElementById('tt-upcoming')?.scrollIntoView({ behavior: 'smooth' });
+  const goTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
   return (
     <section ref={ref} className="tt-hero" aria-labelledby="tt-title">
       <div className="tt-stick">
         <div className="tt-stars" aria-hidden="true" />
         <NeonRibbons className="tt-ribbons" />
+        <img className="tt-earth" src="/tech-talks/earth-night.jpg" alt="" />
 
         <div className="tt-moon" aria-hidden="true" />
         <span className="tt-touchdown" aria-hidden="true" />
-        {dust.map((d, i) => (
-          <span
-            key={i}
-            className="tt-dust"
-            style={{ left: `${d.l}%`, bottom: `${d.b}svh`, width: d.w, height: d.h, animationDelay: `${-i * 1.7}s` }}
-            aria-hidden="true"
-          />
-        ))}
-
         <img className="tt-hero-astro" src="/tech-talks/astronaut-cutout.webp" alt="" />
 
+        <p className="tt-corner tt-corner-tr tt-mono" aria-hidden="true">
+          Same curiosity.
+          <br />
+          Bigger tomorrows.
+        </p>
+        <p className="tt-corner tt-corner-bl tt-mono" aria-hidden="true">
+          People
+          <br />
+          Ideas
+          <br />
+          Technology
+          <br />
+          A brighter
+          <br />
+          tomorrow
+        </p>
+        <p className="tt-corner tt-corner-mr tt-mono" aria-hidden="true">
+          Houston
+          <br />
+          builds
+          <br />
+          bigger
+        </p>
+
         <div className="tt-hero-copy">
-          <p className="tt-mono m-0 mb-5 text-[clamp(10px,1.1vw,13px)] text-white/70">Houston · The Ion · One Thursday a month</p>
+          <p className="tt-mono m-0 mb-6 text-[clamp(10px,1.1vw,13px)] text-white/75">Houston · The Ion · One Thursday a month</p>
           <h1 id="tt-title" className="tt-display m-0 text-[clamp(52px,9vw,132px)]">
             NASA
             <br />
             Tech <span className="text-[#EAFE07]">Talks</span>
           </h1>
-          <p className="tt-body m-0 mt-8 max-w-[640px] text-[clamp(16px,1.6vw,21px)] leading-[1.6] text-white/80">
-            Monthly conversations with the people building NASA’s future — live in Houston, open to anyone
-            who shows up with a question.
+          <p className="tt-body m-0 mt-8 max-w-[700px] text-[clamp(17px,1.9vw,26px)] leading-[1.45] text-white">
+            You came here to learn how NASA solves problems.
           </p>
-          <button type="button" onClick={toUpcoming} className="tt-pill tt-mono mt-10">
-            <span aria-hidden="true">✦</span> Next talk · Thu Sep 24
-          </button>
+          <p className="tt-body m-0 mt-2.5 max-w-[700px] text-[clamp(15px,1.6vw,22px)] leading-[1.45] text-white/60">
+            Now put what you’ve learned to work.
+          </p>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <button type="button" onClick={() => goTo('tt-archive-top')} className="tt-pill tt-pill-solid tt-mono">
+              Explore the talks <span aria-hidden="true">↓</span>
+            </button>
+            <button type="button" onClick={() => goTo('tt-upcoming')} className="tt-pill tt-mono">
+              Next talk · Sep 24 <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="tt-cue tt-mono" aria-hidden="true">
+          <span>You’ve been here before</span>
+          <svg viewBox="0 0 12 40" width="12" height="40" fill="none" stroke="currentColor" strokeWidth="1">
+            <path d="M6 0v33M1.5 27.5 6 34l4.5-6.5" />
+          </svg>
         </div>
       </div>
     </section>
@@ -174,6 +196,19 @@ const Words: React.FC = () => {
   return (
     <section ref={ref} className="tt-words">
       <div className="tt-stick flex items-center justify-center">
+        {/* Earth and the astronaut follow you down from the hero */}
+        <img
+          className="tt-sec-earth left-[-8vw] top-[10%] w-[clamp(130px,19vw,280px)]"
+          style={{ '--sp': '30vh' } as VarStyle}
+          src="/tech-talks/earth-night.jpg"
+          alt=""
+        />
+        <img
+          className="tt-sec-astro bottom-[12%] right-[8vw] h-[clamp(70px,11svh,130px)]"
+          style={{ '--sp': '-20vh' } as VarStyle}
+          src="/tech-talks/astronaut-cutout.webp"
+          alt=""
+        />
         <h2
           className="tt-display m-0 text-center text-[clamp(52px,10vw,148px)] leading-[1.18]"
           style={{ transform: 'translateY(calc(var(--p, 0) * -10svh))' }}
@@ -208,6 +243,18 @@ const Globes: React.FC = () => {
       <div className="tt-globe left-[52%] top-[58%] w-[12vw] min-w-[90px]" style={{ '--sp': '70vh' } as VarStyle}>
         <WireGlobe spin={16} strokeWidth={1} />
       </div>
+      <img
+        className="tt-sec-earth right-[6vw] top-[12%] w-[clamp(110px,16vw,240px)]"
+        style={{ '--sp': '-26vh' } as VarStyle}
+        src="/tech-talks/earth-night.jpg"
+        alt=""
+      />
+      <img
+        className="tt-sec-astro bottom-[14%] left-[9vw] h-[clamp(64px,10svh,120px)]"
+        style={{ '--sp': '34vh' } as VarStyle}
+        src="/tech-talks/astronaut-cutout.webp"
+        alt=""
+      />
       <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
         <p className="tt-mono m-0 mb-7 text-[12px] text-[#2E96F5]">January 2025 → today</p>
         <p className="tt-display m-0 text-[clamp(38px,6.2vw,92px)]">
@@ -659,7 +706,7 @@ const Archive: React.FC = () => {
   const talks = [...(years.find((y) => y.year === year)?.talks ?? [])].reverse();
 
   return (
-    <section className="bg-[#050a1c] px-[max(20px,4vw)] py-[clamp(80px,10vw,150px)]" aria-labelledby="tt-archive">
+    <section id="tt-archive-top" className="bg-[#050a1c] px-[max(20px,4vw)] py-[clamp(80px,10vw,150px)]" aria-labelledby="tt-archive">
       <div className="mx-auto max-w-[1320px]">
         <LabelRow label="Every talk so far" />
         <div className="mt-10 flex flex-wrap items-end justify-between gap-6">

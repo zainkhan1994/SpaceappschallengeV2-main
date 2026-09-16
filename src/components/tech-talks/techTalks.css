@@ -119,7 +119,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: calc(env(safe-area-inset-top, 0px) + 11svh) 20px 0;
+  justify-content: center;
+  padding: 0 20px 22svh;
   text-align: center;
   transform: translateY(calc(var(--p, 0) * -30svh));
   opacity: calc(1 - var(--p, 0) * 2.6);
@@ -128,35 +129,56 @@
   position: absolute;
   z-index: 1;
   inset: auto 0 0 0;
-  height: 42svh;
-  background: url('/tech-talks/moon-surface.jpg') center 30% / cover no-repeat;
-  -webkit-mask-image: linear-gradient(180deg, transparent, #000 26%);
-  mask-image: linear-gradient(180deg, transparent, #000 26%);
-  transform: translateY(calc((1 - var(--p, 0)) * 7svh));
+  height: 38svh;
+  background: url('/tech-talks/moon-surface.jpg') center top / cover no-repeat;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 11%);
+  mask-image: linear-gradient(180deg, transparent, #000 11%);
+  transform: translateY(calc((1 - var(--p, 0)) * 4svh));
+  filter: brightness(0.6) contrast(1.14) saturate(0.85);
 }
+/* darkens the regolith towards the bottom so the corner notes and cue stay readable */
+.tt-moon::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(4, 7, 15, 0) 0%, rgba(4, 7, 15, 0.3) 52%, rgba(4, 7, 15, 0.82) 100%);
+}
+/* Earth hangs in the upper right and drifts up as you scroll */
+.tt-earth {
+  position: absolute;
+  z-index: 1;
+  top: clamp(-90px, -6svh, -40px);
+  right: clamp(-70px, -5vw, -30px);
+  width: clamp(150px, 30vw, 520px);
+  height: auto;
+  border-radius: 50%;
+  filter: drop-shadow(0 0 60px rgba(46, 150, 245, 0.45)) drop-shadow(0 0 140px rgba(46, 150, 245, 0.25));
+  transform: translateY(calc(var(--p, 0) * -14svh));
+}
+/* the lone figure on the horizon, settling the last little way down */
 .tt-hero-astro {
   position: absolute;
   z-index: 2;
-  left: 50%;
-  bottom: 13svh;
-  height: min(62svh, 720px);
+  left: 84%;
+  bottom: 16svh;
+  height: clamp(58px, 10svh, 128px);
   width: auto;
   max-width: none;
-  transform: translate(-50%, calc((1 - var(--p, 0)) * -108svh)) rotate(calc((1 - var(--p, 0)) * -6deg));
-  filter: drop-shadow(0 24px 50px rgba(0, 0, 0, 0.75));
+  transform: translate(-50%, calc((1 - var(--p, 0)) * -9svh));
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.85));
   will-change: transform;
 }
 .tt-touchdown {
   position: absolute;
   z-index: 1;
-  left: 50%;
-  bottom: 11svh;
-  width: min(62vw, 620px);
-  height: 12svh;
+  left: 84%;
+  bottom: 14svh;
+  width: min(22vw, 220px);
+  height: 5svh;
   translate: -50% 0;
   border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(234, 254, 7, 0.28), rgba(46, 150, 245, 0.16) 45%, transparent 75%);
-  opacity: clamp(0, calc(var(--p, 0) * 2.6 - 1.5), 1);
+  background: radial-gradient(closest-side, rgba(234, 254, 7, 0.2), rgba(46, 150, 245, 0.12) 45%, transparent 75%);
+  opacity: clamp(0, calc(var(--p, 0) * 2.6 - 0.6), 1);
 }
 .tt-dust {
   position: absolute;
@@ -176,6 +198,78 @@
   inset: 0;
   z-index: 0;
   opacity: 0.85;
+}
+
+/* small wide-tracked notes pinned to the edges of the hero */
+.tt-corner {
+  position: absolute;
+  z-index: 3;
+  margin: 0;
+  font-size: clamp(8px, 0.85vw, 11px);
+  line-height: 1.85;
+  color: rgba(255, 255, 255, 0.82);
+  text-shadow: 0 2px 12px rgba(4, 7, 15, 0.95);
+  opacity: calc(1 - var(--p, 0) * 2.2);
+}
+.tt-corner::after {
+  content: '';
+  display: block;
+  width: 46px;
+  height: 1px;
+  margin-top: 12px;
+  background: rgba(255, 255, 255, 0.45);
+}
+.tt-corner-tr { top: calc(env(safe-area-inset-top, 0px) + 44px); right: 24px; text-align: right; }
+.tt-corner-tr::after { margin-left: auto; }
+.tt-corner-bl { left: 24px; bottom: 27svh; }
+.tt-corner-mr { right: 24px; bottom: 36svh; text-align: right; }
+.tt-corner-mr::after { margin-left: auto; }
+@media (max-width: 640px) {
+  .tt-corner-mr { display: none; }
+  /* below the stacked buttons on a phone, sitting on the darkened regolith */
+  .tt-corner-bl { bottom: 18svh; }
+  .tt-hero-astro { left: 82%; bottom: 10svh; height: clamp(52px, 8svh, 92px); }
+  .tt-touchdown { display: none; }
+}
+
+.tt-cue {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 3svh;
+  translate: -50% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-size: clamp(8px, 0.85vw, 11px);
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 2px 12px rgba(4, 7, 15, 0.95);
+  opacity: calc(1 - var(--p, 0) * 3);
+}
+
+.tt-pill-solid {
+  background: #fff;
+  border-color: #fff;
+  color: #04070f;
+}
+.tt-pill-solid:hover { background: var(--tt-yellow); border-color: var(--tt-yellow); }
+
+/* Earth and the astronaut carry through into the next two sections */
+.tt-sec-earth {
+  position: absolute;
+  border-radius: 50%;
+  filter: drop-shadow(0 0 50px rgba(46, 150, 245, 0.4));
+  transform: translateY(calc((0.5 - var(--p, 0)) * var(--sp, 24vh)));
+  pointer-events: none;
+}
+.tt-sec-astro {
+  position: absolute;
+  width: auto;
+  max-width: none;
+  filter: drop-shadow(0 12px 26px rgba(0, 0, 0, 0.8));
+  transform: translateY(calc((0.5 - var(--p, 0)) * var(--sp, 18vh)));
+  pointer-events: none;
 }
 
 /* ---------- stacked words ---------- */
