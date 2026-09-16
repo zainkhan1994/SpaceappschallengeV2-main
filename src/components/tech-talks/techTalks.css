@@ -94,11 +94,8 @@
   box-shadow: 0 0 34px rgba(234, 254, 7, 0.45);
 }
 
-/* ---------- hero: astronaut descends onto the Moon ---------- */
-.tt-hero {
-  height: 240vh;
-  background: radial-gradient(120% 70% at 50% 0%, #0b1330 0%, #05070f 55%, #000 100%);
-}
+/* ---------- hero: the Tech Talks stage on the Moon ---------- */
+.tt-hero { height: 230vh; background: #000; }
 .tt-stars {
   position: absolute;
   inset: 0;
@@ -112,140 +109,153 @@
     radial-gradient(1.1px 1.1px at 36% 70%, rgba(255, 255, 255, 0.45), transparent),
     radial-gradient(1.4px 1.4px at 70% 64%, rgba(255, 255, 255, 0.5), transparent);
 }
-.tt-hero-copy {
+.tt-stars {
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 26%, transparent 40%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 26%, transparent 40%);
+}
+.tt-h-moon {
   position: absolute;
   inset: 0;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0 20px 22svh;
-  text-align: center;
-  transform: translateY(calc(var(--p, 0) * -30svh));
-  opacity: calc(1 - var(--p, 0) * 2.6);
+  background: #000 url('/tech-talks/story/moon.jpg') center 30% / cover no-repeat;
+  transform: translateY(calc(var(--p, 0) * -6svh)) scale(1.04);
 }
-.tt-moon {
+.tt-h-earth {
   position: absolute;
   z-index: 1;
-  inset: auto 0 0 0;
-  height: 38svh;
-  background: url('/tech-talks/moon-surface.jpg') center top / cover no-repeat;
-  -webkit-mask-image: linear-gradient(180deg, transparent, #000 11%);
-  mask-image: linear-gradient(180deg, transparent, #000 11%);
-  transform: translateY(calc((1 - var(--p, 0)) * 4svh));
-  filter: brightness(0.6) contrast(1.14) saturate(0.85);
-}
-/* darkens the regolith towards the bottom so the corner notes and cue stay readable */
-.tt-moon::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(4, 7, 15, 0) 0%, rgba(4, 7, 15, 0.3) 52%, rgba(4, 7, 15, 0.82) 100%);
-}
-/* Earth hangs in the upper right and drifts up as you scroll */
-.tt-earth {
-  position: absolute;
-  z-index: 1;
-  top: clamp(-90px, -6svh, -40px);
-  right: clamp(-70px, -5vw, -30px);
-  width: clamp(150px, 30vw, 520px);
+  top: calc(env(safe-area-inset-top, 0px) + 1svh);
+  right: -6vw;
+  width: clamp(190px, 50vw, 560px);
   height: auto;
-  border-radius: 50%;
-  filter: drop-shadow(0 0 60px rgba(46, 150, 245, 0.45)) drop-shadow(0 0 140px rgba(46, 150, 245, 0.25));
-  transform: translateY(calc(var(--p, 0) * -14svh));
+  filter: drop-shadow(0 0 50px rgba(46, 150, 245, 0.35));
+  transform: translateY(calc(var(--p, 0) * -10svh));
 }
-/* the lone figure on the horizon, settling the last little way down */
-.tt-hero-astro {
+/* the stage lifts away as you scroll, leaving the Moon */
+.tt-h-stage {
   position: absolute;
   z-index: 2;
-  left: 84%;
-  bottom: 16svh;
-  height: clamp(58px, 10svh, 128px);
-  width: auto;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
   max-width: none;
-  transform: translate(-50%, calc((1 - var(--p, 0)) * -9svh));
-  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.85));
+  transform: translateY(calc(var(--p, 0) * -115svh));
   will-change: transform;
 }
-.tt-touchdown {
-  position: absolute;
-  z-index: 1;
-  left: 84%;
-  bottom: 14svh;
-  width: min(22vw, 220px);
-  height: 5svh;
-  translate: -50% 0;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(234, 254, 7, 0.2), rgba(46, 150, 245, 0.12) 45%, transparent 75%);
-  opacity: clamp(0, calc(var(--p, 0) * 2.6 - 0.6), 1);
-}
-.tt-dust {
-  position: absolute;
-  z-index: 2;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(216, 214, 208, 0.5), rgba(180, 178, 172, 0.22) 55%, transparent);
-  filter: blur(7px);
-  opacity: clamp(0, calc(var(--p, 0) * 3 - 2), 1);
-  animation: tt-puff 5s ease-in-out infinite alternate;
-}
-@keyframes tt-puff {
-  from { translate: -4% 0; scale: 0.94; }
-  to { translate: 4% -8%; scale: 1.06; }
-}
-.tt-ribbons {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  opacity: 0.85;
-}
-
-/* small wide-tracked notes pinned to the edges of the hero */
-.tt-corner {
+.tt-h-copy {
   position: absolute;
   z-index: 3;
-  margin: 0;
-  font-size: clamp(8px, 0.85vw, 11px);
-  line-height: 1.85;
-  color: rgba(255, 255, 255, 0.82);
-  text-shadow: 0 2px 12px rgba(4, 7, 15, 0.95);
-  opacity: calc(1 - var(--p, 0) * 2.2);
+  left: max(7vw, 20px);
+  top: 25svh;
+  width: min(86vw, 36rem);
+  color: #fff;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.9);
+  transform: translateY(calc(var(--p, 0) * 14svh));
 }
-.tt-corner::after {
-  content: '';
+.tt-h-rule {
   display: block;
-  width: 46px;
+  width: 22px;
   height: 1px;
-  margin-top: 12px;
-  background: rgba(255, 255, 255, 0.45);
+  margin-bottom: 14px;
+  background: rgba(255, 255, 255, 0.7);
 }
-.tt-corner-tr { top: calc(env(safe-area-inset-top, 0px) + 44px); right: 24px; text-align: right; }
-.tt-corner-tr::after { margin-left: auto; }
-.tt-corner-bl { left: 24px; bottom: 27svh; }
-.tt-corner-mr { right: 24px; bottom: 36svh; text-align: right; }
-.tt-corner-mr::after { margin-left: auto; }
-@media (max-width: 640px) {
-  .tt-corner-mr { display: none; }
-  /* below the stacked buttons on a phone, sitting on the darkened regolith */
-  .tt-corner-bl { bottom: 18svh; }
-  .tt-hero-astro { left: 82%; bottom: 10svh; height: clamp(52px, 8svh, 92px); }
-  .tt-touchdown { display: none; }
+.tt-h-copy h1 {
+  font-size: clamp(17px, 1.9vw, 28px);
+  line-height: 1.5;
+  font-weight: 400;
+}
+.tt-h-arrow {
+  display: block;
+  margin-top: 18px;
+  font-size: clamp(18px, 1.8vw, 26px);
+  color: var(--tt-yellow);
+  animation: tt-bob 2.2s ease-in-out infinite;
+}
+@keyframes tt-bob {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 6px; }
+}
+@media (min-width: 900px) {
+  .tt-h-earth { right: 3vw; width: clamp(200px, 22vw, 380px); }
+  .tt-h-stage {
+    left: auto;
+    right: 2vw;
+    width: auto;
+    height: 62svh;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  }
+  .tt-h-copy { top: 22svh; }
 }
 
-.tt-cue {
-  position: absolute;
-  z-index: 3;
-  left: 50%;
-  bottom: 3svh;
-  translate: -50% 0;
+/* ---------- the people you heard from (rocket section) ---------- */
+.tt-roles {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  font-size: clamp(8px, 0.85vw, 11px);
-  color: rgba(255, 255, 255, 0.92);
-  text-shadow: 0 2px 12px rgba(4, 7, 15, 0.95);
-  opacity: calc(1 - var(--p, 0) * 3);
+  gap: 0.1em;
+  font-size: clamp(24px, 3.4vw, 50px);
+}
+.tt-role {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4em;
+  opacity: var(--q);
+  transform: translateY(calc((1 - var(--q)) * 30px));
+}
+.tt-role-arrow { color: var(--tt-yellow); font-size: 0.6em; }
+@media (min-width: 900px) {
+  .tt-roles { flex-direction: row; flex-wrap: wrap; column-gap: 0.45em; row-gap: 0.15em; }
+}
+
+/* ---------- from the talks to the challenge ---------- */
+.tt-flow { height: 300vh; background: #000; }
+.tt-flow-moon {
+  position: absolute;
+  inset: 0;
+  background: #000 url('/tech-talks/story/moon.jpg') center 30% / cover no-repeat;
+}
+.tt-flow-moon::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.05) 35%, rgba(0, 0, 0, 0.5) 100%);
+}
+.tt-flow-steps {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  padding: 22svh max(7vw, 20px) 6svh;
+  display: flex;
+  flex-direction: column;
+  gap: 4svh;
+}
+.tt-flow-step {
+  width: min(80vw, 34rem);
+  color: #fff;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95);
+  opacity: var(--q);
+  transform: translateY(calc((1 - var(--q)) * 28px));
+}
+.tt-flow-step p { font-size: clamp(17px, 1.8vw, 26px); line-height: 1.5; font-weight: 400; }
+.tt-flow-step.is-0,
+.tt-flow-step.is-2 { align-self: flex-end; }
+.tt-flow-step.is-cta { align-self: center; width: auto; text-align: center; }
+.tt-flow-arrow { display: block; margin-bottom: 10px; color: var(--tt-yellow); font-size: 1.1em; }
+.tt-flow-step.is-cta .tt-pill { white-space: nowrap; font-size: clamp(10px, 2.8vw, 13px); padding: 14px 22px; }
+@media (min-width: 900px) {
+  .tt-flow-steps { padding-top: 26svh; gap: 5svh; }
+}
+
+/* supplied photography behind later sections */
+.tt-sec-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.26;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 78%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 78%, transparent 100%);
+  pointer-events: none;
 }
 
 .tt-pill-solid {
@@ -575,19 +585,6 @@
 .tt-deck-nav button:disabled { opacity: 0.3; cursor: default; }
 .tt-deck-nav button:disabled:hover { background: transparent; color: #fff; border-color: rgba(255, 255, 255, 0.4); }
 
-/* ---------- deep dives ---------- */
-.tt-asteroid { rotate: calc(var(--p, 0) * 160deg); }
-.tt-box { border: 1px solid rgba(255, 255, 255, 0.35); }
-.tt-link-line { width: 1px; height: 36px; margin: 0 auto; background: rgba(255, 255, 255, 0.35); }
-
-/* ---------- counters ---------- */
-.tt-counters { background: linear-gradient(180deg, #000 0%, #041428 26%, #062247 64%, #04070f 100%); }
-.tt-sparkle { filter: drop-shadow(0 0 10px rgba(234, 254, 7, 0.95)); animation: tt-twinkle 3.4s ease-in-out infinite; }
-@keyframes tt-twinkle {
-  0%, 100% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(0.82) rotate(20deg); }
-}
-
 /* ---------- horizontal statement ---------- */
 .tt-horizon { height: 320vh; background: linear-gradient(180deg, #04070f 0%, #050a1c 40%, #04070f 100%); }
 .tt-sweep {
@@ -642,13 +639,13 @@
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
-  .tt-hero, .tt-words, .tt-series, .tt-horizon, .tt-focus { height: auto; }
+  .tt-hero, .tt-words, .tt-series, .tt-flow, .tt-horizon, .tt-focus { height: auto; }
   .tt-stick { position: relative; height: auto; min-height: 100svh; }
-  .tt-hero .tt-stick { min-height: 150svh; }
-  .tt-hero-copy { opacity: 1; transform: none; }
+  .tt-h-stage, .tt-h-copy, .tt-h-earth, .tt-h-moon { transform: none; }
+  .tt-h-arrow { animation: none; }
   .tt-series .tt-stick { padding-bottom: 34svh; }
+  .tt-flow .tt-stick { min-height: 120svh; }
   .tt-horizon .tt-stick { min-height: 70svh; }
   .tt-sweep { white-space: normal; font-size: clamp(48px, 10vw, 130px); transform: translateY(-50%); width: 100%; text-align: center; }
   .tt-focus-line { filter: none; opacity: 1; }
-  .tt-dust, .tt-sparkle { animation: none; }
 }

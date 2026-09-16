@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import '../tech-talks/techTalks.css';
-import { REDUCED_MOTION, useScrollProgress } from '../tech-talks/useScrollProgress';
+import { useScrollProgress } from '../tech-talks/useScrollProgress';
 import { ScrollReveal } from '../ui/ScrollReveal';
 import { TechTalk, techTalks2023, techTalks2024, techTalks2025, techTalks2026 } from '../../data/techTalksData';
 import { techTalkCards } from '../../data/techTalkCards';
 
-// Imagery: astronaut plate supplied by Space Apps Houston; Moon surface = Apollo 16 AS16-120-19187;
+// Imagery: hero/story layers, Ion atrium and event photo supplied by Space Apps Houston;
 // nebula = NASA/ESA/CSA/STScI Webb "Cosmic Cliffs" in the Carina Nebula (images.nasa.gov: carina_nebula).
 
 const REGISTER_URL = 'https://www.spaceappschallenge.org/2026/local-events/houston/';
@@ -77,108 +77,26 @@ const LabelRow: React.FC<{ label: string; className?: string }> = ({ label, clas
   </div>
 );
 
-const Sparkle: React.FC<{ className?: string }> = ({ className }) => (
-  <svg viewBox="-50 -50 100 100" className={`tt-sparkle ${className ?? ''}`} aria-hidden="true">
-    {[0, 22.5, 45, 67.5, 90, 112.5, 135, 157.5].map((a, i) => (
-      <path key={a} d={`M0 ${i % 2 ? -30 : -48} L3 0 L0 ${i % 2 ? 30 : 48} L-3 0Z`} fill="#EAFE07" transform={`rotate(${a})`} />
-    ))}
-  </svg>
-);
-
-/* faceted crystal asteroid */
-const rim = [
-  [0, 88], [31, 74], [66, 94], [97, 70], [131, 86], [160, 96], [196, 72], [228, 88], [262, 78], [297, 92], [330, 70]
-].map(([deg, r]) => [100 + r * Math.cos((deg * Math.PI) / 180), 100 + r * Math.sin((deg * Math.PI) / 180)]);
-const core = [92, 96];
-const shades = ['#f6f6f6', '#8e8e8e', '#d3d3d3', '#4b4b4b', '#ececec', '#6c6c6c', '#bdbdbd', '#2c2c2c', '#fbfbfb', '#9a9a9a', '#cfcfcf'];
-const facets = rim.flatMap((p, i) => {
-  const q = rim[(i + 1) % rim.length];
-  const m = [core[0] + 0.58 * ((p[0] + q[0]) / 2 - core[0]), core[1] + 0.58 * ((p[1] + q[1]) / 2 - core[1])];
-  const pts = (a: number[][]) => a.map((v) => v.join(',')).join(' ');
-  return [
-    { d: pts([core, p, m]), fill: shades[i % shades.length] },
-    { d: pts([m, p, q]), fill: shades[(i + 4) % shades.length] },
-    { d: pts([core, m, q]), fill: shades[(i + 7) % shades.length] }
-  ];
-});
-
-const Asteroid: React.FC<{ className?: string }> = ({ className }) => (
-  <svg viewBox="0 0 200 200" className={className} aria-hidden="true">
-    {facets.map((f, i) => (
-      <polygon key={i} points={f.d} fill={f.fill} stroke="rgba(255,255,255,0.45)" strokeWidth="0.5" strokeLinejoin="round" />
-    ))}
-  </svg>
-);
-
 /* ---------------------------------------------------------------- 1. hero */
 
 const Hero: React.FC = () => {
   const ref = useScrollProgress<HTMLElement>('pin');
-  const goTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
   return (
     <section ref={ref} className="tt-hero" aria-labelledby="tt-title">
       <div className="tt-stick">
+        <div className="tt-h-moon" aria-hidden="true" />
         <div className="tt-stars" aria-hidden="true" />
-        <NeonRibbons className="tt-ribbons" />
-        <img className="tt-earth" src="/tech-talks/earth-night.jpg" alt="" />
-
-        <div className="tt-moon" aria-hidden="true" />
-        <span className="tt-touchdown" aria-hidden="true" />
-        <img className="tt-hero-astro" src="/tech-talks/astronaut-cutout.webp" alt="" />
-
-        <p className="tt-corner tt-corner-tr tt-mono" aria-hidden="true">
-          Same curiosity.
-          <br />
-          Bigger tomorrows.
-        </p>
-        <p className="tt-corner tt-corner-bl tt-mono" aria-hidden="true">
-          People
-          <br />
-          Ideas
-          <br />
-          Technology
-          <br />
-          A brighter
-          <br />
-          tomorrow
-        </p>
-        <p className="tt-corner tt-corner-mr tt-mono" aria-hidden="true">
-          Houston
-          <br />
-          builds
-          <br />
-          bigger
-        </p>
-
-        <div className="tt-hero-copy">
-          <p className="tt-mono m-0 mb-6 text-[clamp(10px,1.1vw,13px)] text-white/75">Houston · The Ion · One Thursday a month</p>
-          <h1 id="tt-title" className="tt-display m-0 text-[clamp(52px,9vw,132px)]">
-            NASA
-            <br />
-            Tech <span className="text-[#EAFE07]">Talks</span>
+        <img className="tt-h-earth" src="/tech-talks/story/earth.webp" alt="" />
+        <img className="tt-h-stage" src="/tech-talks/story/stage.webp" alt="" />
+        <div className="tt-h-copy">
+          <span className="tt-h-rule" aria-hidden="true" />
+          <h1 id="tt-title" className="tt-body m-0">
+            Every 4th Thursday of the month, at NASA Tech Talks you heard directly from
           </h1>
-          <p className="tt-body m-0 mt-8 max-w-[700px] text-[clamp(17px,1.9vw,26px)] leading-[1.45] text-white">
-            You came here to learn how NASA solves problems.
-          </p>
-          <p className="tt-body m-0 mt-2.5 max-w-[700px] text-[clamp(15px,1.6vw,22px)] leading-[1.45] text-white/60">
-            Now put what you’ve learned to work.
-          </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <button type="button" onClick={() => goTo('tt-archive-top')} className="tt-pill tt-pill-solid tt-mono">
-              Explore the talks <span aria-hidden="true">↓</span>
-            </button>
-            <button type="button" onClick={() => goTo('tt-upcoming')} className="tt-pill tt-mono">
-              Next talk · Sep 24 <span aria-hidden="true">→</span>
-            </button>
-          </div>
-        </div>
-
-        <div className="tt-cue tt-mono" aria-hidden="true">
-          <span>You’ve been here before</span>
-          <svg viewBox="0 0 12 40" width="12" height="40" fill="none" stroke="currentColor" strokeWidth="1">
-            <path d="M6 0v33M1.5 27.5 6 34l4.5-6.5" />
-          </svg>
+          <span className="tt-h-arrow" aria-hidden="true">
+            ↓
+          </span>
         </div>
       </div>
     </section>
@@ -201,7 +119,7 @@ const Words: React.FC = () => {
         <img
           className="tt-sec-earth left-[-8vw] top-[10%] w-[clamp(130px,19vw,280px)]"
           style={{ '--sp': '30vh' } as VarStyle}
-          src="/tech-talks/earth-night.jpg"
+          src="/tech-talks/story/earth.webp"
           alt=""
         />
         <img
@@ -235,6 +153,7 @@ const Globes: React.FC = () => {
   const ref = useScrollProgress<HTMLElement>('pass');
   return (
     <section ref={ref} className="tt-globes" aria-label="One Thursday every month">
+      <img className="tt-sec-photo" src="/tech-talks/story/event.jpg" alt="" />
       <div className="tt-globe left-[-8vw] top-[30%] w-[38vw] min-w-[220px]" style={{ '--sp': '50vh' } as VarStyle}>
         <WireGlobe spin={34} />
       </div>
@@ -247,7 +166,7 @@ const Globes: React.FC = () => {
       <img
         className="tt-sec-earth right-[6vw] top-[12%] w-[clamp(110px,16vw,240px)]"
         style={{ '--sp': '-26vh' } as VarStyle}
-        src="/tech-talks/earth-night.jpg"
+        src="/tech-talks/story/earth.webp"
         alt=""
       />
       <img
@@ -295,6 +214,8 @@ const parts: { w: number; o: number; y: number; r: number; dark?: boolean; windo
   { w: 14, o: 32, y: -14, r: 11, clip: 'polygon(0 0, 42% 4%, 78% 24%, 100% 50%, 78% 76%, 42% 96%, 0 100%)' }
 ];
 
+const roles = ['NASA technologists', 'astronauts', 'engineers', 'physicians', 'professors'];
+
 const Series: React.FC = () => {
   const ref = useScrollProgress<HTMLElement>('pin');
   const [active, setActive] = useState<number | null>(null);
@@ -305,10 +226,18 @@ const Series: React.FC = () => {
       <div className="tt-stick">
         <div className="mx-auto max-w-[1320px] px-[max(20px,4vw)] pt-[calc(env(safe-area-inset-top,0px)+9svh)]">
           <LabelRow label="The series" />
-          <p className="tt-display-lite m-0 mt-[5svh] max-w-[1080px] text-[clamp(24px,3.6vw,54px)]">
-            To put the people building NASA’s future in a room in Houston — and let anyone walk in and{' '}
-            <span className="text-[#EAFE07]">ask them a question.</span>
-          </p>
+          <ol className="tt-roles m-0 mt-[4svh] list-none p-0" aria-label="You heard directly from">
+            {roles.map((r, i) => (
+              <li key={r} className="tt-q tt-role tt-display-lite" style={{ '--s': 0.02 + i * 0.09, '--k': 7 } as VarStyle}>
+                {i > 0 && (
+                  <span className="tt-role-arrow" aria-hidden="true">
+                    ↓
+                  </span>
+                )}
+                {r}
+              </li>
+            ))}
+          </ol>
         </div>
 
         <div className="tt-card" aria-live="polite">
@@ -387,6 +316,47 @@ const Series: React.FC = () => {
         <p className="tt-mono absolute inset-x-0 bottom-[5svh] m-0 px-6 text-center text-[10px] text-white/45 md:hidden">
           Tap a stage
         </p>
+      </div>
+    </section>
+  );
+};
+
+/* ---------------------------------------------------------------- 4b. from the talks to the challenge */
+
+const flowSteps = [
+  'and they have laid out the operational bottlenecks',
+  'Sustained presence on the Moon and Mars requires software, mission planning, and hardware solutions NASA can’t build alone.',
+  'Take what you have learned, form a team, and prove your solution in 48 hours at the NASA International Space Apps Challenge.'
+];
+
+const Flow: React.FC = () => {
+  const ref = useScrollProgress<HTMLElement>('pin');
+
+  return (
+    <section ref={ref} className="tt-flow" aria-label="From the talks to the challenge">
+      <div className="tt-stick">
+        <div className="tt-flow-moon" aria-hidden="true" />
+        <img className="tt-h-earth" src="/tech-talks/story/earth.webp" alt="" />
+        <ol className="tt-flow-steps m-0 list-none">
+          {flowSteps.map((text, i) => (
+            <li key={text} className={`tt-q tt-flow-step is-${i}`} style={{ '--s': 0.04 + i * 0.22, '--k': 5 } as VarStyle}>
+              {i > 0 && (
+                <span className="tt-flow-arrow" aria-hidden="true">
+                  ↓
+                </span>
+              )}
+              <p className="tt-body m-0">{text}</p>
+            </li>
+          ))}
+          <li className="tt-q tt-flow-step is-cta" style={{ '--s': 0.7, '--k': 5 } as VarStyle}>
+            <span className="tt-flow-arrow" aria-hidden="true">
+              ↓
+            </span>
+            <a href="#/" className="tt-pill tt-pill-solid tt-mono">
+              Join NASA Space Apps Houston <span aria-hidden="true">→</span>
+            </a>
+          </li>
+        </ol>
       </div>
     </section>
   );
@@ -489,155 +459,6 @@ const WhatHappens: React.FC = () => {
   );
 };
 
-/* ---------------------------------------------------------------- 6. deep dives */
-
-const DeepDives: React.FC = () => {
-  const ref = useScrollProgress<HTMLElement>('pass');
-  const boxes = [
-    'Every talk is led by the people doing the work — engineers, scientists, clinicians and space entrepreneurs from across Houston’s space community.',
-    'Topics have ranged from Artemis and lunar spacesuits to space food, AI medical agents and manufacturing in microgravity.',
-    'Thursday evening, Midtown Houston, done by 7 PM. The story so far goes something like this…'
-  ];
-  return (
-    <section ref={ref} className="bg-black px-[max(20px,4vw)] py-[clamp(90px,12vw,170px)]">
-      <div className="relative mx-auto max-w-[1180px]">
-        <h2 className="tt-display relative z-0 m-0 whitespace-nowrap text-center text-[clamp(46px,11vw,170px)]">Deep dives</h2>
-        <div className="absolute left-1/2 top-1/2 z-10 w-[clamp(110px,17vw,250px)] -translate-x-1/2 -translate-y-[46%]">
-          <Asteroid className="tt-asteroid block w-full drop-shadow-[0_20px_40px_rgba(255,255,255,0.12)]" />
-        </div>
-      </div>
-
-      <div className="mx-auto mt-[clamp(60px,9vw,120px)] max-w-[960px]">
-        {boxes.map((b, i) => (
-          <React.Fragment key={i}>
-            {i > 0 && <div className="tt-link-line" aria-hidden="true" />}
-            <ScrollReveal>
-              <p className="tt-box tt-body m-0 px-[clamp(18px,3vw,32px)] py-[clamp(20px,3vw,30px)] text-[clamp(15px,1.4vw,18px)] leading-[1.7] text-white/85">
-                {b}
-              </p>
-            </ScrollReveal>
-          </React.Fragment>
-        ))}
-      </div>
-    </section>
-  );
-};
-
-/* ---------------------------------------------------------------- 7. counters */
-
-const heldCount =
-  techTalks2025.filter((t) => t.status === 'normal').length + techTalks2026.filter((t) => t.status === 'normal').length;
-const upcoming2026 = techTalks2026.filter((t) => t.status === 'upcoming');
-
-const Counter: React.FC<{ value: number; caption: string; align: 'left' | 'right' }> = ({ value, caption, align }) => {
-  const box = useRef<HTMLDivElement>(null);
-  const textRef = useRef<SVGTextElement>(null);
-  const [shown, setShown] = useState(value);
-  const [vb, setVb] = useState<[number, number, number, number]>([0, 0, String(value).length * 230 + 20, 330]);
-
-  useEffect(() => {
-    let cancelled = false;
-    document.fonts?.ready.then(() => {
-      const t = textRef.current;
-      if (!t || cancelled) return;
-      const b = t.getBBox();
-      setVb([b.x - 8, b.y + b.height * 0.2, b.width + 16, b.height * 0.8]);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  useEffect(() => {
-    const el = box.current;
-    if (!el || window.matchMedia(REDUCED_MOTION).matches) return;
-    setShown(0);
-    let raf = 0;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        io.disconnect();
-        const start = performance.now();
-        const step = (now: number) => {
-          const k = Math.min(1, (now - start) / 1600);
-          setShown(Math.round(value * (1 - Math.pow(1 - k, 3))));
-          if (k < 1) raf = requestAnimationFrame(step);
-        };
-        raf = requestAnimationFrame(step);
-      },
-      { threshold: 0.4 }
-    );
-    io.observe(el);
-    return () => {
-      io.disconnect();
-      cancelAnimationFrame(raf);
-    };
-  }, [value]);
-
-  const right = align === 'right';
-  return (
-    <div ref={box} className={`flex min-h-[78svh] flex-col justify-center ${right ? 'items-end text-right' : 'items-start'}`}>
-      <svg
-        viewBox={vb.join(' ')}
-        className="block h-[clamp(130px,24vw,340px)] w-auto max-w-full overflow-visible"
-        style={{ aspectRatio: `${vb[2]} / ${vb[3]}` }}
-        role="img"
-        aria-label={String(value)}
-      >
-        {/* invisible final value, used only to size the viewBox */}
-        <text ref={textRef} x="0" y="300" fontSize="380" fontFamily="Overpass, sans-serif" fontWeight="900" visibility="hidden">
-          {value}
-        </text>
-        <text
-          x={right ? vb[0] + vb[2] - 8 : vb[0] + 8}
-          y="300"
-          textAnchor={right ? 'end' : 'start'}
-          fontSize="380"
-          fontFamily="Overpass, sans-serif"
-          fontWeight="900"
-          fill="url(#tt-tex)"
-          stroke="rgba(255,255,255,0.35)"
-          strokeWidth="2"
-        >
-          {shown}
-        </text>
-      </svg>
-      <p className="tt-body m-0 mt-6 max-w-[540px] text-[clamp(15px,1.4vw,18px)] leading-[1.7] text-white/80">{caption}</p>
-    </div>
-  );
-};
-
-const Counters: React.FC = () => (
-  <section className="tt-counters relative overflow-hidden px-[max(20px,4vw)] pb-[8vh] pt-[18vh]">
-    <svg width="0" height="0" className="absolute" aria-hidden="true">
-      <defs>
-        <pattern id="tt-tex" patternUnits="userSpaceOnUse" width="1200" height="700">
-          <image href="/tech-talks/nebula.jpg" width="1200" height="700" preserveAspectRatio="xMidYMid slice" />
-        </pattern>
-      </defs>
-    </svg>
-    <div className="relative mx-auto max-w-[1320px]">
-      <Counter
-        value={heldCount}
-        align="left"
-        caption={`Talks held at The Ion since January 2025 — ${techTalks2025.filter((t) => t.status === 'normal').length} last year, ${techTalks2026.filter((t) => t.status === 'normal').length} so far this year.`}
-      />
-      <div className="relative">
-        <Sparkle className="absolute right-[4%] top-[8%] w-[clamp(44px,6vw,84px)]" />
-        <svg className="pointer-events-none absolute right-[2%] top-[14%] hidden h-[70%] w-[22%] md:block" viewBox="0 0 100 300" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M20 0 C 90 60, 110 180, 60 300" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="1" strokeDasharray="3 5" vectorEffect="non-scaling-stroke" />
-        </svg>
-        <Counter value={60} align="right" caption="Minutes, Thursday evening, 6:00 to 7:00 PM CDT. Long enough to go deep, short enough to make it after work." />
-      </div>
-      <Counter
-        value={upcoming2026.length}
-        align="left"
-        caption={`Talks left on the 2026 calendar: ${upcoming2026.map((t) => `${t.month} ${t.day}`).join(' and ')}. Then it’s hack weekend.`}
-      />
-    </div>
-  </section>
-);
-
 /* ---------------------------------------------------------------- 8. horizontal statement */
 
 const Horizon: React.FC = () => {
@@ -645,6 +466,7 @@ const Horizon: React.FC = () => {
   return (
     <section ref={ref} className="tt-horizon" aria-label="See you at The Ion">
       <div className="tt-stick">
+        <img className="tt-sec-photo" src="/tech-talks/story/ion.jpg" alt="" />
         <WireGlobe className="tt-glow-globe absolute left-1/2 top-1/2 w-[min(58vw,56svh)] min-w-[240px] -translate-x-1/2 -translate-y-1/2" spin={30} strokeWidth={0.9} />
         <p className="tt-display tt-sweep m-0" aria-hidden="true">
           See you at The Ion
@@ -890,12 +712,11 @@ export const TechTalksSection: React.FC = () => (
       <span aria-hidden="true">←</span> Space Apps Houston
     </a>
     <Hero />
+    <Series />
+    <Flow />
     <Words />
     <Globes />
-    <Series />
     <WhatHappens />
-    <DeepDives />
-    <Counters />
     <Horizon />
     <Constellation />
     <Archive />
