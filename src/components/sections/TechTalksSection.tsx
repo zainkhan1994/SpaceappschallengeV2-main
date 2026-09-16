@@ -393,16 +393,79 @@ const Series: React.FC = () => {
 
 /* ---------------------------------------------------------------- 5. what happens */
 
-// x/y/a = desktop placement; xm/ym/am = phone placement (labels always point right so they stay on screen)
-const spheres = [
-  { label: 'Listen', x: 18, y: 30, a: '-32deg', xm: 24, ym: 12, am: '-24deg', size: 'clamp(100px,15vw,210px)', sp: '18vh' },
-  { label: 'Ask', x: 64, y: 22, a: '-24deg', xm: 34, ym: 38, am: '22deg', size: 'clamp(80px,10vw,150px)', sp: '-14vh' },
-  { label: 'Meet', x: 40, y: 64, a: '28deg', xm: 26, ym: 63, am: '-20deg', size: 'clamp(110px,17vw,240px)', sp: '26vh' },
-  { label: 'Build', x: 78, y: 74, a: '-40deg', xm: 42, ym: 87, am: '18deg', size: 'clamp(60px,7vw,104px)', sp: '-22vh' }
+/** One card per talk: NASA public-domain art, the talk's own words, and a link to its event page. */
+const cards: { art: string; year: string; kicker: string; top: string; accent: string; end?: string; talk: TechTalk }[] = [
+  {
+    art: 'humanities',
+    year: '2026',
+    kicker: 'People × Ideas × Worlds',
+    top: 'Rice University’s',
+    accent: 'Space Humanities',
+    end: 'Initiative',
+    talk: byMonth(techTalks2026, 'AUG')
+  },
+  {
+    art: 'sensorimotor',
+    year: '2026',
+    kicker: 'Body × Gravity × Performance',
+    top: 'Optimizing',
+    accent: 'Sensorimotor',
+    end: 'Performance',
+    talk: byMonth(techTalks2026, 'JUL')
+  },
+  {
+    art: 'education',
+    year: '2026',
+    kicker: 'Students × Faculty × NASA',
+    top: 'NASA',
+    accent: 'Education',
+    end: 'Highlights',
+    talk: byMonth(techTalks2026, 'JUN')
+  },
+  {
+    art: 'lifesupport',
+    year: '2025',
+    kicker: 'Air × Water × Life',
+    top: 'Ceramic Ion',
+    accent: 'Transport Membranes',
+    talk: byMonth(techTalks2025, 'SEP')
+  },
+  {
+    art: 'lunar',
+    year: '2025',
+    kicker: 'Suits × Habitats × Safety',
+    top: 'Lunar',
+    accent: 'Innovations',
+    talk: byMonth(techTalks2025, 'AUG')
+  },
+  {
+    art: 'biomanufacturing',
+    year: '2025',
+    kicker: 'Cells × Materials × Orbit',
+    top: 'In-Space',
+    accent: 'Biomanufacturing',
+    talk: byMonth(techTalks2025, 'JUL')
+  },
+  {
+    art: 'food',
+    year: '2025',
+    kicker: 'Crops × Meals × Missions',
+    top: 'Space Food',
+    accent: 'Systems',
+    talk: byMonth(techTalks2025, 'MAY')
+  }
 ];
 
 const WhatHappens: React.FC = () => {
-  const ref = useScrollProgress<HTMLDivElement>('pass');
+  const deck = useRef<HTMLDivElement>(null);
+
+  const nudge = (dir: number) => {
+    const el = deck.current;
+    if (!el) return;
+    const card = el.querySelector('.tt-card-item') as HTMLElement | null;
+    el.scrollBy({ left: dir * ((card?.offsetWidth ?? 360) + 24), behavior: 'smooth' });
+  };
+
   return (
     <section className="tt-dark">
       <div className="mx-auto max-w-[1320px] px-[max(20px,4vw)] pt-[clamp(90px,14vw,180px)]">
@@ -418,36 +481,68 @@ const WhatHappens: React.FC = () => {
             7:00 PM the floor is yours.
           </p>
         </ScrollReveal>
+
+        <div className="mt-12 flex items-center justify-between gap-6">
+          <p className="tt-mono m-0 text-[11px] text-white/60">Swipe through the talks</p>
+          <div className="tt-deck-nav">
+            <button type="button" onClick={() => nudge(-1)} aria-label="Previous talk">
+              ←
+            </button>
+            <button type="button" onClick={() => nudge(1)} aria-label="Next talk">
+              →
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div ref={ref} className="relative mt-16 h-[clamp(620px,110svh,980px)]">
+      <div className="relative mt-8">
         <div className="tt-grid absolute inset-0" aria-hidden="true" />
-        {spheres.map((s) => (
-          <div
-            key={s.label}
-            className="tt-sphere-wrap"
-            style={
-              {
-                '--x': `${s.x}%`,
-                '--y': `${s.y}%`,
-                '--ad': s.a,
-                '--xm': `${s.xm}%`,
-                '--ym': `${s.ym}%`,
-                '--am': s.am,
-                '--size': s.size,
-                '--sp': s.sp
-              } as VarStyle
-            }
-          >
-            <span className="tt-chrome" aria-hidden="true" />
-            <span className="tt-leader">
-              <span className="tt-tag">
-                <span className="tt-dot" aria-hidden="true" />
-                <span className="tt-mono text-[clamp(13px,1.4vw,18px)]">{s.label}</span>
-              </span>
-            </span>
-          </div>
-        ))}
+        <div ref={deck} className="tt-deck relative">
+          {cards.map((c) => (
+            <a
+              key={c.art}
+              className="tt-card-item"
+              href={c.talk.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={`/tech-talks/cards/${c.art}.jpg`} alt="" loading="lazy" />
+              <div className="tt-card-body">
+                <div className="tt-card-top tt-mono">
+                  <span>
+                    NASA Tech Talks
+                    <br />
+                    Houston
+                  </span>
+                  <span>
+                    {c.talk.month} {c.year}
+                  </span>
+                </div>
+                <p className="tt-card-kicker tt-mono">{c.kicker}</p>
+                <h3 className="tt-card-title tt-display-lite normal-case">
+                  {c.top}
+                  <br />
+                  <span>{c.accent}</span>
+                  {c.end && (
+                    <>
+                      <br />
+                      {c.end}
+                    </>
+                  )}
+                </h3>
+                <p className="tt-card-desc tt-body">{c.talk.desc}</p>
+                <div className="tt-card-cta tt-mono">
+                  <i aria-hidden="true">→</i> View talk
+                </div>
+                <span className="tt-card-note tt-mono" aria-hidden="true">
+                  Same curiosity.
+                  <br />
+                  Bigger tomorrows.
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
       </div>
     </section>
   );
