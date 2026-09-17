@@ -1,15 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Globe, Lightbulb, PenTool, Users } from 'lucide-react';
 import '../tech-talks/techTalks.css';
 import { REDUCED_MOTION, useScrollProgress } from '../tech-talks/useScrollProgress';
 import { ScrollReveal } from '../ui/ScrollReveal';
 import { TechTalk, techTalks2023, techTalks2024, techTalks2025, techTalks2026 } from '../../data/techTalksData';
 import { challengePosters } from '../../data/challengePosters';
+import { techTalkCards } from '../../data/techTalkCards';
 
 // Imagery: stage, staircase, lunar horizon and Earth (hero) supplied by Space Apps Houston.
 // NASA, public domain (images.nasa.gov): Moon GSFC_20171208_Archive_e001861 (LRO) · Mars PIA00407 (Viking) ·
 // SLS Block 1B illustration B1B_Crew_OML · software jsc2022e090102 · mission planning jsc2026e019242 ·
-// hardware KSC-20260721-PH-JBS01_0014 · Artemis II crew patch jsc2025e034457 · spacewalk iss038e020234 (join art).
+// Artemis II crew patch jsc2025e034457 · spacewalk iss038e020234 (join art).
+// Software: NASA Artemis II Real-time Orbit Website (AROW) · Mission planning: NASA/JSC Artemis II mission map (SVS 20412).
+// Hardware: Orion jsc2022e046362, Gateway KSC-20240716-PH-NAS01_0001, NASA Moon Base renderings (fission surface power, habitat).
+// Moon and Mars videos rendered from NASA SVS CGI Moon Kit (LROC color + LOLA elevation) and the Viking MDIM2.1 color mosaic (NASA Mars Trek).
 // Rotating globe rendered from NASA Visible Earth: Blue Marble Next Generation, Black Marble 2016, cloud_combined.
 // Houston skyline (join art): Carol M. Highsmith Archive, Library of Congress (no known restrictions).
 // Neon arcs, Space Apps Houston logo and challenge posters supplied by Space Apps Houston.
@@ -31,6 +34,43 @@ const LabelRow: React.FC<{ label: string; className?: string }> = ({ label, clas
     </span>
   </div>
 );
+
+/** Muted, looping planet render: plays only while on screen, never for reduced motion. */
+const LoopVideo: React.FC<{ name: string; className: string; large?: boolean; style?: VarStyle }> = ({ name, className, large, style }) => {
+  const video = useRef<HTMLVideoElement>(null);
+  const [still] = useState(() => typeof window !== 'undefined' && window.matchMedia(REDUCED_MOTION).matches);
+
+  useEffect(() => {
+    const v = video.current;
+    if (!v || still) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) v.play().catch(() => undefined);
+        else v.pause();
+      },
+      { rootMargin: '200px 0px' }
+    );
+    io.observe(v);
+    return () => io.disconnect();
+  }, [still]);
+
+  return (
+    <video
+      ref={video}
+      className={className}
+      style={style}
+      muted
+      loop
+      playsInline
+      preload={still ? 'none' : 'metadata'}
+      poster={`${STORY}/${name}-poster.jpg`}
+      aria-hidden="true"
+    >
+      {large && <source src={`${STORY}/${name}-900.mp4`} type="video/mp4" media="(min-width: 900px)" />}
+      <source src={`${STORY}/${name}-${large ? 720 : 600}.mp4`} type="video/mp4" />
+    </video>
+  );
+};
 
 /* ---------------------------------------------------------------- 1. hero: the people you heard from */
 
@@ -122,10 +162,12 @@ const SUSTAIN: { text: string; s: number; accent?: boolean }[] = [
   { text: 'NASA can’t build alone.', s: 0.68, accent: true }
 ];
 
-const ELEMENTS = [
-  { src: 'el-software.jpg', label: 'Software', s: 0.36 },
-  { src: 'el-planning.jpg', label: 'Mission planning', s: 0.46 },
-  { src: 'el-hardware.jpg', label: 'Hardware', s: 0.56 }
+/** NASA Moon to Mars architecture elements, one render per hexagon (after NASA's architecture board). */
+const HARDWARE = [
+  { src: 'hw-orion.jpg', label: 'Orion' },
+  { src: 'hw-gateway.jpg', label: 'Gateway' },
+  { src: 'hw-fission.jpg', label: 'Fission surface power' },
+  { src: 'hw-habitat.jpg', label: 'Surface habitat' }
 ];
 
 /** International partners building Artemis hardware alongside NASA (Orion, Gateway, lunar surface habitation). */
@@ -145,14 +187,24 @@ const Sustain: React.FC = () => {
       <div className="tt-stick">
         <div className="tt-stars" aria-hidden="true" />
         <div className="tt-sus-visual">
-          <img className="tt-fx tt-fx-moon" src={`${STORY}/moon-disk.webp`} alt="" style={{ '--s': 0.1, '--e': 0.32 } as VarStyle} />
-          <img className="tt-fx tt-fx-mars" src={`${STORY}/mars-disk.webp`} alt="" style={{ '--s': 0.18, '--e': 0.32 } as VarStyle} />
-          {ELEMENTS.map((el, i) => (
-            <figure key={el.label} className={`tt-fx tt-fx-el is-${i}`} style={{ '--s': el.s, '--e': 0.64 } as VarStyle} aria-hidden="true">
-              <img src={`${STORY}/${el.src}`} alt="" loading="lazy" />
-              <figcaption className="tt-mono">{el.label}</figcaption>
-            </figure>
-          ))}
+          <LoopVideo name="moon" className="tt-fx tt-fx-moon" style={{ '--s': 0.1 } as VarStyle} />
+          <LoopVideo name="mars" className="tt-fx tt-fx-mars" style={{ '--s': 0.18 } as VarStyle} />
+          <figure className="tt-fx tt-fx-stage" style={{ '--s': 0.34, '--e': 0.43 } as VarStyle} aria-hidden="true">
+            <img className="tt-fx-media" src={`${STORY}/software-arow.jpg`} alt="" loading="lazy" />
+            <figcaption className="tt-mono">Software · NASA Artemis II real-time tracker</figcaption>
+          </figure>
+          <figure className="tt-fx tt-fx-stage" style={{ '--s': 0.45, '--e': 0.53 } as VarStyle} aria-hidden="true">
+            <LoopVideo name="mission-map" className="tt-fx-media" />
+            <figcaption className="tt-mono">Mission planning · Artemis II trajectory</figcaption>
+          </figure>
+          <div className="tt-fx-hexes" aria-hidden="true">
+            {HARDWARE.map((h, i) => (
+              <figure key={h.label} className={`tt-fx tt-fx-hex is-${i}`} style={{ '--s': 0.55 + i * 0.025, '--e': 0.66 } as VarStyle}>
+                <img src={`${STORY}/${h.src}`} alt="" loading="lazy" />
+                <figcaption className="tt-mono">{h.label}</figcaption>
+              </figure>
+            ))}
+          </div>
           <div className="tt-fx-partners">
             <div className="tt-fx-lead">
               <img className="tt-fx-item tt-fx-nasa" src="/nasa-logo.png" alt="NASA" style={{ '--s': 0.72 } as VarStyle} />
@@ -201,40 +253,11 @@ const LEARNED = [
 
 const Learned: React.FC = () => {
   const ref = useScrollProgress<HTMLElement>('pin');
-  const video = useRef<HTMLVideoElement>(null);
-  const [still] = useState(() => typeof window !== 'undefined' && window.matchMedia(REDUCED_MOTION).matches);
-
-  // play only while the section is on screen; browsers can leave an off-screen autoplay video paused
-  useEffect(() => {
-    const el = ref.current;
-    const v = video.current;
-    if (!el || !v || still) return;
-    const io = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) v.play().catch(() => undefined);
-      else v.pause();
-    });
-    io.observe(el);
-    return () => io.disconnect();
-  }, [ref, still]);
-
   return (
     <section ref={ref} className="tt-learn" aria-labelledby="tt-learn-title">
       <div className="tt-stick">
         <div className="tt-stars" aria-hidden="true" />
-        <video
-          ref={video}
-          className="tt-learn-globe"
-          autoPlay={!still}
-          muted
-          loop
-          playsInline
-          preload={still ? 'none' : 'metadata'}
-          poster={`${STORY}/globe-poster.jpg`}
-          aria-hidden="true"
-        >
-          <source src={`${STORY}/globe-900.mp4`} type="video/mp4" media="(min-width: 900px)" />
-          <source src={`${STORY}/globe-720.mp4`} type="video/mp4" />
-        </video>
+        <LoopVideo name="globe" className="tt-learn-globe" large />
         <h2 id="tt-learn-title" className="tt-learn-text m-0">
           {LEARNED.map((line, i) => (
             <span
@@ -252,13 +275,6 @@ const Learned: React.FC = () => {
 };
 
 /* ---------------------------------------------------------------- 5. join Space Apps (two frames) */
-
-const JOIN_VERBS = [
-  { Icon: Users, label: 'Collaborate' },
-  { Icon: Lightbulb, label: 'Innovate' },
-  { Icon: Globe, label: 'Solve' },
-  { Icon: PenTool, label: 'Create' }
-];
 
 const Join: React.FC = () => {
   const ref = useScrollProgress<HTMLElement>('pin');
@@ -293,49 +309,81 @@ const Join: React.FC = () => {
         <h2 id="tt-join-title" className="sr-only">
           Join the NASA Space Apps Challenge
         </h2>
-        <ul className="tt-join-list is-left tt-mono" aria-hidden="true">
-          <li>People</li>
-          <li>Ideas</li>
-          <li>Data</li>
-          <li>Community</li>
-        </ul>
-        <ul className="tt-join-list is-right tt-mono" aria-hidden="true">
-          <li>Local</li>
-          <li>Solutions</li>
-          <li>Global</li>
-          <li>Impact</li>
-        </ul>
         <div className="tt-join-frame is-1" aria-hidden="true">
           <p className="tt-join-title m-0">
-            Join the NASA
-            <br />
-            Space Apps
-            <br />
-            Challenge
+            {['Join the NASA', 'Space Apps', 'Challenge'].map((line, i) => (
+              <span key={line} className="tt-q tt-join-line" style={{ '--s': 0.02 + i * 0.08, '--k': 6, '--dir': i % 2 ? -1 : 1 } as VarStyle}>
+                {line}
+              </span>
+            ))}
           </p>
-          <span className="tt-join-arrow">→</span>
+          <span className="tt-q tt-join-arrow" style={{ '--s': 0.26, '--k': 8 } as VarStyle}>
+            →
+          </span>
         </div>
         <div className="tt-join-frame is-2">
           <img className="tt-join-logo" src="/sac-logo-houston-transparent.png" alt="NASA Space Apps Houston" />
           <p className="tt-join-meta tt-mono m-0">November 14–15, 2026 · 48 hours · Houston</p>
           <a href="#/" className="tt-join-btn tt-mono">
-            Be part of it <span aria-hidden="true">→</span>
+            Sign up <span aria-hidden="true">→</span>
           </a>
         </div>
-        <ul className="tt-join-verbs m-0 list-none p-0">
-          {JOIN_VERBS.map(({ Icon, label }) => (
-            <li key={label}>
-              <Icon aria-hidden="true" strokeWidth={1.25} />
-              <span className="tt-mono">{label}</span>
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
   );
 };
 
-/* ---------------------------------------------------------------- 6. what happens */
+/* ---------------------------------------------------------------- 6. the Space Apps challenges */
+
+const Challenges: React.FC = () => {
+  const deck = useRef<HTMLDivElement>(null);
+
+  const nudge = (dir: number) => {
+    const el = deck.current;
+    if (!el) return;
+    const card = el.querySelector('.tt-card-item') as HTMLElement | null;
+    el.scrollBy({ left: dir * ((card?.offsetWidth ?? 360) + 24), behavior: 'smooth' });
+  };
+
+  return (
+    <section className="tt-dark" aria-labelledby="tt-challenges">
+      <div className="mx-auto max-w-[1320px] px-[max(20px,4vw)] pt-[clamp(90px,14vw,180px)]">
+        <ScrollReveal>
+          <h2 id="tt-challenges" className="tt-display m-0 text-[clamp(40px,7vw,104px)]">
+            The Space Apps
+            <br />
+            challenges
+          </h2>
+        </ScrollReveal>
+
+        <div className="mt-12 flex items-center justify-between gap-6">
+          <p className="tt-mono m-0 text-[11px] text-white/60">Swipe through the challenges</p>
+          <div className="tt-deck-nav">
+            <button type="button" onClick={() => nudge(-1)} aria-label="Previous challenge">
+              ←
+            </button>
+            <button type="button" onClick={() => nudge(1)} aria-label="Next challenge">
+              →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="relative mt-8 pb-[clamp(40px,6vw,80px)]">
+        <div className="tt-grid absolute inset-0" aria-hidden="true" />
+        <div ref={deck} className="tt-deck relative">
+          {challengePosters.map((c) => (
+            <figure key={c.slug} className="tt-card-item is-poster m-0">
+              <img src={`/tech-talks/challenges/${c.slug}.webp`} alt={c.title} width={1122} height={1402} loading="lazy" />
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ---------------------------------------------------------------- 7. what happens at a talk */
 
 const WhatHappens: React.FC = () => {
   const deck = useRef<HTMLDivElement>(null);
@@ -359,17 +407,17 @@ const WhatHappens: React.FC = () => {
           <p className="tt-body m-0 mt-8 max-w-[860px] text-[clamp(16px,1.5vw,20px)] leading-[1.7] text-white/80">
             At 6:00 PM on a Thursday, someone who does the work — an engineer, a scientist, a founder — takes
             the stage at The Ion. You hear the story behind a real NASA problem, straight from the source. By
-            7:00 PM the floor is yours, and problems like these become Space Apps challenges for a team to take on.
+            7:00 PM the floor is yours.
           </p>
         </ScrollReveal>
 
         <div className="mt-12 flex items-center justify-between gap-6">
-          <p className="tt-mono m-0 text-[11px] text-white/60">Swipe through the challenges</p>
+          <p className="tt-mono m-0 text-[11px] text-white/60">Swipe through the talks</p>
           <div className="tt-deck-nav">
-            <button type="button" onClick={() => nudge(-1)} aria-label="Previous challenge">
+            <button type="button" onClick={() => nudge(-1)} aria-label="Previous talk">
               ←
             </button>
-            <button type="button" onClick={() => nudge(1)} aria-label="Next challenge">
+            <button type="button" onClick={() => nudge(1)} aria-label="Next talk">
               →
             </button>
           </div>
@@ -379,18 +427,60 @@ const WhatHappens: React.FC = () => {
       <div className="relative mt-8">
         <div className="tt-grid absolute inset-0" aria-hidden="true" />
         <div ref={deck} className="tt-deck relative">
-          {challengePosters.map((c) => (
-            <figure key={c.slug} className="tt-card-item m-0">
-              <img src={`/tech-talks/challenges/${c.slug}.webp`} alt={c.title} width={1122} height={1402} loading="lazy" />
-            </figure>
-          ))}
+          {techTalkCards.map((c) => {
+            const Tag = c.url ? 'a' : 'div';
+            return (
+              <Tag
+                key={c.slug}
+                className={`tt-card-item${c.art ? '' : ' is-type'}`}
+                {...(c.url ? { href: c.url, target: '_blank', rel: 'noopener noreferrer' } : {})}
+              >
+                {c.art && <img src={`/tech-talks/cards/${c.slug}.jpg`} alt="" loading="lazy" />}
+                <div className="tt-card-body">
+                  <div className="tt-card-top tt-mono">
+                    <span>
+                      NASA Tech Talks
+                      <br />
+                      Houston
+                    </span>
+                    <span>
+                      {c.month} {c.year}
+                    </span>
+                  </div>
+                  <p className="tt-card-kicker tt-mono">{c.kicker}</p>
+                  <h3 className="tt-card-title tt-display-lite normal-case">
+                    {c.top}
+                    <br />
+                    <span>{c.accent}</span>
+                    {c.end && (
+                      <>
+                        <br />
+                        {c.end}
+                      </>
+                    )}
+                  </h3>
+                  <p className="tt-card-desc tt-body">{c.desc}</p>
+                  {c.url && (
+                    <div className="tt-card-cta tt-mono">
+                      <i aria-hidden="true">→</i> View talk
+                    </div>
+                  )}
+                  <span className="tt-card-note tt-mono" aria-hidden="true">
+                    Same curiosity.
+                    <br />
+                    Bigger tomorrows.
+                  </span>
+                </div>
+              </Tag>
+            );
+          })}
         </div>
       </div>
     </section>
   );
 };
 
-/* ---------------------------------------------------------------- 7. archive */
+/* ---------------------------------------------------------------- 8. archive */
 
 const years: { year: string; talks: TechTalk[] }[] = [
   { year: '2026', talks: techTalks2026 },
@@ -493,6 +583,7 @@ export const TechTalksSection: React.FC = () => (
     <Sustain />
     <Learned />
     <Join />
+    <Challenges />
     <WhatHappens />
     <Archive />
   </div>
