@@ -432,6 +432,10 @@
 }
 .tt-join-frame.is-1 { opacity: calc(1 - var(--f)); filter: blur(calc(var(--f) * 10px)); scale: calc(1 - var(--f) * 0.05); }
 .tt-join-frame.is-2 { opacity: var(--f); filter: blur(calc((1 - var(--f)) * 10px)); scale: calc(1.05 - var(--f) * 0.05); }
+.tt-join-frame.is-1 { pointer-events: none; }
+.tt-join:not(.is-second) .tt-join-frame.is-2 { pointer-events: none; }
+/* tabbing to the button brings its frame forward even before you scroll there */
+.tt-join .tt-join-frame.is-2:focus-within { opacity: 1; filter: none; scale: 1; pointer-events: auto; }
 .tt-join-title {
   font-family: 'Overpass', 'Fira Sans', sans-serif;
   font-weight: 900;
@@ -588,4 +592,6 @@
   .tt-h-arrow { animation: none; }
   .tt-h-copy { opacity: 1; filter: none; }
   .tt-focus-line { filter: none; opacity: 1; }
+  .tt-join .tt-stick { display: flex; flex-direction: column; justify-content: center; gap: 5svh; padding: 24svh 20px 20svh; }
+  .tt-join-frame { position: relative; inset: auto; padding: 0; opacity: 1; filter: none; scale: 1; }
 }

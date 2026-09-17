@@ -228,7 +228,7 @@ const Learned: React.FC = () => {
           muted
           loop
           playsInline
-          preload="auto"
+          preload={still ? 'none' : 'metadata'}
           poster={`${STORY}/globe-poster.jpg`}
           aria-hidden="true"
         >
@@ -263,18 +263,14 @@ const JOIN_VERBS = [
 const Join: React.FC = () => {
   const ref = useScrollProgress<HTMLElement>('pin');
 
-  // only the frame on screen can take focus or clicks
+  // the second frame takes clicks once it is on screen (it stays in the tab order for keyboard users)
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const first = el.querySelector('.tt-join-frame.is-1');
-    const second = el.querySelector('.tt-join-frame.is-2');
     let raf = 0;
     const sync = () => {
       raf = 0;
-      const onSecond = parseFloat(el.style.getPropertyValue('--p') || '0') >= 0.5;
-      first?.toggleAttribute('inert', onSecond);
-      second?.toggleAttribute('inert', !onSecond);
+      el.classList.toggle('is-second', parseFloat(el.style.getPropertyValue('--p') || '0') >= 0.5);
     };
     const schedule = () => {
       if (!raf) raf = requestAnimationFrame(sync);
