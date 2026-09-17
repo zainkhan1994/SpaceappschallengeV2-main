@@ -359,7 +359,7 @@ const WhatHappens: React.FC = () => {
           <p className="tt-body m-0 mt-8 max-w-[860px] text-[clamp(16px,1.5vw,20px)] leading-[1.7] text-white/80">
             At 6:00 PM on a Thursday, someone who does the work — an engineer, a scientist, a founder — takes
             the stage at The Ion. You hear the story behind a real NASA problem, straight from the source. By
-            7:00 PM the floor is yours.
+            7:00 PM the floor is yours, and problems like these become Space Apps challenges for a team to take on.
           </p>
         </ScrollReveal>
 
