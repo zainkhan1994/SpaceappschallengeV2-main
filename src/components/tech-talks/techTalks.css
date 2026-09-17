@@ -304,6 +304,8 @@
   filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.35)) drop-shadow(0 24px 40px rgba(0, 0, 0, 0.6));
 }
 .tt-fx-hex {
+  --in: clamp(0, calc((var(--p, 0) - var(--s, 0)) * 18), 1);
+  --out: clamp(0, calc((var(--p, 0) - var(--e, 2)) * 18), 1);
   width: 39%;
   aspect-ratio: 1 / 1.1547;
   margin: 0;

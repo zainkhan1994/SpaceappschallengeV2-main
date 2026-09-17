@@ -1,5 +1,5 @@
 /**
- * Space Apps challenge posters shown in the "What happens at a talk" deck.
+ * Space Apps challenge posters, shown in their own swipeable section after the join frames.
  * Each poster already carries its own title and copy, so the card renders the image alone.
  * Files: public/tech-talks/challenges/<slug>.webp (1122x1402, 4:5).
  */

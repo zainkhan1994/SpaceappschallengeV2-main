@@ -159,7 +159,7 @@ const SUSTAIN: { text: string; s: number; accent?: boolean }[] = [
   { text: 'requires software,', s: 0.34 },
   { text: 'mission planning,', s: 0.44 },
   { text: 'and hardware solutions', s: 0.54 },
-  { text: 'NASA can’t build alone.', s: 0.68, accent: true }
+  { text: 'NASA can’t build alone.', s: 0.72, accent: true }
 ];
 
 /** NASA Moon to Mars architecture elements, one render per hexagon (after NASA's architecture board). */
@@ -199,7 +199,7 @@ const Sustain: React.FC = () => {
           </figure>
           <div className="tt-fx-hexes" aria-hidden="true">
             {HARDWARE.map((h, i) => (
-              <figure key={h.label} className={`tt-fx tt-fx-hex is-${i}`} style={{ '--s': 0.55 + i * 0.025, '--e': 0.66 } as VarStyle}>
+              <figure key={h.label} className={`tt-fx tt-fx-hex is-${i}`} style={{ '--s': 0.55 + i * 0.02, '--e': 0.71 } as VarStyle}>
                 <img src={`${STORY}/${h.src}`} alt="" loading="lazy" />
                 <figcaption className="tt-mono">{h.label}</figcaption>
               </figure>
@@ -207,21 +207,21 @@ const Sustain: React.FC = () => {
           </div>
           <div className="tt-fx-partners">
             <div className="tt-fx-lead">
-              <img className="tt-fx-item tt-fx-nasa" src="/nasa-logo.png" alt="NASA" style={{ '--s': 0.72 } as VarStyle} />
+              <img className="tt-fx-item tt-fx-nasa" src="/nasa-logo.png" alt="NASA" style={{ '--s': 0.75 } as VarStyle} />
               <img
                 className="tt-fx-item tt-fx-patch"
                 src={`${STORY}/artemis-ii-patch.webp`}
                 alt="Artemis II crew patch"
                 loading="lazy"
-                style={{ '--s': 0.77 } as VarStyle}
+                style={{ '--s': 0.79 } as VarStyle}
               />
             </div>
-            <p className="tt-fx-item tt-mono m-0 text-[10px] text-white/55" style={{ '--s': 0.8 } as VarStyle}>
+            <p className="tt-fx-item tt-mono m-0 text-[10px] text-white/55" style={{ '--s': 0.81 } as VarStyle}>
               With Artemis partners
             </p>
             <div className="tt-fx-row">
               {PARTNERS.map((p, i) => (
-                <img key={p.name} className="tt-fx-item tt-fx-partner" src={p.src} alt={p.name} loading="lazy" style={{ '--s': 0.82 + i * 0.025 } as VarStyle} />
+                <img key={p.name} className="tt-fx-item tt-fx-partner" src={p.src} alt={p.name} loading="lazy" style={{ '--s': 0.83 + i * 0.022 } as VarStyle} />
               ))}
             </div>
           </div>
