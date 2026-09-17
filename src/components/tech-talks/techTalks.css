@@ -389,7 +389,9 @@
 }
 
 /* ---------- 4. take what you have learned: the rotating Earth ---------- */
-.tt-learn { height: 260vh; background: #000; }
+.tt-learn { height: 300vh; background: #000; }
+/* width of the join key art as drawn in the next frame (object-fit: cover); set exactly from script */
+.tt-learn .tt-stick { --art: max(100vw, 56.25svh); }
 .tt-learn-globe {
   position: absolute;
   z-index: 1;
@@ -422,13 +424,56 @@
   filter: blur(calc((1 - var(--q)) * 10px));
 }
 .tt-learn-line.is-accent { color: var(--tt-yellow); }
+.tt-learn .tt-stick { --lit: clamp(0, calc((var(--p, 0) - 0.803) * 12), 1); }
+.tt-learn-line.is-accent { text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9), 0 0 calc(var(--lit) * 26px) rgba(234, 254, 7, calc(var(--lit) * 0.4)); }
 @media (min-width: 900px) {
-  .tt-learn-globe { left: auto; right: 3vw; top: 50%; width: min(52vw, 88svh); translate: 0 -50%; }
-  .tt-learn-text { right: auto; top: 50%; bottom: auto; width: 44vw; translate: 0 -50%; font-size: clamp(34px, 3.8vw, 58px); }
+  .tt-learn .tt-stick { --art: max(100vw, 177.78svh); }
+  /* the globe sits over the blue and red tubes so both run into it */
+  .tt-learn-globe { left: calc(50% + 0.09 * var(--art)); top: 50%; width: min(46vw, 80svh); translate: -50% -50%; }
+  .tt-learn-text { right: auto; top: 50%; bottom: auto; width: 36vw; translate: 0 -50%; font-size: clamp(30px, 3.2vw, 52px); }
 }
+/* neon tubes rising out of the join art: strips cut from the art itself, so they meet it seamlessly */
+.tt-tubes { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.tt-tube {
+  --g: clamp(0, calc((var(--p, 0) - var(--s)) * 7), 1);
+  --hit: clamp(0, calc((var(--p, 0) - var(--s) - 0.143) * 12), 1);
+  position: absolute;
+  bottom: 0;
+  left: calc(50% + (var(--x) - 0.5) * var(--art));
+  width: calc(var(--w) * var(--art));
+  height: var(--len, 0px);
+  translate: -50% 0;
+}
+.tt-tube-body {
+  position: absolute;
+  inset: 0;
+  background: url('/tech-talks/story/tube-yellow.png') center top / 100% 4px repeat-y;
+  translate: 0 calc((1 - var(--g)) * 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 34px);
+  mask-image: linear-gradient(to bottom, transparent, #000 34px);
+  will-change: translate;
+}
+.tt-tube.is-blue .tt-tube-body { background-image: url('/tech-talks/story/tube-blue.png'); }
+.tt-tube.is-red .tt-tube-body { background-image: url('/tech-talks/story/tube-red.png'); }
+/* where a tube meets the message or the planet, it lights the contact point */
+.tt-tube-hit {
+  --c: 234, 254, 7;
+  position: absolute;
+  left: 50%;
+  top: 20px;
+  width: 300%;
+  aspect-ratio: 3.4;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(var(--c), 0.38), rgba(var(--c), 0.14) 45%, transparent);
+  opacity: var(--hit);
+  scale: calc(0.7 + var(--hit) * 0.3);
+}
+.tt-tube.is-blue .tt-tube-hit { --c: 64, 132, 255; }
+.tt-tube.is-red .tt-tube-hit { --c: 255, 48, 56; }
 
 /* ---------- 5. join Space Apps: key art, then the Houston mark ---------- */
-.tt-join { height: 280vh; background: #05080f; }
+.tt-join { height: 280vh; background: #000; }
 .tt-join .tt-stick { --f: clamp(0, calc((var(--p, 0) - 0.42) * 6), 1); }
 .tt-join-bg {
   position: absolute;
@@ -436,6 +481,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* pinned to the top edge, where the tubes continue from the frame above */
+  object-position: 50% 0;
 }
 .tt-join-frame {
   position: absolute;

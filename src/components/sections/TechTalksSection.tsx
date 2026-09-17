@@ -251,19 +251,84 @@ const LEARNED = [
   'at the NASA International Space Apps Challenge.'
 ];
 
+/* the three neon tubes of the join key art, carried up into this frame. x and width are shares of the
+   art's width (the same in the desktop and mobile art); each tube rises until it meets the message or the globe */
+const TUBES = [
+  { color: 'yellow', x: 0.30996, w: 0.07344, s: 0.66 },
+  { color: 'blue', x: 0.49707, w: 0.07422, s: 0.7 },
+  { color: 'red', x: 0.6834, w: 0.07656, s: 0.74 }
+];
+const TUBE_CORE = 0.0547; // lit glass without the glow
+const GLOBE_DISK = 0.39; // globe video: the Earth's radius as a share of the frame
+const TIP = 20; // px a tube runs past the contact point, so its feathered tip meets the edge solid
+
 const Learned: React.FC = () => {
   const ref = useScrollProgress<HTMLElement>('pin');
+
+  useEffect(() => {
+    const section = ref.current;
+    const stick = section?.firstElementChild as HTMLElement | null;
+    const join = section?.nextElementSibling?.firstElementChild as HTMLElement | null;
+    const globe = section?.querySelector<HTMLElement>('.tt-learn-globe');
+    if (!section || !stick) return;
+    const lines = Array.from(section.querySelectorAll<HTMLElement>('.tt-learn-line'));
+    const tubes = Array.from(section.querySelectorAll<HTMLElement>('.tt-tube'));
+    const wide = window.matchMedia('(min-width: 900px)');
+
+    const measure = () => {
+      // the join art is object-fit: cover in the next frame, so its width is set by that frame's box
+      const artW = join ? Math.max(join.clientWidth, join.clientHeight * (wide.matches ? 16 / 9 : 9 / 16)) : stick.clientWidth;
+      stick.style.setProperty('--art', `${artW}px`);
+      const box = stick.getBoundingClientRect();
+      const rects = lines.flatMap((l) => Array.from(l.getClientRects()));
+      const g = globe?.getBoundingClientRect();
+      TUBES.forEach((t, i) => {
+        const x = box.left + box.width / 2 + (t.x - 0.5) * artW;
+        const half = (TUBE_CORE * artW) / 2;
+        let top = box.top; // nothing in the way: run out of the top of the frame
+        for (const r of rects) if (r.width && r.left < x + half && r.right > x - half) top = Math.max(top, r.bottom - TIP);
+        if (g && globe) {
+          const radius = globe.offsetWidth * GLOBE_DISK;
+          const dx = x - (g.left + g.width / 2);
+          if (Math.abs(dx) < radius * 0.9) top = Math.max(top, g.top + g.height / 2 + Math.sqrt(radius * radius - dx * dx) - radius * 0.03 - TIP);
+        }
+        tubes[i]?.style.setProperty('--len', `${Math.max(0, box.bottom - top)}px`);
+      });
+    };
+
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(stick);
+    if (join) ro.observe(join);
+    const text = section.querySelector('.tt-learn-text');
+    if (text) ro.observe(text); // re-wraps when the web font arrives
+    wide.addEventListener('change', measure);
+    document.fonts?.ready.then(measure).catch(() => undefined);
+    return () => {
+      ro.disconnect();
+      wide.removeEventListener('change', measure);
+    };
+  }, [ref]);
+
   return (
     <section ref={ref} className="tt-learn" aria-labelledby="tt-learn-title">
       <div className="tt-stick">
         <div className="tt-stars" aria-hidden="true" />
         <LoopVideo name="globe" className="tt-learn-globe" large />
+        <div className="tt-tubes" aria-hidden="true">
+          {TUBES.map((t) => (
+            <span key={t.color} className={`tt-tube is-${t.color}`} style={{ '--x': t.x, '--w': t.w, '--s': t.s } as VarStyle}>
+              <i className="tt-tube-body" />
+              <i className="tt-tube-hit" />
+            </span>
+          ))}
+        </div>
         <h2 id="tt-learn-title" className="tt-learn-text m-0">
           {LEARNED.map((line, i) => (
             <span
               key={line}
               className={`tt-q tt-learn-line${i === LEARNED.length - 1 ? ' is-accent' : ''}`}
-              style={{ '--s': 0.04 + i * 0.16, '--k': 6 } as VarStyle}
+              style={{ '--s': 0.04 + i * 0.14, '--k': 6 } as VarStyle}
             >
               {line}{' '}
             </span>
