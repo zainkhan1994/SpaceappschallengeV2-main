@@ -125,14 +125,27 @@
   inset: 0;
   background: #000 url('/tech-talks/story/moon.jpg') center 30% / cover no-repeat;
 }
+/* the same ground, cut along the skyline and laid over the Earth, so the Earth sits behind the ridge */
+.tt-h-ridge {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: url('/tech-talks/story/moon.jpg') center 30% / cover no-repeat;
+  -webkit-mask: url('/tech-talks/story/moon-horizon.png') center 30% / cover no-repeat;
+  mask: url('/tech-talks/story/moon-horizon.png') center 30% / cover no-repeat;
+  pointer-events: none;
+}
 .tt-h-earth {
   position: absolute;
   z-index: 1;
   top: calc(env(safe-area-inset-top, 0px) + 1svh);
   right: -6vw;
   width: clamp(190px, 50vw, 560px);
-  height: auto;
-  filter: drop-shadow(0 0 50px rgba(46, 150, 245, 0.35));
+  aspect-ratio: 1;
+  object-fit: cover;
+  /* black space around the disk drops out against the sky */
+  mix-blend-mode: screen;
+  pointer-events: none;
   transform-origin: 100% 0;
   transform: translateX(calc(var(--i) * 8vw)) scale(calc(1 - var(--i) * 0.3));
 }
@@ -230,6 +243,9 @@
 }
 @media (min-width: 900px) {
   .tt-h-earth { right: 3vw; width: clamp(200px, 22vw, 380px); transform: none; }
+  /* a little more sky on wide screens, so the Earth clears the ridge */
+  .tt-h-moon,
+  .tt-h-ridge { background-position: center 12%; -webkit-mask-position: center 12%; mask-position: center 12%; }
   .tt-h-stage,
   .tt-h-stair {
     left: auto;
@@ -424,19 +440,21 @@
   filter: blur(calc((1 - var(--q)) * 10px));
 }
 .tt-learn-line.is-accent { color: var(--tt-yellow); }
-.tt-learn .tt-stick { --lit: clamp(0, calc((var(--p, 0) - 0.803) * 12), 1); }
+.tt-learn .tt-stick { --lit: clamp(0, calc((var(--p, 0) - 0.8) * 14), 1); }
 .tt-learn-line.is-accent { text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9), 0 0 calc(var(--lit) * 26px) rgba(234, 254, 7, calc(var(--lit) * 0.4)); }
 @media (min-width: 900px) {
   .tt-learn .tt-stick { --art: max(100vw, 177.78svh); }
   /* the globe sits over the blue and red tubes so both run into it */
-  .tt-learn-globe { left: calc(50% + 0.09 * var(--art)); top: 50%; width: min(46vw, 80svh); translate: -50% -50%; }
-  .tt-learn-text { right: auto; top: 50%; bottom: auto; width: 36vw; translate: 0 -50%; font-size: clamp(30px, 3.2vw, 52px); }
+  .tt-learn-globe { left: calc(50% + 0.09 * var(--art)); top: 50%; width: min(42vw, 74svh); translate: -50% -50%; }
+  .tt-learn-text { right: auto; top: 50%; bottom: auto; width: 34vw; translate: 0 -50%; font-size: clamp(28px, 3vw, 50px); }
 }
-/* neon tubes rising out of the join art: strips cut from the art itself, so they meet it seamlessly */
+/* neon tubes drawn up out of the join art: strips cut from the art itself, so they meet it seamlessly */
 .tt-tubes { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
 .tt-tube {
-  --g: clamp(0, calc((var(--p, 0) - var(--s)) * 7), 1);
-  --hit: clamp(0, calc((var(--p, 0) - var(--s) - 0.143) * 12), 1);
+  --c: 234, 254, 7;
+  --g: clamp(0, calc((var(--p, 0) - var(--s)) * 6), 1);
+  --e: calc(1 - (1 - var(--g)) * (1 - var(--g)) * (1 - var(--g))); /* eased: quick out of the art, settling onto the target */
+  --hit: clamp(0, calc((var(--p, 0) - var(--s) - 0.16) * 14), 1);
   position: absolute;
   bottom: 0;
   left: calc(50% + (var(--x) - 0.5) * var(--art));
@@ -444,33 +462,48 @@
   height: var(--len, 0px);
   translate: -50% 0;
 }
+.tt-tube.is-blue { --c: 70, 140, 255; }
+.tt-tube.is-red { --c: 255, 52, 60; }
 .tt-tube-body {
   position: absolute;
   inset: 0;
   background: url('/tech-talks/story/tube-yellow.png') center top / 100% 4px repeat-y;
-  translate: 0 calc((1 - var(--g)) * 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 34px);
-  mask-image: linear-gradient(to bottom, transparent, #000 34px);
-  will-change: translate;
+  /* the tube is drawn upward in place rather than slid in */
+  clip-path: inset(calc((1 - var(--e)) * 100%) 0 0 0);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 14px);
+  mask-image: linear-gradient(to bottom, transparent, #000 14px);
 }
 .tt-tube.is-blue .tt-tube-body { background-image: url('/tech-talks/story/tube-blue.png'); }
 .tt-tube.is-red .tt-tube-body { background-image: url('/tech-talks/story/tube-red.png'); }
-/* where a tube meets the message or the planet, it lights the contact point */
-.tt-tube-hit {
-  --c: 234, 254, 7;
+/* ends that meet the Earth follow the curve of the limb */
+.tt-tube.is-globe .tt-tube-body {
+  -webkit-mask-image: radial-gradient(circle at var(--gx) var(--gy), transparent calc(var(--gr) - 1px), #000 var(--gr));
+  mask-image: radial-gradient(circle at var(--gx) var(--gy), transparent calc(var(--gr) - 1px), #000 var(--gr));
+}
+/* the light front travelling up the tube while it forms */
+.tt-tube-head {
   position: absolute;
   left: 50%;
-  top: 20px;
-  width: 300%;
+  top: 0;
+  width: 76%;
+  aspect-ratio: 1 / 2.2;
+  translate: -50% calc(var(--len, 0px) * (1 - var(--e)) - 38%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.8), rgba(var(--c), 0.6) 34%, rgba(var(--c), 0) 100%);
+  opacity: calc(clamp(0, var(--g) * 12, 1) * (1 - var(--hit)));
+}
+/* where a tube meets the message or the planet, it lights the contact point */
+.tt-tube-hit {
+  position: absolute;
+  left: 50%;
+  top: var(--hy, 0px);
+  width: 240%;
   aspect-ratio: 3.4;
   translate: -50% -50%;
   border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(var(--c), 0.38), rgba(var(--c), 0.14) 45%, transparent);
+  background: radial-gradient(closest-side, rgba(var(--c), 0.34), rgba(var(--c), 0.12) 45%, transparent);
   opacity: var(--hit);
-  scale: calc(0.7 + var(--hit) * 0.3);
 }
-.tt-tube.is-blue .tt-tube-hit { --c: 64, 132, 255; }
-.tt-tube.is-red .tt-tube-hit { --c: 255, 48, 56; }
 
 /* ---------- 5. join Space Apps: key art, then the Houston mark ---------- */
 .tt-join { height: 280vh; background: #000; }

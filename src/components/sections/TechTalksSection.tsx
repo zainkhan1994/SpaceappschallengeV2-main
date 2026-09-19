@@ -6,7 +6,8 @@ import { TechTalk, techTalks2023, techTalks2024, techTalks2025, techTalks2026 } 
 import { challengePosters } from '../../data/challengePosters';
 import { techTalkCards } from '../../data/techTalkCards';
 
-// Imagery: stage, staircase, lunar horizon and Earth (hero) supplied by Space Apps Houston.
+// Imagery: stage, staircase and lunar horizon (hero) supplied by Space Apps Houston.
+// Hero Earth: NASA DSCOVR/EPIC natural-colour photographs of 20 June 2024 (epic.gsfc.nasa.gov), reprojected between frames into one smooth turn.
 // NASA, public domain (images.nasa.gov): Moon GSFC_20171208_Archive_e001861 (LRO) · Mars PIA00407 (Viking) ·
 // SLS Block 1B illustration B1B_Crew_OML · software jsc2022e090102 · mission planning jsc2026e019242 ·
 // Artemis II crew patch jsc2025e034457 · spacewalk iss038e020234 (join art).
@@ -36,7 +37,8 @@ const LabelRow: React.FC<{ label: string; className?: string }> = ({ label, clas
 );
 
 /** Muted, looping planet render: plays only while on screen, never for reduced motion. */
-const LoopVideo: React.FC<{ name: string; className: string; large?: boolean; style?: VarStyle }> = ({ name, className, large, style }) => {
+/** `sizes`: frame width for narrow screens, then (optionally) for screens 900px and up. */
+const LoopVideo: React.FC<{ name: string; className: string; sizes?: [number, number?]; style?: VarStyle }> = ({ name, className, sizes = [600], style }) => {
   const video = useRef<HTMLVideoElement>(null);
   const [still] = useState(() => typeof window !== 'undefined' && window.matchMedia(REDUCED_MOTION).matches);
 
@@ -66,8 +68,8 @@ const LoopVideo: React.FC<{ name: string; className: string; large?: boolean; st
       poster={`${STORY}/${name}-poster.jpg`}
       aria-hidden="true"
     >
-      {large && <source src={`${STORY}/${name}-900.mp4`} type="video/mp4" media="(min-width: 900px)" />}
-      <source src={`${STORY}/${name}-${large ? 720 : 600}.mp4`} type="video/mp4" />
+      {sizes[1] && <source src={`${STORY}/${name}-${sizes[1]}.mp4`} type="video/mp4" media="(min-width: 900px)" />}
+      <source src={`${STORY}/${name}-${sizes[0]}.mp4`} type="video/mp4" />
     </video>
   );
 };
@@ -88,7 +90,9 @@ const Hero: React.FC = () => {
       <div className="tt-stick">
         <div className="tt-h-moon" aria-hidden="true" />
         <div className="tt-stars" aria-hidden="true" />
-        <img className="tt-h-earth" src={`${STORY}/earth.webp`} alt="" />
+        <LoopVideo name="earth" className="tt-h-earth" sizes={[480, 720]} />
+        {/* the lunar ridge again, cut out along the skyline, so the Earth rises from behind it */}
+        <div className="tt-h-ridge" aria-hidden="true" />
         <img className="tt-h-stair" src={`${STORY}/staircase.webp`} alt="" />
         <img className="tt-h-stage" src={`${STORY}/stage.webp`} alt="" />
         <p className="tt-h-cue tt-mono m-0" aria-hidden="true">
@@ -254,13 +258,13 @@ const LEARNED = [
 /* the three neon tubes of the join key art, carried up into this frame. x and width are shares of the
    art's width (the same in the desktop and mobile art); each tube rises until it meets the message or the globe */
 const TUBES = [
-  { color: 'yellow', x: 0.30996, w: 0.07344, s: 0.66 },
-  { color: 'blue', x: 0.49707, w: 0.07422, s: 0.7 },
-  { color: 'red', x: 0.6834, w: 0.07656, s: 0.74 }
+  { color: 'yellow', x: 0.30996, w: 0.07344, s: 0.64 },
+  { color: 'blue', x: 0.49707, w: 0.07422, s: 0.67 },
+  { color: 'red', x: 0.6834, w: 0.07656, s: 0.7 }
 ];
 const TUBE_CORE = 0.0547; // lit glass without the glow
 const GLOBE_DISK = 0.39; // globe video: the Earth's radius as a share of the frame
-const TIP = 20; // px a tube runs past the contact point, so its feathered tip meets the edge solid
+const TIP = 14; // px a tube tucks under the message, so its feathered end meets the letters solid
 
 const Learned: React.FC = () => {
   const ref = useScrollProgress<HTMLElement>('pin');
@@ -283,16 +287,37 @@ const Learned: React.FC = () => {
       const rects = lines.flatMap((l) => Array.from(l.getClientRects()));
       const g = globe?.getBoundingClientRect();
       TUBES.forEach((t, i) => {
+        const tube = tubes[i];
+        if (!tube) return;
         const x = box.left + box.width / 2 + (t.x - 0.5) * artW;
         const half = (TUBE_CORE * artW) / 2;
-        let top = box.top; // nothing in the way: run out of the top of the frame
-        for (const r of rects) if (r.width && r.left < x + half && r.right > x - half) top = Math.max(top, r.bottom - TIP);
+        const outer = (t.w * artW) / 2;
+        // rise until the first thing in the way: a line of the message, or the Earth
+        let top = box.top;
+        let contact = box.top;
+        for (const r of rects) if (r.width && r.left < x + half && r.right > x - half && r.bottom - TIP > top) contact = top = r.bottom - TIP;
+        let onGlobe = false;
         if (g && globe) {
           const radius = globe.offsetWidth * GLOBE_DISK;
-          const dx = x - (g.left + g.width / 2);
-          if (Math.abs(dx) < radius * 0.9) top = Math.max(top, g.top + g.height / 2 + Math.sqrt(radius * radius - dx * dx) - radius * 0.03 - TIP);
+          const cx = g.left + g.width / 2;
+          const cy = g.top + g.height / 2;
+          const dx = x - cx;
+          const hit = cy + Math.sqrt(Math.max(0, radius * radius - dx * dx));
+          if (Math.abs(dx) < radius * 0.85 && hit > top) {
+            // the tube ends on the curve of the limb: its box reaches the highest point of the limb across its width,
+            // and a circular mask cuts it along the disk
+            const far = Math.min(radius, Math.abs(dx) + outer);
+            top = cy + Math.sqrt(radius * radius - far * far);
+            contact = hit;
+            onGlobe = true;
+            tube.style.setProperty('--gx', `${cx - (x - outer)}px`);
+            tube.style.setProperty('--gy', `${cy - top}px`);
+            tube.style.setProperty('--gr', `${radius}px`);
+          }
         }
-        tubes[i]?.style.setProperty('--len', `${Math.max(0, box.bottom - top)}px`);
+        tube.classList.toggle('is-globe', onGlobe);
+        tube.style.setProperty('--len', `${Math.max(0, box.bottom - top)}px`);
+        tube.style.setProperty('--hy', `${contact - top}px`);
       });
     };
 
@@ -314,11 +339,12 @@ const Learned: React.FC = () => {
     <section ref={ref} className="tt-learn" aria-labelledby="tt-learn-title">
       <div className="tt-stick">
         <div className="tt-stars" aria-hidden="true" />
-        <LoopVideo name="globe" className="tt-learn-globe" large />
+        <LoopVideo name="globe" className="tt-learn-globe" sizes={[720, 900]} />
         <div className="tt-tubes" aria-hidden="true">
           {TUBES.map((t) => (
             <span key={t.color} className={`tt-tube is-${t.color}`} style={{ '--x': t.x, '--w': t.w, '--s': t.s } as VarStyle}>
               <i className="tt-tube-body" />
+              <i className="tt-tube-head" />
               <i className="tt-tube-hit" />
             </span>
           ))}
