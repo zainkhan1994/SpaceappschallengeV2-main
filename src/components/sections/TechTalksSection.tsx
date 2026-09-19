@@ -11,7 +11,8 @@ import { techTalkCards } from '../../data/techTalkCards';
 // NASA, public domain (images.nasa.gov): Moon GSFC_20171208_Archive_e001861 (LRO) · Mars PIA00407 (Viking) ·
 // SLS Block 1B illustration B1B_Crew_OML · software jsc2022e090102 · mission planning jsc2026e019242 ·
 // Artemis II crew patch jsc2025e034457 · spacewalk iss038e020234 (join art).
-// Software: NASA Artemis II Real-time Orbit Website (AROW) · Mission planning: NASA/JSC Artemis II mission map (SVS 20412).
+// Software: CAPSTONE and LRO 3D models, NASA/JPL-Caltech (Eyes on the Solar System), drawn live over the Moon.
+// Mission planning: NASA/JSC Artemis II mission map (SVS 20412).
 // Hardware: Orion jsc2022e046362, Gateway KSC-20240716-PH-NAS01_0001, NASA Moon Base renderings (fission surface power, habitat).
 // Moon and Mars videos rendered from NASA SVS CGI Moon Kit (LROC color + LOLA elevation) and the Viking MDIM2.1 color mosaic (NASA Mars Trek).
 // Rotating globe rendered from NASA Visible Earth: Blue Marble Next Generation, Black Marble 2016, cloud_combined.
@@ -183,6 +184,40 @@ const PARTNERS = [
   { src: '/asi-italy-logo.png', name: 'Italian Space Agency' }
 ];
 
+/** Live WebGL layer for the software beat; the three.js scene loads only when the section comes near. */
+const CapstoneOrbit: React.FC<{ section: React.RefObject<HTMLElement> }> = ({ section }) => {
+  const canvas = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const c = canvas.current;
+    const s = section.current;
+    const moon = s?.querySelector<HTMLElement>('.tt-fx-moon');
+    if (!c || !s || !moon || window.matchMedia(REDUCED_MOTION).matches) return;
+    let stop: (() => void) | undefined;
+    let cancelled = false;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        io.disconnect();
+        import('../tech-talks/capstoneScene')
+          .then(({ startCapstoneScene }) => {
+            if (!cancelled) stop = startCapstoneScene(c, s, moon);
+          })
+          .catch(() => undefined);
+      },
+      { rootMargin: '100% 0px' }
+    );
+    io.observe(s);
+    return () => {
+      cancelled = true;
+      io.disconnect();
+      stop?.();
+    };
+  }, [section]);
+
+  return <canvas ref={canvas} className="tt-soft" aria-hidden="true" />;
+};
+
 const Sustain: React.FC = () => {
   const ref = useScrollProgress<HTMLElement>('pin');
 
@@ -193,11 +228,10 @@ const Sustain: React.FC = () => {
         <div className="tt-sus-visual">
           <LoopVideo name="moon" className="tt-fx tt-fx-moon" style={{ '--s': 0.1 } as VarStyle} />
           <LoopVideo name="mars" className="tt-fx tt-fx-mars" style={{ '--s': 0.18 } as VarStyle} />
-          <figure className="tt-fx tt-fx-stage" style={{ '--s': 0.34, '--e': 0.43 } as VarStyle} aria-hidden="true">
-            <img className="tt-fx-media" src={`${STORY}/software-arow.jpg`} alt="" loading="lazy" />
-            <figcaption className="tt-mono">Software · NASA Artemis II real-time tracker</figcaption>
+          <figure className="tt-fx tt-fx-stage is-caption" style={{ '--s': 0.35, '--e': 0.425 } as VarStyle} aria-hidden="true">
+            <figcaption className="tt-mono">Software · CAPSTONE ranging off NASA’s LRO to find itself</figcaption>
           </figure>
-          <figure className="tt-fx tt-fx-stage" style={{ '--s': 0.45, '--e': 0.53 } as VarStyle} aria-hidden="true">
+          <figure className="tt-fx tt-fx-stage" style={{ '--s': 0.465, '--e': 0.535 } as VarStyle} aria-hidden="true">
             <LoopVideo name="mission-map" className="tt-fx-media" />
             <figcaption className="tt-mono">Mission planning · Artemis II trajectory</figcaption>
           </figure>
@@ -230,6 +264,7 @@ const Sustain: React.FC = () => {
             </div>
           </div>
         </div>
+        <CapstoneOrbit section={ref} />
         <h2 id="tt-sus-title" className="tt-sus-text m-0">
           {SUSTAIN.map((line, i) => (
             <span

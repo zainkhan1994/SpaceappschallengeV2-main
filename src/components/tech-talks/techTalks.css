@@ -272,6 +272,19 @@
   right: 16px;
   top: calc(env(safe-area-inset-top, 0px) + 9svh);
   height: 42svh;
+  container-type: size;
+}
+/* the software beat's spacecraft, drawn live over the Moon (see capstoneScene.ts) */
+.tt-soft {
+  --a: clamp(0, calc((var(--p, 0) - 0.33) * 20), 1);
+  --z: clamp(0, calc((var(--p, 0) - 0.425) * 22), 1);
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: calc(var(--a) * (1 - var(--z)));
 }
 /* each visual fades in at --s and out at --e */
 .tt-fx {
@@ -287,13 +300,18 @@
 .tt-fx-moon { left: -6%; top: -8%; height: 84%; }
 .tt-fx-mars { right: -4%; bottom: -6%; height: 60%; }
 .tt-fx-moon,
+.tt-fx-mars { opacity: calc(var(--in) * (1 - var(--push))); }
+/* Mars leaves as the requirements arrive; the Moon takes centre stage for the software beat, then leaves */
 .tt-fx-mars {
-  /* pushed out of frame as the requirements arrive */
-  --push: clamp(0, calc((var(--p, 0) - 0.3) * 7), 1);
-  opacity: calc(var(--in) * (1 - var(--push)));
+  --push: clamp(0, calc((var(--p, 0) - 0.28) * 9), 1);
+  translate: calc(var(--push) * 45%) calc(var(--push) * 35%);
 }
-.tt-fx-moon { translate: calc(var(--push) * -45%) calc(var(--push) * -35%); }
-.tt-fx-mars { translate: calc(var(--push) * 45%) calc(var(--push) * 35%); }
+.tt-fx-moon {
+  --stage: clamp(0, calc((var(--p, 0) - 0.29) * 10), 1);
+  --push: clamp(0, calc((var(--p, 0) - 0.425) * 22), 1);
+  translate: calc(var(--stage) * (56cqw - 42cqh) + var(--push) * -55%) calc(var(--stage) * 16cqh + var(--push) * -40%);
+  scale: calc(1 - var(--stage) * 0.18);
+}
 .tt-fx-stage {
   /* quicker hand-offs so two captions never share the frame */
   --in: clamp(0, calc((var(--p, 0) - var(--s, 0)) * 18), 1);
@@ -309,6 +327,7 @@
 .tt-fx-stage figcaption,
 .tt-fx-hex figcaption { font-size: 9px; color: rgba(255, 255, 255, 0.62); }
 .tt-fx-stage figcaption { margin-top: 12px; text-align: center; }
+.tt-fx-stage.is-caption { justify-content: flex-end; }
 /* hardware board: a honeycomb of four renders */
 .tt-fx-hexes {
   position: absolute;
