@@ -6,6 +6,7 @@
  * deck has the same summaries but older tags for CLPS, Health Monitoring, MODIS/VIIRS, Martian Map and Planet X.
  * Art: public/tech-talks/challenges/<slug>.webp (1122x1402, 4:5). Posters supplied by Space Apps Houston carry
  * their own type; challenges without a poster get a NASA photograph with the type set in HTML (`cover`).
+ * The CLPS poster's blurb was re-set to match the official summary (it described browsing upcoming CLPS missions).
  */
 export type Difficulty = 'Beginner/Youth' | 'Intermediate' | 'Advanced';
 
