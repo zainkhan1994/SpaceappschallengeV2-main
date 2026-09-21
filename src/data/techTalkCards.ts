@@ -6,9 +6,9 @@
  * render as type-led cards instead of showing a broken image. Photos picked from
  * the NASA Image and Video Library (images-api.nasa.gov) carry their ID in `photo`.
  *
- * Talks deliberately absent, per the card brief: SEP + OCT 2026 and OCT 2025
- * (unconfirmed or canceled), JUL 2024 (no confirmed talk), MAY 2023 (subject
- * not evidenced).
+ * Talks deliberately absent, per the card brief: OCT 2026 (topic not yet
+ * announced), OCT 2025 (canceled), JUL 2024 (no confirmed talk), MAY 2023
+ * (subject not evidenced).
  */
 export interface TechTalkCard {
   slug: string;
@@ -31,6 +31,19 @@ export interface TechTalkCard {
 const ION = 'https://iondistrict.com/event/';
 
 export const techTalkCards: TechTalkCard[] = [
+  {
+    slug: '2026-09-navigation',
+    year: '2026',
+    month: 'SEP',
+    kicker: 'Craters × Limbs × Stars',
+    top: 'Autonomous',
+    accent: 'Onboard',
+    end: 'Navigation',
+    desc: 'A spacecraft that finds itself from what its camera sees, when the ground goes quiet.',
+    url: `${ION}nasa-tech-talks-22/`,
+    art: true,
+    photo: 'art001e000346'
+  },
   {
     slug: '2026-08-humanities',
     year: '2026',

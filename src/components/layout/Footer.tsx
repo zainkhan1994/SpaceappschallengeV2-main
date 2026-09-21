@@ -18,15 +18,11 @@ export const Footer: React.FC = () => {
               <span className="text-[#EAFE07]">2026</span>
             </span>
           </div>
-          <p className="m-0 mb-4 max-w-[420px] text-[16px] leading-relaxed text-white/60">
-            Two days of innovation, collaboration, and discovery powered by NASA open data. Houston, Texas · November 14–15, 2026. Free to attend.
-          </p>
           <p className="m-0 text-[16px]">
             <a href="mailto:zain@nasaspaceappschallenge.org" className="text-[#2E96F5] hover:text-[#EAFE07]">
               zain@nasaspaceappschallenge.org
             </a>
           </p>
-          <p className="mt-4 text-[14px] text-white/45">#SpaceApps · #SpaceAppsHouston</p>
         </div>
 
         {footerCols.map((col, idx) => (

@@ -11,6 +11,8 @@ export interface TechTalk {
   venue?: string;
   /** Ion District event page for this talk. */
   url?: string;
+  /** What follows the talk, e.g. networking. */
+  after?: string;
   status: 'normal' | 'canceled' | 'upcoming';
 }
 
@@ -316,22 +318,27 @@ export const techTalks2026: TechTalk[] = [
   {
     month: 'SEP',
     day: '24',
-    short: 'Upcoming',
-    title: 'NASA Tech Talks at The Ion',
-    speaker: '',
+    short: 'Onboard Navigation',
+    title: 'Enhancing Autonomous Onboard Navigation Systems',
+    speaker: 'Jorge Chong + Montgomery B. Goforth',
+    role: 'Project TRON manager, NASA JSC + JSC Chief Technologist',
+    desc: 'TRON, the Target & Range-adaptive Optical Navigation suite built at NASA JSC: a spacecraft finds its own position from crater images up close, the Earth or Moon limb at mid range and unresolved planets far out, so it keeps navigating when contact with the ground is lost. An overview of the software release and two upcoming test flights.',
     time: 'Thursday · 6:00 PM – 7:00 PM CDT',
-    venue: 'The Ion',
+    venue: 'Ion · 4201 Main Street, Houston',
+    after: 'Drinks and networking at Second Draught',
     url: `${ION}nasa-tech-talks-22/`,
     status: 'upcoming'
   },
   {
     month: 'OCT',
     day: '22',
-    short: 'Upcoming',
-    title: 'NASA Tech Talks at The Ion',
+    short: 'Topic TBA',
+    title: 'NASA Tech Talks',
     speaker: '',
+    desc: 'Topic and speakers not yet announced by Ion.',
     time: 'Thursday · 6:00 PM – 7:00 PM CDT',
-    venue: 'The Ion',
+    venue: 'Ion · 4201 Main Street, Houston',
+    after: 'Drinks and networking at Second Draught',
     url: `${ION}nasa-tech-talks-23/`,
     status: 'upcoming'
   }

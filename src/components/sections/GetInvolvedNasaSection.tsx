@@ -8,7 +8,7 @@ const paths = [
     href: '#/tech-talks',
     eyebrow: 'Monthly at The Ion',
     title: 'NASA Tech Talks',
-    body: 'Thursday evenings with NASA engineers, scientists and partners. Next talks: September 24 and October 22, 2026.',
+    body: 'Thursday evenings with NASA engineers, scientists and partners. Next: September 24, 2026, Enhancing Autonomous Onboard Navigation Systems with NASA JSC’s Jorge Chong and Montgomery B. Goforth.',
     cta: 'Explore Tech Talks',
     accent: '#EAFE07'
   },

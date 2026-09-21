@@ -290,8 +290,10 @@ const LEARNED = [
   'Take what you have learned,',
   'form a team,',
   'and prove your solution in 48 hours',
-  'at the NASA International Space Apps Challenge.'
+  'at the NASA Space Apps Challenge.'
 ];
+/* the last line's three words each take the colour of the tube beneath them */
+const WORDS = ['Space', 'Apps', 'Challenge.'];
 
 /* the three neon tubes of the join key art, carried up into this frame. x and width are shares of the
    art's width (the same in the desktop and mobile art); each tube rises until it meets the message or the globe */
@@ -315,6 +317,7 @@ const Learned: React.FC = () => {
     if (!section || !stick) return;
     const lines = Array.from(section.querySelectorAll<HTMLElement>('.tt-learn-line'));
     const tubes = Array.from(section.querySelectorAll<HTMLElement>('.tt-tube'));
+    const words = Array.from(section.querySelectorAll<HTMLElement>('.tt-learn-word'));
     const wide = window.matchMedia('(min-width: 900px)');
 
     const measure = () => {
@@ -322,18 +325,30 @@ const Learned: React.FC = () => {
       const artW = join ? Math.max(join.clientWidth, join.clientHeight * (wide.matches ? 16 / 9 : 9 / 16)) : stick.clientWidth;
       stick.style.setProperty('--art', `${artW}px`);
       const box = stick.getBoundingClientRect();
+      const tubeX = (t: (typeof TUBES)[number]) => box.left + box.width / 2 + (t.x - 0.5) * artW;
+      // each of the three words slides along its row until it is centred on its own tube: stacked on narrow screens,
+      // one spread row on wide ones
+      words.forEach((w) => w.style.setProperty('--dx', '0px'));
+      words.forEach((w, i) => {
+        const r = w.getBoundingClientRect();
+        const dx = tubeX(TUBES[i]) - (r.left + r.width / 2);
+        w.style.setProperty('--dx', `${Math.min(Math.max(dx, box.left + 12 - r.left), box.right - 12 - r.right)}px`);
+      });
       const rects = lines.flatMap((l) => Array.from(l.getClientRects()));
       const g = globe?.getBoundingClientRect();
       TUBES.forEach((t, i) => {
         const tube = tubes[i];
         if (!tube) return;
-        const x = box.left + box.width / 2 + (t.x - 0.5) * artW;
+        const x = tubeX(t);
         const half = (TUBE_CORE * artW) / 2;
         const outer = (t.w * artW) / 2;
-        // rise until the first thing in the way: a line of the message, or the Earth
+        // rise to meet this tube's own word when it is overhead; otherwise the first thing in the way: a line of the
+        // message, or the Earth
         let top = box.top;
         let contact = box.top;
-        for (const r of rects) if (r.width && r.left < x + half && r.right > x - half && r.bottom - TIP > top) contact = top = r.bottom - TIP;
+        const word = words[i]?.getBoundingClientRect();
+        if (word && word.left < x + half && word.right > x - half) contact = top = word.bottom - TIP;
+        else for (const r of rects) if (r.width && r.left < x + half && r.right > x - half && r.bottom - TIP > top) contact = top = r.bottom - TIP;
         let onGlobe = false;
         if (g && globe) {
           const radius = globe.offsetWidth * GLOBE_DISK;
@@ -394,7 +409,19 @@ const Learned: React.FC = () => {
               className={`tt-q tt-learn-line${i === LEARNED.length - 1 ? ' is-accent' : ''}`}
               style={{ '--s': 0.04 + i * 0.14, '--k': 6 } as VarStyle}
             >
-              {line}{' '}
+              {i === LEARNED.length - 1 ? (
+                <>
+                  at the NASA <br className="tt-learn-break" />
+                  {WORDS.map((w, k) => (
+                    <React.Fragment key={w}>
+                      <span className={`tt-learn-word is-${TUBES[k].color}`}>{w}</span>
+                      {k < WORDS.length - 1 ? ' ' : ''}
+                    </React.Fragment>
+                  ))}
+                </>
+              ) : (
+                line
+              )}{' '}
             </span>
           ))}
         </h2>
@@ -656,13 +683,13 @@ const Archive: React.FC = () => {
                   <h3 className="tt-display-lite m-0 text-[clamp(19px,2.1vw,28px)]">{canceled ? 'Canceled' : t.title}</h3>
                   {(who || next) && (
                     <p className="tt-mono m-0 mt-2.5 text-[10px] leading-[1.8] text-white/55">
-                      {next ? 'Upcoming · Speaker TBA' : who}
+                      {next ? `Upcoming${t.speaker ? ` · ${who}` : ' · Speaker TBA'}` : who}
                     </p>
                   )}
                 </div>
                 <div>
                   <p className="tt-body m-0 text-[15px] leading-[1.7] text-white/65">
-                    {next ? `${t.time} · ${t.venue}. Topic to be announced.` : t.desc ?? ''}
+                    {next ? `${t.time} · ${t.venue}. ${t.desc ?? 'Topic to be announced.'}` : t.desc ?? ''}
                   </p>
                   {t.url && (
                     <span className="tt-mono mt-3 inline-block text-[10px] text-[#2E96F5]" aria-hidden="true">
