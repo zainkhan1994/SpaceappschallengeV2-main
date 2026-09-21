@@ -3,7 +3,8 @@
  *
  * One card per confirmed talk, newest first. `art: true` means
  * public/tech-talks/cards/<slug>.jpg exists (4:5, 1600x2000); cards without art
- * render as type-led cards instead of showing a broken image.
+ * render as type-led cards instead of showing a broken image. Photos picked from
+ * the NASA Image and Video Library (images-api.nasa.gov) carry their ID in `photo`.
  *
  * Talks deliberately absent, per the card brief: SEP + OCT 2026 and OCT 2025
  * (unconfirmed or canceled), JUL 2024 (no confirmed talk), MAY 2023 (subject
@@ -23,6 +24,8 @@ export interface TechTalkCard {
   /** Ion District event page, where one exists. */
   url?: string;
   art?: boolean;
+  /** NASA Image and Video Library ID of the card photo (images.nasa.gov/details/<id>), public domain. */
+  photo?: string;
 }
 
 const ION = 'https://iondistrict.com/event/';
@@ -73,7 +76,9 @@ export const techTalkCards: TechTalkCard[] = [
     accent: 'Space Hub',
     end: 'Accelerator',
     desc: 'European space technology arriving in Houston: trusted data, power electronics, propulsion.',
-    url: `${ION}nasa-tech-talks-18/`
+    url: `${ION}nasa-tech-talks-18/`,
+    art: true,
+    photo: 'KSC-20211020-PH-GEB01_0005'
   },
   {
     slug: '2026-04-force',
@@ -84,7 +89,9 @@ export const techTalkCards: TechTalkCard[] = [
     accent: 'Force',
     end: 'Initiative',
     desc: 'Outside expertise pulled onto NASA’s hardest problems, from universities to industry.',
-    url: `${ION}nasa-tech-talks-24/`
+    url: `${ION}nasa-tech-talks-24/`,
+    art: true,
+    photo: 'MSFC-STARPATH-07-30-2025-joek-2'
   },
   {
     slug: '2026-03-ritf',
@@ -95,7 +102,9 @@ export const techTalkCards: TechTalkCard[] = [
     accent: 'Inspection',
     end: '& Test Facility',
     desc: 'Nothing mission-critical gets a free pass. How flight hardware earns its place.',
-    url: `${ION}nasa-tech-talks-17/`
+    url: `${ION}nasa-tech-talks-17/`,
+    art: true,
+    photo: 'wstf2019e04639'
   },
   {
     slug: '2026-02-tech-dev',
@@ -106,7 +115,9 @@ export const techTalkCards: TechTalkCard[] = [
     accent: 'Development',
     end: 'Opportunities',
     desc: 'Where NASA’s unsolved technology problems actually are — and how Houston can take them on.',
-    url: `${ION}nasa-tech-talks-16/`
+    url: `${ION}nasa-tech-talks-16/`,
+    art: true,
+    photo: 'MSFC-1501193'
   },
   {
     slug: '2026-01-rice-uk',
@@ -116,7 +127,9 @@ export const techTalkCards: TechTalkCard[] = [
     top: 'Rice Space Institute',
     accent: '+ UK Consulate',
     desc: 'A UK science and technology delegation meets Houston’s space community.',
-    url: `${ION}nasa-tech-talks-15/`
+    url: `${ION}nasa-tech-talks-15/`,
+    art: true,
+    photo: 'jsc2012e239142'
   },
   {
     slug: '2025-09-ceramic',
@@ -161,7 +174,9 @@ export const techTalkCards: TechTalkCard[] = [
     accent: 'Medical Crew',
     end: 'Agent',
     desc: 'A doctor in a box: local AI helping crews diagnose and treat when Earth is too far to ask.',
-    url: `${ION}nasa-tech-talks-9/`
+    url: `${ION}nasa-tech-talks-9/`,
+    art: true,
+    photo: 'iss073e0384171'
   },
   {
     slug: '2025-05-food',
@@ -182,7 +197,9 @@ export const techTalkCards: TechTalkCard[] = [
     top: 'Rice Space',
     accent: 'Institute',
     desc: 'International technologies and founders meeting the Houston space ecosystem.',
-    url: `${ION}nasa-tech-talks-10/`
+    url: `${ION}nasa-tech-talks-10/`,
+    art: true,
+    photo: 'jsc2024e070222'
   },
   {
     slug: '2025-03-sans',
@@ -193,7 +210,9 @@ export const techTalkCards: TechTalkCard[] = [
     accent: 'Neuro-ocular',
     end: 'Syndrome',
     desc: 'What long-duration flight does to an astronaut’s eyes — and why it is a mission risk.',
-    url: `${ION}nasa-tech-talks-7/`
+    url: `${ION}nasa-tech-talks-7/`,
+    art: true,
+    photo: 'iss065e045357'
   },
   {
     slug: '2025-02-gold-rush',
@@ -203,7 +222,9 @@ export const techTalkCards: TechTalkCard[] = [
     top: 'The Galactic',
     accent: 'Gold Rush',
     desc: 'The space economy as it actually is: who is buying, who is building, what is next.',
-    url: `${ION}nasa-tech-talks-6/`
+    url: `${ION}nasa-tech-talks-6/`,
+    art: true,
+    photo: 'iss070e075556'
   },
   {
     slug: '2025-01-artemis',
@@ -214,7 +235,9 @@ export const techTalkCards: TechTalkCard[] = [
     accent: 'Sustainable Lunar',
     end: 'Exploration',
     desc: 'The sheer magnitude of putting people back on the Moon, and keeping them there.',
-    url: `${ION}nasa-tech-talks-5/`
+    url: `${ION}nasa-tech-talks-5/`,
+    art: true,
+    photo: 'Artemis II at the pad Moon 01292026_1'
   },
   {
     slug: '2024-10-space-force',
@@ -223,7 +246,9 @@ export const techTalkCards: TechTalkCard[] = [
     kicker: 'Orbit × Awareness × Operations',
     top: 'Space Force',
     accent: 'Association',
-    desc: 'Domain awareness in orbit: watching a crowded, contested and increasingly commercial sky.'
+    desc: 'Domain awareness in orbit: watching a crowded, contested and increasingly commercial sky.',
+    art: true,
+    photo: 'iss059e104771'
   },
   {
     slug: '2024-09-exercise',
@@ -233,7 +258,9 @@ export const techTalkCards: TechTalkCard[] = [
     top: 'Exercise',
     accent: 'Physiology',
     end: '& Countermeasures',
-    desc: 'Training against the slow erosion of a body that no longer has to hold itself up.'
+    desc: 'Training against the slow erosion of a body that no longer has to hold itself up.',
+    art: true,
+    photo: 'iss072e126509'
   },
   {
     slug: '2024-08-robotics',
@@ -243,7 +270,9 @@ export const techTalkCards: TechTalkCard[] = [
     top: 'Robotics in the',
     accent: 'New Space',
     end: 'Economy',
-    desc: 'End effectors and autonomy doing the work that used to need a person in a suit.'
+    desc: 'End effectors and autonomy doing the work that used to need a person in a suit.',
+    art: true,
+    photo: 'iss073e0422335'
   },
   {
     slug: '2024-06-microbes',
@@ -252,7 +281,9 @@ export const techTalkCards: TechTalkCard[] = [
     kicker: 'Samples × Sequencing × Station',
     top: 'Microbes',
     accent: 'in Space',
-    desc: 'Sequencing life aboard the station — what grows up there, and what it means for crews.'
+    desc: 'Sequencing life aboard the station — what grows up there, and what it means for crews.',
+    art: true,
+    photo: 'iss057e000180'
   },
   {
     slug: '2024-05-startup',
@@ -262,7 +293,9 @@ export const techTalkCards: TechTalkCard[] = [
     top: 'From Space',
     accent: 'to Startup',
     desc: 'NASA technology crossing the line from laboratory bench to a company’s product.',
-    url: `${ION}nasa-tech-talks-0523/`
+    url: `${ION}nasa-tech-talks-0523/`,
+    art: true,
+    photo: 'KSC-20201009-PH-KLS01_0037'
   },
   {
     slug: '2024-04-nutrition',
@@ -273,7 +306,9 @@ export const techTalkCards: TechTalkCard[] = [
     accent: 'as Fuel',
     end: 'for Spaceflight',
     desc: 'History is full of missions broken by food. What crews eat is mission-critical engineering.',
-    url: `${ION}nasa-tech-talks-0425/`
+    url: `${ION}nasa-tech-talks-0425/`,
+    art: true,
+    photo: 'jsc2024e040737'
   },
   {
     slug: '2024-03-life-support',
@@ -283,7 +318,9 @@ export const techTalkCards: TechTalkCard[] = [
     top: 'Keeping Humans',
     accent: 'Alive',
     end: 'in Space',
-    desc: 'The closed loop that turns a sealed metal volume into somewhere a person can live.'
+    desc: 'The closed loop that turns a sealed metal volume into somewhere a person can live.',
+    art: true,
+    photo: 'jsc2022e045237'
   },
   {
     slug: '2024-02-r5',
@@ -292,7 +329,9 @@ export const techTalkCards: TechTalkCard[] = [
     kicker: 'Small × Free-flying × Watchful',
     top: 'JSC',
     accent: 'R5',
-    desc: 'A low-cost free-flying spacecraft built to go look at things humans should not have to.'
+    desc: 'A low-cost free-flying spacecraft built to go look at things humans should not have to.',
+    art: true,
+    photo: 'KSC-20240424-PH-FRF01_0001'
   },
   {
     slug: '2024-01-challenges',
@@ -302,7 +341,9 @@ export const techTalkCards: TechTalkCard[] = [
     top: 'NASA',
     accent: 'Technology',
     end: 'Challenges',
-    desc: 'The pieces that are not finished yet, laid out honestly — and the one space still empty.'
+    desc: 'The pieces that are not finished yet, laid out honestly — and the one space still empty.',
+    art: true,
+    photo: 'GRC-2019-C-13153'
   },
   {
     slug: '2023-10-intuitive-machines',
@@ -312,7 +353,9 @@ export const techTalkCards: TechTalkCard[] = [
     top: 'Intuitive',
     accent: 'Machines',
     desc: 'From NASA engineer to Project Morpheus to landing commercial hardware on the Moon.',
-    url: `${ION}nasa-tech-talks1026/`
+    url: `${ION}nasa-tech-talks1026/`,
+    art: true,
+    photo: 'KSC-2014-1706'
   },
   {
     slug: '2023-09-life-support-long',
@@ -322,7 +365,9 @@ export const techTalkCards: TechTalkCard[] = [
     top: 'Long-Duration',
     accent: 'Life Support',
     desc: 'On-demand hydrogen peroxide and the chemistry of staying alive far longer than a resupply.',
-    url: `${ION}nasa-tech-talks0928/`
+    url: `${ION}nasa-tech-talks0928/`,
+    art: true,
+    photo: 'iss062e014322'
   },
   {
     slug: '2023-08-orbital-mining',
@@ -332,7 +377,9 @@ export const techTalkCards: TechTalkCard[] = [
     top: 'Orbital Mining',
     accent: '& Lunar Power',
     desc: 'Treating lunar dust as a resource, and power as the thing that makes any of it possible.',
-    url: `${ION}nasa-tech-talks0824/`
+    url: `${ION}nasa-tech-talks0824/`,
+    art: true,
+    photo: 'KSC-20250603-PH-FMX01_0056'
   },
   {
     slug: '2023-07-networking',
@@ -342,7 +389,9 @@ export const techTalkCards: TechTalkCard[] = [
     top: 'Networking',
     accent: 'Edition',
     desc: 'No slides. Just the Houston aerospace community in one room at The Ion.',
-    url: `${ION}nasa-tech-talks0727/`
+    url: `${ION}nasa-tech-talks0727/`,
+    art: true,
+    photo: 'jsc2022e043154'
   },
   {
     slug: '2023-06-ultrasound',
@@ -353,7 +402,9 @@ export const techTalkCards: TechTalkCard[] = [
     accent: 'Integrated.',
     end: 'Everywhere.',
     desc: 'One technology crossing from pipeline inspection to medicine to spaceflight.',
-    url: `${ION}nasa-tech-talks0622/`
+    url: `${ION}nasa-tech-talks0622/`,
+    art: true,
+    photo: 'iss073e0076065'
   },
   {
     slug: '2023-04-open-innovation',
@@ -364,6 +415,8 @@ export const techTalkCards: TechTalkCard[] = [
     accent: 'Partnerships',
     end: '& Open Innovation',
     desc: 'A builder in front of a wall of prototypes, asking who else wants to work on this.',
-    url: `${ION}nasa-tech-talk0427/`
+    url: `${ION}nasa-tech-talk0427/`,
+    art: true,
+    photo: 'jsc2012e034637'
   }
 ];

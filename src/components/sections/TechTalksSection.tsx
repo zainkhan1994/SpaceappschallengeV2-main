@@ -3,8 +3,8 @@ import '../tech-talks/techTalks.css';
 import { REDUCED_MOTION, useScrollProgress } from '../tech-talks/useScrollProgress';
 import { ScrollReveal } from '../ui/ScrollReveal';
 import { TechTalk, techTalks2023, techTalks2024, techTalks2025, techTalks2026 } from '../../data/techTalksData';
-import { challengePosters } from '../../data/challengePosters';
 import { techTalkCards } from '../../data/techTalkCards';
+import { ChallengeDeck } from '../tech-talks/ChallengeDeck';
 
 // Imagery: stage, staircase and lunar horizon (hero) supplied by Space Apps Houston.
 // Hero Earth: NASA DSCOVR/EPIC natural-colour photographs of 20 June 2024 (epic.gsfc.nasa.gov), reprojected between frames into one smooth turn.
@@ -18,6 +18,9 @@ import { techTalkCards } from '../../data/techTalkCards';
 // Rotating globe rendered from NASA Visible Earth: Blue Marble Next Generation, Black Marble 2016, cloud_combined.
 // Houston skyline (join art): Carol M. Highsmith Archive, Library of Congress (no known restrictions).
 // Neon arcs, Space Apps Houston logo and challenge posters supplied by Space Apps Houston.
+// Talk card photos: NASA Image and Video Library (public domain); each card's image ID is its `photo` in techTalkCards.ts.
+// Challenge covers without a poster (NASA): SPHEREx PIA26542 (NASA/JPL-Caltech/BAE Systems) · Orion over the Moon,
+// Artemis I art001e002092 · Earth Information Center NHQ202410070003 (NASA/Bill Ingalls).
 
 type VarStyle = React.CSSProperties & Record<`--${string}`, string | number>;
 
@@ -449,7 +452,6 @@ const Join: React.FC = () => {
         </div>
         <div className="tt-join-frame is-2">
           <img className="tt-join-logo" src="/sac-logo-houston-transparent.png" alt="NASA Space Apps Houston" />
-          <p className="tt-join-meta tt-mono m-0">November 14–15, 2026 · 48 hours · Houston</p>
           <a href="#/" className="tt-join-btn tt-mono">
             Sign up <span aria-hidden="true">→</span>
           </a>
@@ -497,13 +499,7 @@ const Challenges: React.FC = () => {
 
       <div className="relative mt-8 pb-[clamp(40px,6vw,80px)]">
         <div className="tt-grid absolute inset-0" aria-hidden="true" />
-        <div ref={deck} className="tt-deck relative">
-          {challengePosters.map((c) => (
-            <figure key={c.slug} className="tt-card-item is-poster m-0">
-              <img src={`/tech-talks/challenges/${c.slug}.webp`} alt={c.title} width={1122} height={1402} loading="lazy" />
-            </figure>
-          ))}
-        </div>
+        <ChallengeDeck deckRef={deck} />
       </div>
     </section>
   );
@@ -532,8 +528,7 @@ const WhatHappens: React.FC = () => {
           </h2>
           <p className="tt-body m-0 mt-8 max-w-[860px] text-[clamp(16px,1.5vw,20px)] leading-[1.7] text-white/80">
             At 6:00 PM on a Thursday, someone who does the work — an engineer, a scientist, a founder — takes
-            the stage at The Ion. You hear the story behind a real NASA problem, straight from the source. By
-            7:00 PM the floor is yours.
+            the stage at The Ion. You hear the story behind a real NASA problem, straight from the source.
           </p>
         </ScrollReveal>
 
