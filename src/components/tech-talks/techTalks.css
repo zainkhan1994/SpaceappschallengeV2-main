@@ -618,7 +618,8 @@
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
-  padding: 10px clamp(16px, 9vw, 240px) 30px;
+  /* top room for the lifted card and its focus ring */
+  padding: 20px clamp(16px, 9vw, 240px) 30px;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -916,6 +917,8 @@ html.tt-cs-lock { overflow: hidden; scrollbar-gutter: stable; }
 .tt-cs.is-out .tt-cs-veil,
 .tt-cs.is-out .tt-cs-bar,
 .tt-cs.is-out .tt-cs-body { opacity: 0; transition: opacity 0.28s ease; }
+.tt-cs.is-out .tt-cs-bar,
+.tt-cs.is-out .tt-cs-body { pointer-events: none; }
 
 .tt-cs-bar {
   position: absolute;
@@ -969,7 +972,8 @@ html.tt-cs-lock { overflow: hidden; scrollbar-gutter: stable; }
 }
 .tt-cs-poster {
   position: relative;
-  height: min(calc(100svh - 150px), 820px);
+  /* as tall as the viewport allows, but never so wide that the text column drops under ~400px */
+  height: min(calc(100svh - 150px), 820px, calc((100vw - 2 * max(24px, 4.5vw) - clamp(40px, 5.5vw, 96px) - 400px) * 1.25));
   aspect-ratio: 4 / 5;
   border-radius: 26px;
   overflow: hidden;
@@ -980,10 +984,10 @@ html.tt-cs-lock { overflow: hidden; scrollbar-gutter: stable; }
   touch-action: pan-y;
   will-change: transform;
 }
-.tt-cs-art { position: absolute; inset: 0; animation: tt-cs-swap 0.55s ease both; }
+.tt-cs-art { position: absolute; inset: 0; }
+.tt-cs-art.is-swap { animation: tt-cs-swap 0.55s ease both; }
 .tt-cs-art > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 @keyframes tt-cs-swap { from { opacity: 0; transform: scale(1.03); } }
-.tt-cs.is-in .tt-cs-art { animation: none; }
 
 .tt-cs-body {
   max-height: calc(100svh - 150px);
@@ -1006,6 +1010,8 @@ html.tt-cs-lock { overflow: hidden; scrollbar-gutter: stable; }
   letter-spacing: -0.01em;
   text-wrap: balance;
 }
+.tt-cs-title:focus { outline: none; }
+.tt-cs-title:focus-visible { outline: 2px solid var(--tt-yellow); outline-offset: 6px; border-radius: 4px; }
 .tt-cs-title.is-long { font-size: clamp(26px, 2.5vw, 38px); line-height: 1.06; }
 .tt-cs-title span { color: #9dc6ff; }
 
@@ -1030,7 +1036,7 @@ html.tt-cs-lock { overflow: hidden; scrollbar-gutter: stable; }
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 999px;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.38);
+  color: rgba(255, 255, 255, 0.64);
 }
 .tt-cs-levels li i { display: block; width: 8px; height: 8px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.35); }
 .tt-cs-levels li.is-on { color: #fff; border-color: color-mix(in srgb, var(--c) 55%, transparent); background: color-mix(in srgb, var(--c) 12%, transparent); }
@@ -1101,7 +1107,7 @@ html.tt-cs-lock { overflow: hidden; scrollbar-gutter: stable; }
 }
 .tt-cs-link:hover,
 .tt-cs-link:focus-visible { color: var(--tt-yellow); border-color: var(--tt-yellow); outline: none; }
-.tt-cs-note { margin: 28px 0 0; font-size: 9px; line-height: 1.8; color: rgba(255, 255, 255, 0.45); }
+.tt-cs-note { margin: 28px 0 0; font-size: 10px; line-height: 1.8; color: rgba(255, 255, 255, 0.64); }
 
 .tt-cs-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 28px 0 0; padding: 0; list-style: none; }
 .tt-cs-facts li {

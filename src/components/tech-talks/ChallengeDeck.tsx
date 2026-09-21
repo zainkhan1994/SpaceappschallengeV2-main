@@ -84,10 +84,16 @@ const Steps: React.FC = () => {
   return (
     <ol className="tt-cs-steps">
       {STEPS.map((s, i) => (
-        <li key={s.when} className={next === -1 || i < next ? 'is-done' : i === next ? 'is-next' : undefined}>
+        <li
+          key={s.when}
+          className={next === -1 || i < next ? 'is-done' : i === next ? 'is-next' : undefined}
+          aria-current={i === next ? 'step' : undefined}
+        >
           <i aria-hidden="true" />
           <span className="tt-mono">{s.when}</span>
           {s.what}
+          {(next === -1 || i < next) && <span className="sr-only"> (done)</span>}
+          {i === next && <span className="sr-only"> (next)</span>}
         </li>
       ))}
     </ol>
@@ -120,7 +126,7 @@ const ChallengeBody: React.FC<{ item: Extract<Item, { kind: 'challenge' }>; onNe
         Challenge {pad(n)} of {TOTAL}
       </Rise>
       <Rise i={1}>
-        <h2 id="tt-cs-title" className={`tt-cs-title${c.title.length > 60 ? ' is-long' : ''}`}>
+        <h2 id="tt-cs-title" tabIndex={-1} className={`tt-cs-title${c.title.length > 60 ? ' is-long' : ''}`}>
           <Title text={c.title} accent={c.accent} />
         </h2>
       </Rise>
@@ -178,7 +184,7 @@ const GuideBody: React.FC<{ onBrowse: () => void }> = ({ onBrowse }) => (
       Start here
     </Rise>
     <Rise i={1}>
-      <h2 id="tt-cs-title" className="tt-cs-title">
+      <h2 id="tt-cs-title" tabIndex={-1} className="tt-cs-title">
         How the <span>challenges work</span>
       </h2>
     </Rise>
@@ -242,6 +248,8 @@ export const ChallengeDeck: React.FC<{ deckRef: React.RefObject<HTMLDivElement> 
   const closing = useRef(false);
   const shown = useRef(false);
   const touch = useRef<{ x: number; y: number } | null>(null);
+  const flight = useRef<Animation | null>(null);
+  const swapped = useRef(false);
 
   const still = () => window.matchMedia(REDUCED_MOTION).matches;
 
@@ -251,6 +259,7 @@ export const ChallengeDeck: React.FC<{ deckRef: React.RefObject<HTMLDivElement> 
 
   const open = (i: number) => {
     closing.current = false;
+    swapped.current = false;
     setIndex(i);
     setPhase('in');
   };
@@ -275,9 +284,14 @@ export const ChallengeDeck: React.FC<{ deckRef: React.RefObject<HTMLDivElement> 
     const from = card.getBoundingClientRect();
     const to = p.getBoundingClientRect();
     card.style.visibility = 'hidden';
-    p.animate([{ transform: toCard(from, to) }, { transform: 'none' }], { duration: 640, easing: EASE }).finished
+    const grow = p.animate([{ transform: toCard(from, to) }, { transform: 'none' }], { duration: 640, easing: EASE });
+    flight.current = grow;
+    grow.finished
       .catch(() => undefined)
       .finally(() => {
+        if (flight.current === grow) flight.current = null;
+        // a close that started mid-grow owns the card now
+        if (closing.current) return;
         card.style.visibility = '';
         opened();
       });
@@ -310,31 +324,42 @@ export const ChallengeDeck: React.FC<{ deckRef: React.RefObject<HTMLDivElement> 
       window.setTimeout(done, still() ? 0 : 200);
       return;
     }
+    // closing mid-grow: start from where the poster is now, measured against its untransformed box
+    const start = flight.current ? getComputedStyle(p).transform : 'none';
+    flight.current?.cancel();
+    flight.current = null;
     const to = card.getBoundingClientRect();
     const from = p.getBoundingClientRect();
     const visible = to.bottom > 0 && to.top < window.innerHeight;
     if (!visible) {
-      window.setTimeout(done, 220);
+      p.animate([{ transform: start, opacity: 1 }, { transform: start, opacity: 0 }], { duration: 220, fill: 'forwards' }).finished
+        .catch(() => undefined)
+        .finally(done);
       return;
     }
     card.style.visibility = 'hidden';
-    p.animate([{ transform: 'none' }, { transform: toCard(to, from) }], { duration: 520, easing: EASE, fill: 'forwards' }).finished
+    p.animate([{ transform: start }, { transform: toCard(to, from) }], { duration: 520, easing: EASE, fill: 'forwards' }).finished
       .catch(() => undefined)
       .finally(done);
   }, [deckRef, finish, index]);
 
-  const go = useCallback(
-    (dir: number) => {
-      setIndex((i) => (i === null ? i : (i + dir + ITEMS.length) % ITEMS.length));
-    },
-    []
-  );
+  const show = useCallback((next: (i: number) => number) => {
+    if (closing.current) return;
+    swapped.current = true;
+    setIndex((i) => (i === null ? i : next(i)));
+  }, []);
+  const go = useCallback((dir: number) => show((i) => (i + dir + ITEMS.length) % ITEMS.length), [show]);
 
-  // reset scroll to the top of the new challenge
+  // on a new challenge: back to the top, and if the focused control went with the old body, focus the new title
   useEffect(() => {
     if (index === null) return;
     shell.current?.scrollTo({ top: 0 });
     body.current?.scrollTo({ top: 0 });
+    const d = dialog.current;
+    const active = document.activeElement;
+    if (d?.open && swapped.current && (!active || active === document.body || !d.contains(active))) {
+      d.querySelector<HTMLElement>('#tt-cs-title')?.focus({ preventScroll: true });
+    }
   }, [index]);
 
   // preload the neighbours
@@ -354,7 +379,12 @@ export const ChallengeDeck: React.FC<{ deckRef: React.RefObject<HTMLDivElement> 
       // handled here as well as in onCancel: some input paths deliver Escape without the dialog's cancel event
       e.preventDefault();
       close();
-    } else if (e.key === 'ArrowRight') {
+      return;
+    }
+    // leave arrows alone while text is selected, or when Shift is held to extend a selection
+    const selection = window.getSelection();
+    if (e.shiftKey || (selection && !selection.isCollapsed)) return;
+    if (e.key === 'ArrowRight') {
       e.preventDefault();
       go(1);
     } else if (e.key === 'ArrowLeft') {
@@ -375,7 +405,7 @@ export const ChallengeDeck: React.FC<{ deckRef: React.RefObject<HTMLDivElement> 
             type="button"
             className="tt-card-item is-poster"
             aria-haspopup="dialog"
-            aria-label={it.kind === 'guide' ? 'Start here: how the challenges work' : `Open challenge: ${it.c.title}`}
+            aria-label={it.kind === 'guide' ? 'Next Gen Space Solutions. Start here: how it works' : `Open challenge: ${it.c.title}`}
             onClick={() => open(i)}
           >
             <ChallengeArt item={it} />
@@ -405,7 +435,10 @@ export const ChallengeDeck: React.FC<{ deckRef: React.RefObject<HTMLDivElement> 
             <div key={`amb-${slugOf(item)}`} className="tt-cs-ambient" style={{ backgroundImage: `url(${ART}/${slugOf(item)}.webp)` }} aria-hidden="true" />
             <div className="tt-cs-veil" aria-hidden="true" />
             <div className="tt-cs-bar">
-              <p className="tt-mono m-0" aria-live="polite">
+              <span className="sr-only" aria-live="polite">
+                {item.kind === 'guide' ? `Start here: ${challengeGuide.title}` : `Challenge ${item.n} of ${TOTAL}: ${item.c.title}`}
+              </span>
+              <p className="tt-mono m-0" aria-hidden="true">
                 {item.kind === 'guide' ? 'Start here' : `${pad(item.n)} / ${TOTAL}`}
                 <span className="tt-cs-dots" aria-hidden="true">
                   <i />
@@ -446,12 +479,12 @@ export const ChallengeDeck: React.FC<{ deckRef: React.RefObject<HTMLDivElement> 
                   if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) go(dx < 0 ? 1 : -1);
                 }}
               >
-                <div key={slugOf(item)} className="tt-cs-art">
+                <div key={slugOf(item)} className={`tt-cs-art${swapped.current ? ' is-swap' : ''}`}>
                   <ChallengeArt item={item} eager />
                 </div>
               </figure>
               <article ref={body} key={slugOf(item)} className="tt-cs-body">
-                {item.kind === 'guide' ? <GuideBody onBrowse={() => setIndex(1)} /> : <ChallengeBody item={item} onNext={() => go(1)} />}
+                {item.kind === 'guide' ? <GuideBody onBrowse={() => show(() => 1)} /> : <ChallengeBody item={item} onNext={() => go(1)} />}
               </article>
             </div>
           </>
