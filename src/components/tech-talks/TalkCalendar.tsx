@@ -1,25 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { MoonPortrait } from './MoonPortrait';
 import { REDUCED_MOTION } from './useScrollProgress';
 import {
   AstroEvent,
-  compass,
   chicagoOffsetAt,
-  sunLongitudeJ2000,
-  daylightHours,
   eclipses,
   fmtHouston,
-  hm,
   houstonTime,
-  horizontal,
-  moon,
   moonPhases,
-  phaseName,
-  planet,
   seasons,
-  solarTime,
-  sun,
-  sunConstellation,
-  sunTimes
 } from './astro';
 import { CALENDAR_YEARS, CalendarTalk, talksIn } from './calendarData';
 import type { CalendarMarker, CalendarScene, FocusBody, FocusView, MarkerKind } from './calendarScene';
@@ -73,15 +62,6 @@ const isTalk = (e: CalEvent) => !!e.talk;
 const dateLong = (t: number) => fmtHouston(t, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
 const clock = (t: number) => fmtHouston(t, { hour: 'numeric', minute: '2-digit', timeZoneName: 'short' });
 const utc = (t: number) => new Date(t).toISOString().slice(11, 16) + ' UTC';
-const raHm = (deg: number) => {
-  const h = deg / 15;
-  return `${Math.floor(h)}h ${String(Math.floor((h % 1) * 60)).padStart(2, '0')}m`;
-};
-const solar = (hours: number) => {
-  const h = Math.floor(hours);
-  const m = Math.floor((hours % 1) * 60);
-  return `${((h + 11) % 12) + 1}:${String(m).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}`;
-};
 /** Houston calendar date parts of an instant (en-US formats as mm/dd/yyyy). */
 const localParts = (t: number) => {
   const [mm, dd, yyyy] = fmtHouston(t, { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').map(Number);
@@ -89,39 +69,6 @@ const localParts = (t: number) => {
 };
 
 const Glyph: React.FC<{ kind: MarkerKind }> = ({ kind }) => <i className={`tt-cal-glyph is-${kind}`} aria-hidden="true" />;
-
-/** What the sky was doing at an instant, from Houston. */
-const SkyFacts: React.FC<{ t: number; kind: MarkerKind }> = ({ t, kind }) => {
-  const s = sun(t);
-  const h = horizontal(t, s.ra, s.dec);
-  const times = sunTimes(t);
-  const m = moon(t);
-  const e = planet('earth', t);
-  const rows: [string, string][] = [];
-  if (kind.startsWith('talk')) {
-    rows.push(['Sun at the start', h.alt > -0.8 ? `${h.alt.toFixed(1)}° up, ${compass(h.az)} (${h.az.toFixed(0)}°)` : `${Math.abs(h.alt).toFixed(1)}° below the horizon`]);
-    rows.push(['Sunset', `${clock(times.set)} · ${hm(times.hours)} of daylight`]);
-    rows.push(['Moon', `${phaseName(m.elong)} · ${Math.round(m.illum * 100)}% lit`]);
-  } else if (kind.endsWith('equinox') || kind.endsWith('solstice')) {
-    rows.push(['Sun declination', `${s.dec >= 0 ? '+' : ''}${s.dec.toFixed(2)}°`]);
-    rows.push(['Houston daylight', `${hm(daylightHours(s.dec))} · sunrise ${clock(times.rise)}, sunset ${clock(times.set)}`]);
-  } else {
-    rows.push(['Moon', `${Math.round(m.illum * 100)}% lit · ${Math.round(m.dist).toLocaleString('en-US')} km away`]);
-    const mh = horizontal(t, m.ra, m.dec);
-    rows.push(['From Houston', mh.alt > 0 ? `${mh.alt.toFixed(0)}° up, ${compass(mh.az)}` : 'Below the horizon']);
-  }
-  rows.push(['Earth', `${e.speed.toFixed(2)} km/s · ${e.r.toFixed(4)} AU from the Sun · Sun in ${sunConstellation(sunLongitudeJ2000(t))}`]);
-  return (
-    <dl className="tt-cal-facts">
-      {rows.map(([k, v]) => (
-        <div key={k}>
-          <dt className="tt-mono">{k}</dt>
-          <dd>{v}</dd>
-        </div>
-      ))}
-    </dl>
-  );
-};
 
 const EventCard: React.FC<{ ev: CalEvent | null; preview: boolean }> = ({ ev, preview }) => {
   if (!ev) return <div className="tt-cal-card is-empty tt-body">Hover or pick any mark on the calendar.</div>;
@@ -139,6 +86,7 @@ const EventCard: React.FC<{ ev: CalEvent | null; preview: boolean }> = ({ ev, pr
           {upcoming && <span className="tt-cal-pill">Upcoming</span>}
         </p>
         <h3 className="tt-cal-card-title">{canceled ? `Canceled: ${talk?.title}` : ev.title}</h3>
+        <div className="tt-cal-event-story"><MoonPortrait time={ev.t} /><div>
         {talk ? (
           <>
             {who && <p className="tt-cal-card-who tt-mono">{who}</p>}
@@ -150,7 +98,7 @@ const EventCard: React.FC<{ ev: CalEvent | null; preview: boolean }> = ({ ev, pr
         ) : (
           ev.astro?.note && <p className="tt-cal-card-desc tt-body">{ev.astro.note}</p>
         )}
-        <SkyFacts t={ev.t} kind={ev.kind} />
+        </div></div>
         {preview && <p className="tt-body">Select this event to open its details and event link.</p>}
         {talk?.url && !preview && (
           <a className="tt-cal-card-link tt-mono" href={talk.url} target="_blank" rel="noopener noreferrer">
@@ -165,11 +113,13 @@ const EventCard: React.FC<{ ev: CalEvent | null; preview: boolean }> = ({ ev, pr
 
 export const TalkCalendar: React.FC = () => {
   const [still, setStill] = useState(() => typeof window !== 'undefined' && window.matchMedia(REDUCED_MOTION).matches);
+  const [inView, setInView] = useState(false);
+  const [exploring, setExploring] = useState(false);
   const now = useMemo(() => clamp(Date.now()), []);
   const timeRef = useRef(now);
   const [time, setTimeState] = useState(now);
   const [year, setYear] = useState(yearOf(now));
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState(() => !window.matchMedia(REDUCED_MOTION).matches);
   const [speed, setSpeed] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [hover, setHover] = useState<{ id: string; x: number; y: number } | null>(null);
@@ -185,10 +135,17 @@ export const TalkCalendar: React.FC = () => {
   const [pending, setPending] = useState<string | null>(null);
   const pendingFocus = useRef<[FocusBody, FocusView] | null>(null);
   const [detailsRequest, setDetailsRequest] = useState(0);
+  useEffect(() => {
+    const el = stage.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: 0.05 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const media = window.matchMedia(REDUCED_MOTION);
-    const update = () => setStill(media.matches);
+    const update = () => { setStill(media.matches); if (media.matches) setPlaying(false); };
     media.addEventListener('change', update);
     return () => media.removeEventListener('change', update);
   }, []);
@@ -253,7 +210,7 @@ export const TalkCalendar: React.FC = () => {
             });
             setSceneOk(true);
           })
-          .catch(() => undefined);
+          .catch((error) => console.error('Calendar scene unavailable:', String(error), error?.stack));
       },
       { rootMargin: '100% 0px' }
     );
@@ -294,7 +251,7 @@ export const TalkCalendar: React.FC = () => {
 
   /* playback */
   useEffect(() => {
-    if (!playing) return;
+    if (!playing || !inView) return;
     let raf = 0;
     let last = performance.now();
     let shown = last;
@@ -319,7 +276,7 @@ export const TalkCalendar: React.FC = () => {
       cancelAnimationFrame(raf);
       setTime(timeRef.current);
     };
-  }, [playing, speed, setTime]);
+  }, [playing, inView, speed, setTime]);
 
   const pick = useCallback(
     (id: string, fly = true) => {
@@ -327,6 +284,7 @@ export const TalkCalendar: React.FC = () => {
       if (!ev) return;
       setHover(null);
       hoverId.current = null;
+      setExploring(false);
       setSelected(id);
       setPlaying(false);
       setTime(ev.t);
@@ -408,9 +366,6 @@ export const TalkCalendar: React.FC = () => {
   };
 
   /* live readouts */
-  const s = sun(time);
-  const earth = planet('earth', time);
-  const mNow = moon(time);
   const yearStart = houstonTime(year, 0, 1, 0);
   const yearEnd = Math.min(houstonTime(year + 1, 0, 1, 0) - 3600000, YEAR_MAX);
 
@@ -468,27 +423,28 @@ export const TalkCalendar: React.FC = () => {
         <div ref={labels} className="tt-cal-labels" aria-hidden="true" />
 
         <div className="tt-cal-hud is-tl tt-mono">
+          <p className="tt-cal-hud-eyebrow">{exploring ? 'Explore the solar system' : 'A year in orbit'}</p>
           <p className="tt-cal-hud-date">{dateLong(time)}</p>
-          <p>{utc(time)}</p>
-          <p>
-            {clock(time)} · Houston
-          </p>
-          <p>Local solar time {solar(solarTime(time))}</p>
+          <p>{clock(time)} · Houston <span className="tt-cal-hud-utc"> / {utc(time)}</span></p>
         </div>
-        <div className="tt-cal-hud is-tr tt-mono" aria-hidden="true">
-          <p>
-            <b>{earth.speed.toFixed(2)}</b> km/s orbital velocity
-          </p>
-          <p>{earth.r.toFixed(4)} AU from the Sun</p>
-          <p>
-            Sun RA {raHm(s.ra)} · Dec {s.dec >= 0 ? '+' : ''}
-            {s.dec.toFixed(1)}°
-          </p>
-          <p>Sun in {sunConstellation(sunLongitudeJ2000(time))}</p>
-          <p>
-            {phaseName(mNow.elong)} · {Math.round(mNow.illum * 100)}%
-          </p>
-          <p>Houston daylight {hm(daylightHours(s.dec))}</p>
+        <div className="tt-cal-explore">
+          <button type="button" className="tt-mono" disabled={!sceneOk} onClick={() => {
+            setExploring((v) => !v);
+            if (exploring) scene.current?.focus(null); else scene.current?.system();
+          }}>{exploring ? 'Back to calendar' : 'Explore solar system'} <span aria-hidden="true">↗</span></button>
+          <label className="tt-cal-planet-picker"><span className="sr-only">Explore a planet</span>
+            <select aria-label="Explore a planet" disabled={!sceneOk} value={focus ?? ''} onChange={(e) => {
+              setExploring(true);
+              if (e.target.value) scene.current?.focus(e.target.value as FocusBody);
+              else scene.current?.system();
+            }}>
+              <option value="">All planets</option>
+              {['sun','mercury','venus','earth','moon','mars','jupiter','saturn','uranus','neptune'].map((name) => <option key={name} value={name}>{name[0].toUpperCase() + name.slice(1)}</option>)}
+            </select>
+          </label>
+        </div>
+        <div className="tt-cal-view-caption tt-mono" aria-hidden="true">
+          {focus ? `${focus[0].toUpperCase() + focus.slice(1)} · drag to look around` : 'Drag to orbit · pinch or use + / − to explore'}
         </div>
 
         <div ref={tip} className={`tt-cal-tip tt-mono${hover && hoverEv && hover.x >= 0 ? ' is-on' : ''}`} aria-hidden="true">
@@ -509,7 +465,7 @@ export const TalkCalendar: React.FC = () => {
               ‹
             </button>
             <button type="button" className="is-play" onClick={togglePlayback} aria-label={playing ? 'Pause' : 'Play'}>
-              {playing ? '❚❚' : '▶'}
+              <span aria-hidden="true">{playing ? 'Ⅱ' : '▶'}</span> {playing ? 'Pause' : 'Play'}
             </button>
             <button type="button" onClick={() => step(1)} aria-label="Forward one day">
               ›
@@ -520,8 +476,8 @@ export const TalkCalendar: React.FC = () => {
           </div>
           <div className="tt-cal-speeds" role="group" aria-label="Playback speed">
             {SPEEDS.map((v, i) => (
-              <button key={v} type="button" aria-pressed={speed === i} onClick={() => setSpeed(i)} title={`${v} hour${v > 1 ? 's' : ''} of sky per second`}>
-                {v}×
+              <button key={v} type="button" aria-pressed={speed === i} onClick={() => setSpeed(i)} aria-label={`${v} hour${v > 1 ? 's' : ''} per second`} title={`${v} hour${v > 1 ? 's' : ''} of sky per second`}>
+                {v}h/s
               </button>
             ))}
           </div>
@@ -565,6 +521,7 @@ export const TalkCalendar: React.FC = () => {
         </div>
       </div>
 
+      <p className="tt-cal-context tt-mono">Planet positions follow the selected date. Sizes are enlarged for exploration. Moon markers show the phase on each date.</p>
       <div className="tt-cal-below">
         <ol ref={strip} className="tt-cal-strip" aria-label={`Talks in ${year}`}>
           {talks.map((e) => {
@@ -681,6 +638,7 @@ export const TalkCalendar: React.FC = () => {
           </p>
         </div>
       </div>
+      <p className="tt-cal-credits">Surface maps: NASA and <a href="https://www.solarsystemscope.com/textures/" target="_blank" rel="noreferrer">Solar System Scope</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>. Planet maps are imagery-based composites, not live photographs.</p>
     </section>
   );
 };

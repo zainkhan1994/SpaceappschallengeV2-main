@@ -50,3 +50,14 @@ for (const [year, kind, expected] of [
 }
 assert.equal(eclipses(2024).find((e) => e.id === 'solar-eclipse-2024-04-08').t, Date.parse('2024-04-08T18:17:19.816Z'));
 console.log('PASS: Houston DST and date normalization, duration rounding, 16 seasons, all lunar phases, eclipse times and orbital ranges.');
+
+// All eight JPL trajectories remain finite and within their expected orbital bands.
+for (const [name, lo, hi] of [['mercury',.30,.47],['venus',.71,.73],['earth',.98,1.02],['mars',1.38,1.67],['jupiter',4.9,5.5],['saturn',9,10.1],['uranus',18.2,20.2],['neptune',29.7,30.5]]) {
+  for (let month=0; month<12; month++) {
+    const pos=planet(name,Date.UTC(2026,month,15)).pos;
+    assert.ok(pos.every(Number.isFinite),`${name} finite coordinates`);
+    const radius=Math.hypot(...pos);
+    assert.ok(radius>=lo && radius<=hi,`${name} orbital distance`);
+  }
+}
+console.log('PASS: all eight planets have finite trajectories and expected orbital distances.');

@@ -13,6 +13,8 @@ import {
   CanvasTexture,
   Color,
   CylinderGeometry,
+  DoubleSide,
+  RingGeometry,
   Group,
   Line,
   LineBasicMaterial,
@@ -41,9 +43,10 @@ import {
   Vector3,
   WebGLRenderer
 } from 'three';
+import { drawMoon } from './renderMoon';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { CSS2DObject, CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
-import { AstroKind, HOUSTON, ZODIAC, gmst, moon, planet, houstonTime, sunLongitudeJ2000 } from './astro';
+import { AstroKind, PlanetName, HOUSTON, ZODIAC, gmst, moon, planet, houstonTime, sunLongitudeJ2000 } from './astro';
 
 export type MarkerKind = 'talk' | 'talk-upcoming' | 'talk-canceled' | AstroKind;
 
@@ -54,16 +57,17 @@ export interface CalendarMarker {
   label: string;
 }
 
-export type FocusBody = 'earth' | 'moon' | 'sun' | null;
+export type FocusBody = PlanetName | 'moon' | 'sun' | null;
 /** Where the camera looks from when it locks on: over Houston, from Earth (the Moon's phase as we see it), or side-on
  * to the Sun (the terminator and the tilt of the axis). */
-export type FocusView = 'houston' | 'from-earth' | 'side';
+export type FocusView = 'houston' | 'from-earth' | 'side' | 'sunlit' | 'overview';
 
 export interface CalendarScene {
   setYear(year: number, markers: CalendarMarker[]): void;
   setHighlight(id: string | null): void;
   focus(body: FocusBody, view?: FocusView): void;
   zoom(factor: number): void;
+  system(): void;
   dispose(): void;
 }
 
@@ -85,7 +89,7 @@ const SUN_R = 1.15;
 const EPS = 23.4393 * (Math.PI / 180);
 const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
-const YELLOW = new Color('#eafe07');
+const YELLOW = new Color('#bacdc4');
 const BLUE = new Color('#2e96f5');
 const RED = new Color('#e43700');
 const ORANGE = new Color('#ff9a3c');
@@ -216,28 +220,16 @@ const radial = (inner: string, outer: string) => {
   return t;
 };
 
-/** A lunar phase glyph: 0 new, 0.5 first quarter... drawn as seen from the northern hemisphere. */
+/** Textured snapshots of the Moon, with the illumination of each calendar phase. */
 const phaseIcon = (kind: 'new' | 'first' | 'full' | 'last') => {
   const c = document.createElement('canvas');
-  c.width = c.height = 64;
-  const g = c.getContext('2d')!;
-  g.translate(32, 32);
-  g.fillStyle = '#1b2233';
-  g.strokeStyle = 'rgba(220,230,255,0.9)';
-  g.lineWidth = 3;
-  g.beginPath();
-  g.arc(0, 0, 26, 0, Math.PI * 2);
-  g.fill();
-  g.stroke();
-  g.fillStyle = '#eef2ff';
-  g.beginPath();
-  if (kind === 'full') g.arc(0, 0, 26, 0, Math.PI * 2);
-  else if (kind === 'first') g.arc(0, 0, 26, -Math.PI / 2, Math.PI / 2);
-  else if (kind === 'last') g.arc(0, 0, 26, Math.PI / 2, (3 * Math.PI) / 2);
-  if (kind !== 'new') g.fill();
-  const t = new CanvasTexture(c);
-  t.colorSpace = SRGBColorSpace;
-  return t;
+  c.width = c.height = 256;
+  const texture = new CanvasTexture(c);
+  texture.colorSpace = SRGBColorSpace;
+  drawMoon(c, { new: 0, first: 90, full: 180, last: 270 }[kind]).then(() => {
+    texture.needsUpdate = true;
+  }).catch(() => undefined);
+  return texture;
 };
 
 const label = (text: string, cls: string) => {
@@ -254,8 +246,9 @@ export function startCalendarScene(o: Options): CalendarScene {
   try {
     renderer = new WebGLRenderer({ canvas: o.canvas, antialias: true, alpha: false, powerPreference: 'high-performance' });
   } catch {
-    return { setYear: () => undefined, setHighlight: () => undefined, focus: () => undefined, zoom: () => undefined, dispose: () => undefined };
+    throw new Error('WebGL unavailable');
   }
+  let disposed = false;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.outputColorSpace = SRGBColorSpace;
   renderer.setClearColor(0x03050c, 1);
@@ -263,7 +256,7 @@ export function startCalendarScene(o: Options): CalendarScene {
   const labels = new CSS2DRenderer({ element: o.labels });
 
   const scene = new Scene();
-  const camera = new PerspectiveCamera(38, 1, 0.05, 2000);
+  const camera = new PerspectiveCamera(38, 1, 0.02, 12000);
   camera.position.set(0, 21, 27);
 
   const controls = new OrbitControls(camera, o.canvas);
@@ -272,7 +265,7 @@ export function startCalendarScene(o: Options): CalendarScene {
   controls.enableZoom = false; // page scroll stays page scroll; zoom is trackpad ctrl+wheel or the HUD buttons
   controls.enablePan = false;
   controls.minDistance = 0.6;
-  controls.maxDistance = 90;
+  controls.maxDistance = 2600;
   controls.rotateSpeed = 0.6;
   o.canvas.style.touchAction = 'pan-y'; // vertical swipes scroll the page; horizontal drags orbit
 
@@ -289,7 +282,7 @@ export function startCalendarScene(o: Options): CalendarScene {
     for (let i = 0; i < n; i++) {
       const u = Math.random() * 2 - 1;
       const th = Math.random() * Math.PI * 2;
-      const r = 400 + Math.random() * 200;
+      const r = 6000 + Math.random() * 1200;
       const s = Math.sqrt(1 - u * u);
       pos.set([r * s * Math.cos(th), r * u, r * s * Math.sin(th)], i * 3);
     }
@@ -312,7 +305,7 @@ export function startCalendarScene(o: Options): CalendarScene {
   const loadTex = (url: string) => {
     const t = texLoader.load(url);
     t.colorSpace = SRGBColorSpace;
-    t.anisotropy = 4;
+    t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
     return track(t);
   };
   const blank = track(new Texture());
@@ -324,25 +317,51 @@ export function startCalendarScene(o: Options): CalendarScene {
         uniforms: { map: { value: map ?? blank }, tint: { value: new Color(tint) }, useMap: { value: map ? 1 : 0 }, sunPos: { value: new Vector3() } }
       })
     );
-  const others: { name: 'mercury' | 'venus' | 'mars'; mesh: Mesh; r: number }[] = [
-    { name: 'mercury', mesh: new Mesh(track(new SphereGeometry(0.16, 24, 12)), bodyMat('#a39d95')), r: 0.16 },
-    { name: 'venus', mesh: new Mesh(track(new SphereGeometry(0.27, 32, 16)), bodyMat('#e8cf9c')), r: 0.27 },
-    { name: 'mars', mesh: new Mesh(track(new SphereGeometry(0.22, 32, 16)), bodyMat('#c9643b')), r: 0.22 }
+  // NASA sidereal rotation periods; tilt direction/prime meridians are illustrative.
+  const specs: { name: Exclude<PlanetName, 'earth'>; r: number; day: number; tilt: number; period: number }[] = [
+    { name: 'mercury', r: .16, day: 1407.6, tilt: .034, period: 87.969 },
+    { name: 'venus', r: .39, day: -5832.5, tilt: 2.6, period: 224.701 },
+    { name: 'mars', r: .23, day: 24.623, tilt: 25.2, period: 686.98 },
+    { name: 'jupiter', r: 1.65, day: 9.925, tilt: 3.1, period: 4332.59 },
+    { name: 'saturn', r: 1.38, day: 10.7, tilt: 26.7, period: 10759.22 },
+    { name: 'uranus', r: .85, day: -17.2, tilt: 82.2, period: 30688.5 },
+    { name: 'neptune', r: .82, day: 16.1, tilt: 28.3, period: 60182 }
   ];
-  others.forEach((p) => scene.add(p.mesh));
+  const others = specs.map((spec) => {
+    const map = loadTex(`/tech-talks/calendar/${spec.name}.jpg`);
+    const mesh = new Mesh(track(new SphereGeometry(spec.r, 96, 48)), bodyMat('#ffffff', map));
+    mesh.userData.body = spec.name;
+    // Apply tilt after local spin so the pole stays fixed through each rotation.
+    mesh.rotation.order = 'ZYX';
+    mesh.rotation.z = spec.tilt * Math.PI / 180;
+    scene.add(mesh);
+    const tag = label(spec.name[0].toUpperCase() + spec.name.slice(1), 'tt-cal-label is-planet');
+    scene.add(tag);
+    return { ...spec, mesh, tag, map };
+  });
+  const saturn = others.find((p) => p.name === 'saturn')!;
+  const ringGeo = track(new RingGeometry(saturn.r * 1.3, saturn.r * 2.35, 192));
+  const ringPos = ringGeo.attributes.position;
+  const ringUV = ringGeo.attributes.uv;
+  for (let i = 0; i < ringPos.count; i++) {
+    const radius = Math.hypot(ringPos.getX(i), ringPos.getY(i));
+    ringUV.setXY(i, (radius / saturn.r - 1.3) / 1.05, .5);
+  }
+  const ring = new Mesh(ringGeo, track(new MeshBasicMaterial({ map: loadTex('/tech-talks/calendar/saturn-ring.png'), side: DoubleSide, transparent: true, opacity: .85, depthWrite: false })));
+  ring.rotation.x = Math.PI / 2;
+  saturn.mesh.add(ring);
 
-  // orbit lines for the other planets (a sampled year of each)
-  const orbitLine = (name: 'mercury' | 'venus' | 'mars', days: number, opacity: number) => {
+  // Closed paths at the current epoch; no extrapolation of orbital shape into later centuries.
+  const orbitLines = new Group();
+  scene.add(orbitLines);
+  for (const spec of specs) {
     const pts: number[] = [];
-    const t0 = Date.UTC(2026, 0, 1);
-    for (let i = 0; i <= 256; i++) pts.push(...toScene(planet(name, t0 + (i / 256) * days * 86400000).pos).toArray());
+    const t0 = o.getTime();
+    for (let i = 0; i <= 512; i++) pts.push(...toScene(planet(spec.name, t0 + (i / 512) * spec.period * 86400000, t0).pos).toArray());
     const g = track(new BufferGeometry());
     g.setAttribute('position', new BufferAttribute(new Float32Array(pts), 3));
-    scene.add(new Line(g, track(new LineBasicMaterial({ color: 0x7c93c7, transparent: true, opacity }))));
-  };
-  orbitLine('mercury', 88, 0.28);
-  orbitLine('venus', 225, 0.28);
-  orbitLine('mars', 687, 0.22);
+    orbitLines.add(new Line(g, track(new LineBasicMaterial({ color: 0x7894ac, transparent: true, opacity: .17 }))));
+  }
 
   /* Earth */
   const earthGroup = new Group();
@@ -379,6 +398,29 @@ export function startCalendarScene(o: Options): CalendarScene {
   const moonMat = bodyMat('#b8b8b8', loadTex('/tech-talks/calendar/moon.jpg'));
   const moonMesh = new Mesh(track(new SphereGeometry(MOON_R, 48, 24)), moonMat);
   scene.add(moonMesh);
+  earth.userData.body = 'earth'; moonMesh.userData.body = 'moon'; sunMesh.userData.body = 'sun';
+  const bodyMeshes = [earth, moonMesh, sunMesh, ...others.map((p) => p.mesh)];
+  let hdController: AbortController | undefined;
+  let releaseHD: (() => void) | undefined;
+  const detailMap = async (body: FocusBody) => {
+    hdController?.abort(); releaseHD?.(); releaseHD = undefined;
+    if (window.innerWidth < 900 || !body || !['earth', 'moon', 'mars', 'jupiter', 'saturn'].includes(body)) return;
+    const controller = new AbortController(); hdController = controller;
+    const uniform = body === 'earth' ? earthUniforms.dayMap : body === 'moon' ? moonMat.uniforms.map : (others.find((p) => p.name === body)!.mesh.material as ShaderMaterial).uniforms.map;
+    const low = uniform.value;
+    try {
+      const response = await fetch(`/tech-talks/calendar/${body}-hd.jpg`, { signal: controller.signal });
+      if (!response.ok) return;
+      const limit = Math.min(4096, renderer.capabilities.maxTextureSize);
+      const bitmap = await createImageBitmap(await response.blob(), { resizeWidth: limit, resizeHeight: limit / 2, imageOrientation: 'flipY' });
+      if (disposed || controller.signal.aborted) { bitmap.close(); return; }
+      const high = new Texture(bitmap); high.colorSpace = SRGBColorSpace; high.flipY = false;
+      high.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy()); high.needsUpdate = true;
+      uniform.value = high;
+      releaseHD = () => { uniform.value = low; high.dispose(); bitmap.close(); };
+    } catch { /* The lightweight map remains usable offline or after switching bodies. */ }
+  };
+
   const moonOrbit = (() => {
     const pts: number[] = [];
     for (let i = 0; i <= 96; i++) {
@@ -410,16 +452,16 @@ export function startCalendarScene(o: Options): CalendarScene {
   scene.add(yearGroup);
   const pickables: Object3D[] = [];
   const markerObjs = new Map<string, { obj: Object3D; kind: MarkerKind; base: number }>();
-  const lineMat = track(new LineBasicMaterial({ color: 0x9dc6ff, transparent: true, opacity: 0.55 }));
-  const tickMat = track(new LineBasicMaterial({ color: 0x9dc6ff, transparent: true, opacity: 0.35 }));
-  const monthMat = track(new LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.7 }));
-  const talkGeo = track(new CylinderGeometry(0.075, 0.075, 1, 12));
+  const lineMat = track(new LineBasicMaterial({ color: 0x9dc6ff, transparent: true, opacity: 0.25 }));
+  const tickMat = track(new LineBasicMaterial({ color: 0x9dc6ff, transparent: true, opacity: 0.14 }));
+  const monthMat = track(new LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.35 }));
+  const talkGeo = track(new CylinderGeometry(0.018, 0.018, 1, 12));
   const talkMats = {
     talk: track(new MeshBasicMaterial({ color: YELLOW })),
     'talk-upcoming': track(new MeshBasicMaterial({ color: YELLOW })),
     'talk-canceled': track(new MeshBasicMaterial({ color: RED, transparent: true, opacity: 0.8 }))
   };
-  const capTex = track(radial('rgba(255,255,220,1)', 'rgba(234,254,7,0.45)'));
+  const capTex = track(radial('rgba(208,229,225,0.7)', 'rgba(156,188,194,0.08)'));
   const seasonGeo = track(new OctahedronGeometry(0.17));
   const seasonMat = track(new MeshBasicMaterial({ color: BLUE }));
   const eclipseGeo = track(new TorusGeometry(0.19, 0.035, 8, 32));
@@ -489,13 +531,13 @@ export function startCalendarScene(o: Options): CalendarScene {
       let obj: Object3D;
       let base = 1;
       if (m.kind === 'talk' || m.kind === 'talk-upcoming' || m.kind === 'talk-canceled') {
-        const h = m.kind === 'talk-canceled' ? 0.45 : 1.05;
+        const h = m.kind === 'talk-canceled' ? 0.22 : 0.5;
         const g = new Group();
         const bar = new Mesh(talkGeo, talkMats[m.kind]);
         bar.scale.y = h;
         bar.position.y = h / 2;
         const cap = new Sprite(new SpriteMaterial({ map: capTex, blending: AdditiveBlending, depthWrite: false, transparent: true, color: m.kind === 'talk-canceled' ? RED : YELLOW }));
-        cap.scale.setScalar(0.55);
+        cap.scale.setScalar(0.18);
         cap.position.y = h + 0.05;
         g.add(bar, cap);
         g.position.copy(p);
@@ -521,7 +563,7 @@ export function startCalendarScene(o: Options): CalendarScene {
         obj = mesh;
       } else {
         const s = new Sprite(new SpriteMaterial({ map: phaseTex[m.kind as 'new' | 'first' | 'full' | 'last'], transparent: true, depthWrite: false }));
-        base = 0.24;
+        base = 0.32;
         s.scale.setScalar(base);
         s.position.copy(p).addScaledVector(out, -0.62);
         s.userData.id = m.id;
@@ -552,17 +594,26 @@ export function startCalendarScene(o: Options): CalendarScene {
   const bodyPos = (b: FocusBody, out: Vector3) => {
     if (b === 'earth') return out.copy(earthPos);
     if (b === 'moon') return out.copy(moonMesh.position);
+    const other = others.find((p) => p.name === b);
+    if (other) return out.copy(other.mesh.position);
     return out.set(0, 0, 0);
   };
   const focus = (b: FocusBody, view?: FocusView) => {
     focusBody = b;
-    focusView = b ? view ?? null : null;
-    focusDist = b === 'earth' ? 2.3 : b === 'moon' ? 0.85 : b === 'sun' ? 7 : overviewDist;
+    focusView = b ? view ?? null : 'overview';
+    const other = others.find((p) => p.name === b);
+    focusDist = other ? other.r * (b === 'saturn' ? 9 : 5.5) : b === 'earth' ? 2.3 : b === 'moon' ? 0.85 : b === 'sun' ? 7 : overviewDist;
+    controls.minDistance = other ? other.r * 2.6 : b === 'earth' ? .65 : b === 'moon' ? .25 : b === 'sun' ? 2.5 : .6;
+    void detailMap(b);
+    if (b && !view) focusView = b === 'moon' ? 'from-earth' : 'sunlit';
     o.onFocusChange?.(b);
   };
   const zoom = (factor: number) => {
-    focusDist = Math.min(controls.maxDistance, Math.max(controls.minDistance, camera.position.distanceTo(controls.target) * factor));
+    focusDist = Math.min(controls.maxDistance, Math.max(controls.minDistance, focusDist * factor));
+    if (focusBody && factor > 1 && focusDist > 18) { focusBody = null; focusView = null; o.onFocusChange?.(null); void detailMap(null); }
   };
+
+  const system = () => { focus(null); focusDist = Math.min(2500, 390 / (Math.tan(camera.fov * Math.PI / 360) * Math.min(1, camera.aspect))); };
 
   const onWheel = (e: WheelEvent) => {
     if (!e.ctrlKey && !e.metaKey) return; // trackpad pinch arrives as ctrl+wheel
@@ -570,6 +621,20 @@ export function startCalendarScene(o: Options): CalendarScene {
     zoom(Math.exp(e.deltaY * 0.01));
   };
   o.canvas.addEventListener('wheel', onWheel, { passive: false });
+
+  let pinchDistance = 0;
+  const pinch = (event: TouchEvent) => {
+    if (event.touches.length !== 2) { pinchDistance = 0; return; }
+    event.preventDefault();
+    const [a, b] = Array.from(event.touches);
+    const distance = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+    if (pinchDistance) zoom(pinchDistance / distance);
+    pinchDistance = distance;
+  };
+  const endPinch = () => { pinchDistance = 0; };
+  o.canvas.addEventListener('touchstart', pinch, { passive: false });
+  o.canvas.addEventListener('touchmove', pinch, { passive: false });
+  o.canvas.addEventListener('touchend', endPinch);
 
   /* picking */
   const ray = new Raycaster();
@@ -580,11 +645,11 @@ export function startCalendarScene(o: Options): CalendarScene {
     const r = o.canvas.getBoundingClientRect();
     ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
     ray.setFromCamera(ndc, camera);
-    const hit = ray.intersectObjects(pickables, false).find(({ object }) => {
+    const hit = ray.intersectObjects([...pickables, ...bodyMeshes], false).find(({ object }) => {
       for (let parent: Object3D | null = object; parent; parent = parent.parent) if (!parent.visible) return false;
       return true;
     });
-    return (hit?.object.userData.id as string | undefined) ?? null;
+    return (hit?.object.userData.id as string | undefined) ?? (hit?.object.userData.body ? `body:${hit.object.userData.body}` : null);
   };
   const onMove = (e: PointerEvent) => {
     if (down && Math.hypot(e.clientX - down.x, e.clientY - down.y) > 6 &&
@@ -595,7 +660,7 @@ export function startCalendarScene(o: Options): CalendarScene {
       hovered = id;
       o.canvas.style.cursor = id ? 'pointer' : '';
     }
-    o.onHover(id, e.clientX, e.clientY);
+    o.onHover(id?.startsWith('body:') ? null : id, e.clientX, e.clientY);
   };
   const onLeave = () => {
     hovered = null;
@@ -608,7 +673,8 @@ export function startCalendarScene(o: Options): CalendarScene {
     down = null;
     if (!start || Math.hypot(e.clientX - start.x, e.clientY - start.y) > 6) return;
     const id = pick(e);
-    if (id) o.onPick(id);
+    if (id?.startsWith('body:')) focus(id.slice(5) as FocusBody);
+    else if (id) o.onPick(id);
   };
   const onCancel = () => { down = null; onLeave(); };
   o.canvas.addEventListener('pointercancel', onCancel);
@@ -664,6 +730,10 @@ export function startCalendarScene(o: Options): CalendarScene {
 
     for (const p of others) {
       p.mesh.position.copy(toScene(planet(p.name, t).pos));
+      p.mesh.rotation.y = ((t / 3600000 / p.day) % 1) * Math.PI * 2;
+      const distance = camera.position.distanceTo(p.mesh.position);
+      p.tag.position.copy(p.mesh.position).add(new Vector3(0, Math.max(p.r * 1.7, distance * .014), 0));
+      p.tag.visible = !(camera.position.length() > 100 && ['mercury','venus','mars'].includes(p.name)) && focusBody !== p.name && (distance > 24 || ['mercury','venus','mars'].includes(p.name));
       (p.mesh.material as ShaderMaterial).uniforms.sunPos.value.set(0, 0, 0);
     }
 
@@ -682,7 +752,6 @@ export function startCalendarScene(o: Options): CalendarScene {
   let raf = 0;
   let visible = false;
   let last = performance.now();
-  const clock0 = performance.now();
 
   const frame = (now: number) => {
     raf = requestAnimationFrame(frame);
@@ -701,15 +770,7 @@ export function startCalendarScene(o: Options): CalendarScene {
     }
     const t = o.getTime();
     place(t);
-    sunMat.uniforms.time.value = o.still ? 0 : (now - clock0) / 1000;
-
-    // pulse the upcoming talks
-    if (!o.still) {
-      const pulse = 1 + 0.18 * Math.sin(now / 320);
-      markerObjs.forEach((m, key) => {
-        if (m.kind === 'talk-upcoming' && key !== highlight) m.obj.scale.set(pulse, 1, pulse);
-      });
-    }
+    sunMat.uniforms.time.value = o.still ? 0 : (t / 3600000) / 24;
 
     // follow the focused body; ease the distance, and the direction when a view is locked
     const k = o.still ? 1 : 1 - Math.pow(0.0015, dt);
@@ -720,8 +781,13 @@ export function startCalendarScene(o: Options): CalendarScene {
     const offset = tmp.subVectors(camera.position, controls.target);
     const len = offset.length();
     if (focusView) {
-      if (focusView === 'houston') houston.getWorldPosition(want).sub(earthPos).normalize();
+      if (focusView === 'overview') want.set(0, .62, .78).normalize();
+      else if (focusView === 'houston') houston.getWorldPosition(want).sub(earthPos).normalize();
       else if (focusView === 'from-earth') want.subVectors(earthPos, moonMesh.position).normalize();
+      else if (focusView === 'sunlit') {
+        bodyPos(focusBody, want).negate().normalize();
+        if (want.lengthSq() === 0) want.set(0, 0, 1);
+      }
       else want.crossVectors(UP, earthUniforms.sunDir.value).normalize();
       if (focusView !== 'from-earth') want.addScaledVector(UP, 0.28).normalize();
       offset.normalize().lerp(want, k).normalize();
@@ -736,6 +802,10 @@ export function startCalendarScene(o: Options): CalendarScene {
       m.obj.visible = m.obj.position.distanceTo(camera.position) > clear;
     });
 
+    const overview = camera.position.length();
+    yearGroup.visible = overview < 95;
+    zodiac.visible = overview < 75 && !focusBody;
+    moonOrbit.visible = focusBody === 'earth' || focusBody === 'moon' || overview < 28;
     renderer.render(scene, camera);
     labels.render(scene, camera);
   };
@@ -755,7 +825,12 @@ export function startCalendarScene(o: Options): CalendarScene {
     setHighlight,
     focus,
     zoom,
+    system,
     dispose() {
+      disposed = true; hdController?.abort(); releaseHD?.();
+      o.canvas.removeEventListener('touchstart', pinch);
+      o.canvas.removeEventListener('touchmove', pinch);
+      o.canvas.removeEventListener('touchend', endPinch);
       io.disconnect();
       cancelAnimationFrame(raf);
       o.canvas.removeEventListener('wheel', onWheel);

@@ -424,114 +424,27 @@
 }
 
 /* ---------- 4. take what you have learned: the rotating Earth ---------- */
-.tt-learn { height: 300vh; background: #000; }
-/* width of the join key art as drawn in the next frame (object-fit: cover); set exactly from script */
-.tt-learn .tt-stick { --art: max(100vw, 56.25svh); }
-.tt-learn-globe {
-  position: absolute;
-  z-index: 1;
-  left: 50%;
-  top: calc(env(safe-area-inset-top, 0px) + 7svh);
-  width: min(94vw, 50svh);
-  aspect-ratio: 1;
-  object-fit: cover;
-  translate: -50% 0;
-  scale: calc(0.92 + var(--p, 0) * 0.08);
-  mix-blend-mode: screen;
-  pointer-events: none;
-}
-.tt-learn-text {
-  position: absolute;
-  z-index: 2;
-  left: max(20px, 6vw);
-  right: 20px;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 9svh);
-  font-family: 'Overpass', 'Fira Sans', sans-serif;
-  font-weight: 800;
-  font-size: clamp(26px, 6.4vw, 58px);
-  line-height: 1.1;
-  letter-spacing: -0.01em;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9);
-}
-.tt-learn-line {
-  display: inline;
-  opacity: var(--q);
-  filter: blur(calc((1 - var(--q)) * 10px));
-}
-.tt-learn .tt-stick { --lit: clamp(0, calc((var(--p, 0) - 0.8) * 14), 1); }
-/* Space, Apps, Challenge: the colours of the three tubes, glowing as the tubes arrive */
-.tt-learn-word { display: inline-block; transform: translateX(var(--dx, 0px)); }
-.tt-learn-word.is-yellow { --glow: 234, 254, 7; color: var(--tt-yellow); }
-.tt-learn-word.is-blue { --glow: 46, 150, 245; color: var(--tt-blue); }
-.tt-learn-word.is-red { --glow: 228, 55, 0; color: var(--tt-red); }
-.tt-learn-word { text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9), 0 0 calc(var(--lit) * 26px) rgba(var(--glow), calc(var(--lit) * 0.5)); }
-@media (max-width: 899px) {
-  .tt-learn-line.is-accent { display: block; }
-  .tt-learn-word { display: block; width: max-content; }
-  .tt-learn-break { display: none; }
-}
-@media (min-width: 900px) {
-  .tt-learn .tt-stick { --art: max(100vw, 177.78svh); }
-  /* the globe sits over the blue and red tubes so both run into it */
-  /* high enough that the three tubes reach their words beneath it */
-  .tt-learn-globe { left: calc(50% + 0.09 * var(--art)); top: 32%; width: min(36vw, 60svh); translate: -50% -50%; }
-  .tt-learn-text { right: auto; top: 50%; bottom: auto; width: 34vw; translate: 0 -50%; font-size: clamp(28px, 3vw, 50px); }
-}
-/* neon tubes drawn up out of the join art: strips cut from the art itself, so they meet it seamlessly */
-.tt-tubes { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
-.tt-tube {
-  --c: 234, 254, 7;
-  --g: clamp(0, calc((var(--p, 0) - var(--s)) * 6), 1);
-  --e: calc(1 - (1 - var(--g)) * (1 - var(--g)) * (1 - var(--g))); /* eased: quick out of the art, settling onto the target */
-  --hit: clamp(0, calc((var(--p, 0) - var(--s) - 0.16) * 14), 1);
-  position: absolute;
-  bottom: 0;
-  left: calc(50% + (var(--x) - 0.5) * var(--art));
-  width: calc(var(--w) * var(--art));
-  height: var(--len, 0px);
-  translate: -50% 0;
-}
-.tt-tube.is-blue { --c: 70, 140, 255; }
-.tt-tube.is-red { --c: 255, 52, 60; }
-.tt-tube-body {
-  position: absolute;
-  inset: 0;
-  background: url('/tech-talks/story/tube-yellow.png') center top / 100% 4px repeat-y;
-  /* the tube is drawn upward in place rather than slid in */
-  clip-path: inset(calc((1 - var(--e)) * 100%) 0 0 0);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 14px);
-  mask-image: linear-gradient(to bottom, transparent, #000 14px);
-}
-.tt-tube.is-blue .tt-tube-body { background-image: url('/tech-talks/story/tube-blue.png'); }
-.tt-tube.is-red .tt-tube-body { background-image: url('/tech-talks/story/tube-red.png'); }
-/* ends that meet the Earth follow the curve of the limb */
-.tt-tube.is-globe .tt-tube-body {
-  -webkit-mask-image: radial-gradient(circle at var(--gx) var(--gy), transparent calc(var(--gr) - 1px), #000 var(--gr));
-  mask-image: radial-gradient(circle at var(--gx) var(--gy), transparent calc(var(--gr) - 1px), #000 var(--gr));
-}
-/* the light front travelling up the tube while it forms */
-.tt-tube-head {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: 76%;
-  aspect-ratio: 1 / 2.2;
-  translate: -50% calc(var(--len, 0px) * (1 - var(--e)) - 38%);
-  border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.8), rgba(var(--c), 0.6) 34%, rgba(var(--c), 0) 100%);
-  opacity: calc(clamp(0, var(--g) * 12, 1) * (1 - var(--hit)));
-}
-/* where a tube meets the message or the planet, it lights the contact point */
-.tt-tube-hit {
-  position: absolute;
-  left: 50%;
-  top: var(--hy, 0px);
-  width: 240%;
-  aspect-ratio: 3.4;
-  translate: -50% -50%;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(var(--c), 0.34), rgba(var(--c), 0.12) 45%, transparent);
-  opacity: var(--hit);
+.tt-learn { height: 150vh; background: #000; }
+.tt-learn .tt-stick { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 3vw; padding: 8vw; }
+.tt-learn-globe { grid-column: 2; grid-row: 1; width: 112%; max-width: none; aspect-ratio: 1; object-fit: contain; mix-blend-mode: screen; pointer-events: none; }
+.tt-learn-copy { grid-column: 1; grid-row: 1; position: relative; z-index: 2; max-width: 640px; }
+.tt-learn-eyebrow { margin: 0 0 24px; font-size: 11px; color: #8cacc5; }
+.tt-learn-copy h2 { margin: 0; font-family: 'Overpass',sans-serif; font-size: clamp(36px,4.9vw,78px); font-weight: 750; line-height: 1.06; letter-spacing: -.045em; text-wrap: balance; }
+.tt-learn-copy h2 > span { color: #a8bed1; }
+.tt-learn-description { margin: 28px 0; max-width: 460px; color: #aeb6c3; font-size: clamp(17px,1.55vw,23px); line-height: 1.65; text-wrap: pretty; }
+.tt-learn-brand { font-weight: 600; }
+.tt-learn-brand span:nth-child(1) { color: #d1dba2; }
+.tt-learn-brand span:nth-child(2) { color: #89b9e0; }
+.tt-learn-brand span:nth-child(3) { color: #df9b8f; }
+.tt-learn-link { display: inline-flex; align-items: center; gap: 40px; padding: 14px 0; border-bottom: 1px solid #657382; color: #fff; font-size: 12px; }
+@media (max-width:899px) {
+  .tt-learn { height: auto; }
+  .tt-learn .tt-stick { position: relative; height: auto; min-height: 100svh; display: flex; flex-direction: column; gap: 0; padding: 50px 26px 64px; }
+  .tt-learn-globe { width: min(100%,390px); max-height: 43svh; }
+  .tt-learn-copy { width: 100%; max-width: 540px; }
+  .tt-learn-copy h2 { font-size: clamp(34px,8vw,58px); }
+  .tt-learn-eyebrow { margin-bottom: 16px; font-size: 9px; }
+  .tt-learn-description { margin: 20px 0; font-size: 17px; }
 }
 
 /* ---------- 5. join Space Apps: key art, then the Houston mark ---------- */
@@ -1427,4 +1340,61 @@ html.tt-cs-lock { overflow: hidden; scrollbar-gutter: stable; }
 @media (max-width: 480px) {
   .tt-cal-controls { grid-template-columns: minmax(0,1fr); }
   .tt-cal-speeds, .tt-cal-view { grid-column: 1; justify-content: center; flex-wrap: wrap; }
+}
+
+/* A quieter observatory: warm silver markers and a clear control surface. */
+.tt-cal { --tt-yellow: #ccd9cf; }
+.tt-cal-stage { border-radius: 24px; margin-left: 20px; margin-right: 20px; border: 1px solid #ffffff12; }
+.tt-cal-hud.is-tl { top: 32px; }
+.tt-cal-hud-eyebrow { color: #89a4ba; font-size: 10px; margin-bottom: 10px !important; }
+.tt-cal-hud-date { font-size: clamp(20px,2.3vw,32px); letter-spacing: -.02em; }
+.tt-cal-hud-utc { color: #82919e; }
+.tt-cal-explore { position: absolute; top: 32px; right: 30px; z-index: 3; display: flex; gap: 10px; }
+.tt-cal-explore button, .tt-cal-explore select { color: #e2eaf0; background: #101a25df; border: 1px solid #ffffff25; border-radius: 30px; padding: 12px 16px; font-size: 11px; }
+.tt-cal-explore button { display: flex; gap: 18px; align-items: center; }
+.tt-cal-explore option { background: #101a25; }
+.tt-cal-view-caption { position: absolute; bottom: 124px; width: 100%; text-align: center; font-size: 9px; color: #8ba1b4; pointer-events: none; }
+.tt-cal-controls { padding-top: 26px; background: linear-gradient(transparent,#050b13e8 25%); }
+.tt-cal-controls button { border-color: #ffffff25; background: #0f1925c9; }
+.tt-cal-controls button.is-play { min-width: 92px; font-size: 12px; background: #d3e0e3; color: #14202c; border: 0; display: inline-flex; align-items: center; justify-content: center; gap: 9px; }
+.tt-cal-speeds button[aria-pressed='true'] { background: #344859; color: #fff; border-color: #6c8598; }
+.tt-cal-scrub input::-webkit-slider-thumb { background: #ccd9df; box-shadow: 0 0 0 5px #c3d5e012; width: 12px; height: 12px; margin-top: -5px; }
+.tt-cal-scrub input::-moz-range-thumb { background: #ccd9df; box-shadow: none; width: 12px; height: 12px; }
+.tt-cal-scrub-marks i { opacity: .45; }
+.tt-cal-context, .tt-cal-credits { margin: 16px auto 0; padding: 0 30px; max-width: 1320px; font-size: 10px; line-height: 1.8; color: #8093a5; text-align: center; }
+.tt-cal-credits { margin-top: 30px; font-size: 11px; }
+.tt-cal-credits a { text-decoration: underline; text-underline-offset: 3px; }
+.tt-cal-event-story { display: grid; grid-template-columns: minmax(0,1fr) 150px; align-items: start; gap: 24px; margin-top: 14px; }
+.tt-cal-event-story .tt-cal-card-who { margin-top: 0; }
+.tt-cal-moon-portrait { margin: 0; text-align: center; }
+.tt-cal-moon-portrait canvas { width: 100%; height: auto; display: block; filter: drop-shadow(0 0 20px #71809615); }
+.tt-cal-moon-portrait figcaption { display: flex; flex-direction: column; gap: 6px; font-size: 11px; color: #91a6b8; }
+.tt-cal-moon-portrait figcaption .tt-mono { font-size: 8px; letter-spacing: .08em; }
+.tt-cal-moon-portrait strong { font-weight: 500; color: #d3dee7; }
+.tt-cal-label.is-planet { color: #b9c9d8; font-size: 10px; letter-spacing: .12em; }
+@media (max-width:899px) {
+  .tt-cal-stage { margin-left: 10px; margin-right: 10px; min-height: 700px; height: 88svh; border-radius: 18px; }
+  .tt-cal-hud.is-tl { top: 26px; }
+  .tt-cal-hud-utc { display: none; }
+  .tt-cal-explore { top: 115px; left: 16px; right: 16px; flex-wrap: wrap; gap: 8px; }
+  .tt-cal-explore button, .tt-cal-explore select { font-size: 10px; padding: 10px 12px; }
+  .tt-cal-view-caption { bottom: 168px; font-size: 8px; }
+  .tt-cal-event-story { grid-template-columns: minmax(0,1fr) 124px; gap: 16px; }
+}
+@media (max-width:480px) {
+  .tt-cal-view-caption { bottom: 212px; }
+  .tt-cal-controls { gap: 8px; }
+  .tt-cal-transport { gap: 6px; }
+  .tt-cal-controls button { min-width: 32px; padding: 0 9px; }
+  .tt-cal-card-body { padding: 22px 18px; }
+  .tt-cal-event-story { grid-template-columns: minmax(0,1fr) 96px; gap: 12px; }
+  .tt-cal-card-desc { font-size: 14px; }
+}
+
+.tt-cal-event-story > div { grid-column: 1; grid-row: 1; }
+.tt-cal-event-story > figure { grid-column: 2; grid-row: 1; }
+@media (max-width: 600px) {
+  .tt-cal-event-story { display: flow-root; }
+  .tt-cal-event-story > div { display: contents; }
+  .tt-cal-event-story > figure { float: right; width: 96px; margin: 0 0 16px 18px; }
 }

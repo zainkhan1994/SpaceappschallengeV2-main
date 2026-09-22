@@ -23,7 +23,7 @@ const date = async (iso) => {
 };
 try {
   await page.setViewport({ width: 1440, height: 900 });
-  await page.goto(`${process.env.CALENDAR_URL || 'http://127.0.0.1:5174/'}#/tech-talks`, { waitUntil: 'networkidle2', timeout: 60000 });
+  await page.goto(`${process.env.CALENDAR_URL || 'http://127.0.0.1:5174/'}#/tech-talks`, { waitUntil: 'domcontentloaded', timeout: 60000 });
   await page.waitForSelector('#tt-calendar');
   await dispatch('talk-2026-01');
   assert.match(await text('.tt-cal-chip.is-selected'), /JAN 22/);
