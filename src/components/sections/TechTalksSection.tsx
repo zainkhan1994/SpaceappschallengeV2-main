@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import '../tech-talks/techTalks.css';
 import { REDUCED_MOTION, useScrollProgress } from '../tech-talks/useScrollProgress';
 import { ScrollReveal } from '../ui/ScrollReveal';
-import { TechTalk, techTalks2023, techTalks2024, techTalks2025, techTalks2026 } from '../../data/techTalksData';
 import { techTalkCards } from '../../data/techTalkCards';
 import { ChallengeDeck } from '../tech-talks/ChallengeDeck';
+import { CALENDAR_EVENT, TalkCalendar } from '../tech-talks/TalkCalendar';
+import { talkIdForCard } from '../tech-talks/calendarData';
 
 // Imagery: stage, staircase and lunar horizon (hero) supplied by Space Apps Houston.
 // Hero Earth: NASA DSCOVR/EPIC natural-colour photographs of 20 June 2024 (epic.gsfc.nasa.gov), reprojected between frames into one smooth turn.
@@ -18,6 +19,8 @@ import { ChallengeDeck } from '../tech-talks/ChallengeDeck';
 // Rotating globe rendered from NASA Visible Earth: Blue Marble Next Generation, Black Marble 2016, cloud_combined.
 // Houston skyline (join art): Carol M. Highsmith Archive, Library of Congress (no known restrictions).
 // Neon arcs, Space Apps Houston logo and challenge posters supplied by Space Apps Houston.
+// Calendar: NASA Visible Earth (Blue Marble land_shallow_topo, Black Marble 2016, cloud_combined) and the NASA SVS CGI
+// Moon Kit (LROC colour) as textures; positions from JPL approximate planetary elements and Meeus (see astro.ts).
 // Talk card photos: NASA Image and Video Library (public domain); each card's image ID is its `photo` in techTalkCards.ts.
 // Challenge covers without a poster (NASA): SPHEREx PIA26542 (NASA/JPL-Caltech/BAE Systems) · Orion over the Moon,
 // Artemis I art001e002092 · Earth Information Center NHQ202410070003 (NASA/Bill Ingalls).
@@ -28,17 +31,6 @@ const STORY = '/tech-talks/story';
 
 /* ---------------------------------------------------------------- shared */
 
-const LabelRow: React.FC<{ label: string; className?: string }> = ({ label, className = '' }) => (
-  <div className={`flex items-center gap-5 ${className}`}>
-    <span className="tt-mono whitespace-nowrap text-[12px] text-white/80">{label}</span>
-    <span className="h-px flex-1 bg-white/25" />
-    <span className="flex items-center gap-2" aria-hidden="true">
-      <i className="block h-2 w-2 rounded-full bg-[#EAFE07]" />
-      <i className="block h-2 w-2 rounded-full bg-[#2E96F5]" />
-      <i className="block h-2 w-2 rounded-full bg-[#E43700]" />
-    </span>
-  </div>
-);
 
 /** Muted, looping planet render: plays only while on screen, never for reduced motion. */
 /** `sizes`: frame width for narrow screens, then (optionally) for screens 900px and up. */
@@ -576,12 +568,14 @@ const WhatHappens: React.FC = () => {
         <div className="tt-grid absolute inset-0" aria-hidden="true" />
         <div ref={deck} className="tt-deck relative">
           {techTalkCards.map((c) => {
-            const Tag = c.url ? 'a' : 'div';
+            // one place for talk details and the Ion link: a card opens its talk in the calendar below
             return (
-              <Tag
+              <button
                 key={c.slug}
+                type="button"
                 className={`tt-card-item${c.art ? '' : ' is-type'}`}
-                {...(c.url ? { href: c.url, target: '_blank', rel: 'noopener noreferrer' } : {})}
+                aria-label={`${c.top} ${c.accent}${c.end ? ` ${c.end}` : ''}, ${c.month} ${c.year}: show in the calendar`}
+                onClick={() => window.dispatchEvent(new CustomEvent(CALENDAR_EVENT, { detail: talkIdForCard(c) }))}
               >
                 {c.art && <img src={`/tech-talks/cards/${c.slug}.jpg`} alt="" loading="lazy" />}
                 <div className="tt-card-body">
@@ -608,112 +602,16 @@ const WhatHappens: React.FC = () => {
                     )}
                   </h3>
                   <p className="tt-card-desc tt-body">{c.desc}</p>
-                  {c.url && (
-                    <div className="tt-card-cta tt-mono">
-                      <i aria-hidden="true">→</i> View talk
-                    </div>
-                  )}
                   <span className="tt-card-note tt-mono" aria-hidden="true">
                     Same curiosity.
                     <br />
                     Bigger tomorrows.
                   </span>
                 </div>
-              </Tag>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-/* ---------------------------------------------------------------- 8. archive */
-
-const years: { year: string; talks: TechTalk[] }[] = [
-  { year: '2026', talks: techTalks2026 },
-  { year: '2025', talks: techTalks2025 },
-  { year: '2024', talks: techTalks2024 },
-  { year: '2023', talks: techTalks2023 }
-];
-
-const Archive: React.FC = () => {
-  const [year, setYear] = useState('2026');
-  const talks = [...(years.find((y) => y.year === year)?.talks ?? [])].reverse();
-
-  return (
-    <section id="tt-archive-top" className="bg-[#050a1c] px-[max(20px,4vw)] py-[clamp(80px,10vw,150px)]" aria-labelledby="tt-archive">
-      <div className="mx-auto max-w-[1320px]">
-        <LabelRow label="Every talk so far" />
-        <div className="mt-10 flex flex-wrap items-end justify-between gap-6">
-          <h2 id="tt-archive" className="tt-display m-0 text-[clamp(40px,7vw,104px)]">
-            The archive
-          </h2>
-          <div role="tablist" aria-label="Year" className="flex gap-2">
-            {years.map((y) => (
-              <button
-                key={y.year}
-                type="button"
-                role="tab"
-                aria-selected={year === y.year}
-                onClick={() => setYear(y.year)}
-                className="tt-tab tt-mono cursor-pointer rounded-full border border-white/40 bg-transparent px-6 py-2.5 text-[12px] text-white transition-colors"
-              >
-                {y.year}
               </button>
-            ))}
-          </div>
-        </div>
-
-        <ol className="m-0 mt-12 list-none border-b border-white/10 p-0">
-          {talks.map((t) => {
-            const canceled = t.status === 'canceled';
-            const next = t.status === 'upcoming';
-            const who = [t.speaker, t.role].filter(Boolean).join(' — ') || (t.venue ? `At ${t.venue}` : '');
-            return (
-              <li
-                key={`${year}-${t.month}`}
-                className="tt-row relative grid gap-x-8 gap-y-2 border-t border-white/10 px-2 py-6 md:grid-cols-[130px_minmax(0,1fr)_minmax(0,34%)] md:px-4"
-              >
-                <p className="tt-mono m-0 flex items-center gap-2.5 text-[12px] text-white/85">
-                  {next && <span className="h-2.5 w-2.5 rounded-full bg-[#EAFE07] shadow-[0_0_10px_rgba(234,254,7,0.9)]" aria-hidden="true" />}
-                  {t.month} {t.day}
-                </p>
-                <div className={canceled ? 'opacity-45' : ''}>
-                  <h3 className="tt-display-lite m-0 text-[clamp(19px,2.1vw,28px)]">{canceled ? 'Canceled' : t.title}</h3>
-                  {(who || next) && (
-                    <p className="tt-mono m-0 mt-2.5 text-[10px] leading-[1.8] text-white/55">
-                      {next ? `Upcoming${t.speaker ? ` · ${who}` : ' · Speaker TBA'}` : who}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <p className="tt-body m-0 text-[15px] leading-[1.7] text-white/65">
-                    {next ? `${t.time} · ${t.venue}. ${t.desc ?? 'Topic to be announced.'}` : t.desc ?? ''}
-                  </p>
-                  {t.url && (
-                    <span className="tt-mono mt-3 inline-block text-[10px] text-[#2E96F5]" aria-hidden="true">
-                      Ion District ↗
-                    </span>
-                  )}
-                </div>
-                {t.url && (
-                  /* the whole row is the link to that talk's Ion District page */
-                  <a
-                    href={t.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="absolute inset-0 rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#EAFE07]"
-                  >
-                    <span className="sr-only">
-                      {t.title} — {t.month} {t.day}, {year}. Opens the Ion District event page.
-                    </span>
-                  </a>
-                )}
-              </li>
             );
           })}
-        </ol>
+        </div>
       </div>
     </section>
   );
@@ -733,7 +631,7 @@ export const TechTalksSection: React.FC = () => (
     <Join />
     <Challenges />
     <WhatHappens />
-    <Archive />
+    <TalkCalendar />
   </div>
 );
 

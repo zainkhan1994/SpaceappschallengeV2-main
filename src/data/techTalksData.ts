@@ -93,6 +93,47 @@ export const techTalks2023: TechTalk[] = [
 
 export const techTalks2024: TechTalk[] = [
   {
+    month: 'JAN',
+    day: '25',
+    short: 'Technology Challenges',
+    title: 'NASA Tech Talks: NASA Technology Challenges',
+    speaker: 'Montgomery B. Goforth + speakers from Intuitive Machines and Orbital Mining Corporation',
+    role: 'Assistant Director, Strategic Pursuits & Partnerships, Engineering Directorate, NASA JSC',
+    desc: 'Dual-use technology needs at JSC: avionics and sensors, RFID for ultra-long-lived wireless sensors, power storage and distribution, autonomous and robotic systems, spacesuits, VR/AR training, human health, and NASA intellectual property ready for startups.',
+    time: 'Thursday · 6:00 PM – 7:00 PM',
+    venue: 'Ion · 4201 Main Street, Houston',
+    after: 'Drinks and networking at Second Draught',
+    url: `${ION}nasa-tech-talks-3/`,
+    status: 'normal'
+  },
+  {
+    month: 'FEB',
+    day: '22',
+    short: 'JSC R5',
+    title: 'JSC R5: A Low-Cost On-Orbit Technology Demonstration and Free-Flying Inspection Platform',
+    speaker: 'Sam Pedrotty',
+    role: 'R5 Project Manager, GNC Autonomous Flight Systems Branch, NASA JSC',
+    desc: 'A lean approach to small spacecraft that takes immature technologies to orbit quickly and cheaply: how small spacecraft evolved at JSC, and what faster, cheaper demonstrations could enable.',
+    time: 'Thursday · 6:00 PM – 7:00 PM',
+    venue: 'Ion · 4201 Main Street, Houston',
+    after: 'Drinks and networking at Second Draught',
+    url: `${ION}nasa-tech-talks-4/`,
+    status: 'normal'
+  },
+  {
+    month: 'MAR',
+    day: '28',
+    short: 'Keeping Humans Alive',
+    title: 'Keeping Humans Alive in Space',
+    speaker: 'Moderated by Montgomery B. Goforth',
+    desc: 'How habitats and spacesuits keep fragile human physiology going: oxygen and carbon dioxide, invisible radiation, muscle atrophy and bone loss.',
+    time: 'Thursday · 6:00 PM – 7:00 PM',
+    venue: 'Ion · 4201 Main Street, Houston',
+    after: 'Drinks and networking at Second Draught',
+    url: `${ION}nasa-tech-talks-0328/`,
+    status: 'normal'
+  },
+  {
     month: 'APR',
     day: '25',
     short: 'Space Nutrition',
@@ -110,6 +151,62 @@ export const techTalks2024: TechTalk[] = [
     speaker: '',
     desc: "NASA's Technology Transfer and T2X programs, and how companies build on NASA innovation.",
     url: `${ION}nasa-tech-talks-0523/`,
+    status: 'normal'
+  },
+  {
+    month: 'JUN',
+    day: '27',
+    short: 'Microbes in Space',
+    title: 'NASA Tech Talks: Microbes in Space',
+    speaker: 'Dr. Sarah Wallace',
+    role: 'Technical lead, Microbiology Laboratory, NASA JSC',
+    desc: 'From culturing samples on Earth to sequencing in orbit: miniPCR and the MinION sequencer on the ISS, swab-to-sequencer microbial monitoring of surfaces and water, and what comes next for spaceflight microbiology.',
+    time: 'Thursday · 6:00 PM – 7:00 PM',
+    venue: 'Ion · 4201 Main Street, Houston',
+    after: 'Drinks and networking at Second Draught',
+    url: `${ION}nasa-tech-talks-0627/`,
+    status: 'normal'
+  },
+  {
+    month: 'AUG',
+    day: '22',
+    short: 'Robotics',
+    title: 'NASA Tech Talks: Robotics in the New Space Economy',
+    speaker: 'Brice Howard',
+    role: 'Co-founder and President, Novium',
+    desc: 'The role robotics will play in building the new space economy, and how Novium is helping to pave the way.',
+    time: 'Thursday · 6:00 PM – 7:00 PM',
+    venue: 'Ion · 4201 Main Street, Houston',
+    after: 'Drinks and networking at Second Draught',
+    url: `${ION}nasa-tech-talks-0822/`,
+    status: 'normal'
+  },
+  {
+    month: 'SEP',
+    day: '26',
+    short: 'Exercise Physiology',
+    title: 'NASA Tech Talks: Exercise Physiology and Countermeasures for Human Spaceflight',
+    speaker: 'Dr. Brian Prejean',
+    role: 'Human Performance Scientist, KBR, H-3PO laboratory at NASA JSC',
+    desc: 'How NASA protects astronauts against spaceflight deconditioning: preparing crews for flight, countermeasures on the ISS, reconditioning after landing, and the challenges ahead on Orion, Gateway and the lunar surface.',
+    time: 'Thursday · 6:00 PM – 7:00 PM',
+    venue: 'Ion · 4201 Main Street, Houston',
+    after: 'Drinks and networking at Second Draught',
+    url: `${ION}nasa-tech-talks-0926/`,
+    status: 'normal'
+  },
+  {
+    month: 'OCT',
+    day: '24',
+    short: 'Space Force',
+    title: 'NASA Tech Talks: Space Force Association Presentation',
+    speaker: 'Col. Jeff Hokett (USSF, ret.) + Commissioner Tom Duncavage',
+    role: 'Former Director of Futures and Integration, U.S. Space Force + Texas Military Preparedness Commissioner and NASA Visiting Executive',
+    desc: 'The evolving role of the U.S. Space Force in space exploration and defense, and how it works with NASA and other space organizations.',
+    time: 'Thursday · 6:00 PM – 7:00 PM',
+    venue: 'Ion · 4201 Main Street, Houston',
+    after: 'Drinks and networking at Second Draught',
+    url: `${ION}nasa-tech-talks-1024/`,
     status: 'normal'
   }
 ];
