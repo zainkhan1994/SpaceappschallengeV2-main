@@ -8,7 +8,7 @@
  *
  * Talks deliberately absent, per the card brief: OCT 2026 (topic not yet
  * announced), OCT 2025 (canceled), JUL 2024 (no confirmed talk), MAY 2023
- * (subject not evidenced).
+ * (Ion names Chris Gerty, but does not state a session topic).
  */
 export interface TechTalkCard {
   slug: string;
@@ -163,7 +163,7 @@ export const techTalkCards: TechTalkCard[] = [
     kicker: 'Suits × Habitats × Safety',
     top: 'Lunar',
     accent: 'Innovations',
-    desc: 'The machined parts that keep people alive on the surface — and the patents behind them.',
+    desc: 'Astronaut rescue and lunar habitat cooling: turning engineering ideas into patents.',
     url: `${ION}nasa-tech-talks-12/`,
     art: true
   },
@@ -195,7 +195,7 @@ export const techTalkCards: TechTalkCard[] = [
     slug: '2025-05-food',
     year: '2025',
     month: 'MAY',
-    kicker: 'Crops × Meals × Missions',
+    kicker: 'Safety × Shelf life × Missions',
     top: 'Space Food',
     accent: 'Systems',
     desc: 'Feeding a crew for years, when every calorie has to launch with them.',
@@ -259,7 +259,7 @@ export const techTalkCards: TechTalkCard[] = [
     kicker: 'Orbit × Awareness × Operations',
     top: 'Space Force',
     accent: 'Association',
-    desc: 'Domain awareness in orbit: watching a crowded, contested and increasingly commercial sky.',
+    desc: 'Working with NASA in orbit while defending U.S. space assets.',
     art: true,
     photo: 'iss059e104771'
   },
@@ -283,7 +283,7 @@ export const techTalkCards: TechTalkCard[] = [
     top: 'Robotics in the',
     accent: 'New Space',
     end: 'Economy',
-    desc: 'End effectors and autonomy doing the work that used to need a person in a suit.',
+    desc: 'How robotics builds the new space economy, and Novium’s role in it.',
     art: true,
     photo: 'iss073e0422335'
   },
@@ -350,11 +350,11 @@ export const techTalkCards: TechTalkCard[] = [
     slug: '2024-01-challenges',
     year: '2024',
     month: 'JAN',
-    kicker: 'Avionics × Power × Robotics',
+    kicker: 'Water × Dust × Lunar power',
     top: 'NASA',
     accent: 'Technology',
     end: 'Challenges',
-    desc: 'The pieces that are not finished yet, laid out honestly — and the one space still empty.',
+    desc: 'Seven JSC projects: water treatment, lunar dust capture, fuel cells and more.',
     art: true,
     photo: 'GRC-2019-C-13153'
   },

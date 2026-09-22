@@ -310,29 +310,29 @@ export function seasons(year: number): AstroEvent[] {
   });
 }
 
-/** Solar and lunar eclipses, greatest eclipse in UT (NASA GSFC Five Millennium Canon). */
+/** Solar and lunar eclipses, global greatest eclipse in TD; converted to UTC below (NASA GSFC Five Millennium Canon). */
 const ECLIPSES: [string, 'solar-eclipse' | 'lunar-eclipse', string, string?][] = [
-  ['2023-04-20T04:17Z', 'solar-eclipse', 'Hybrid solar eclipse'],
-  ['2023-05-05T17:24Z', 'lunar-eclipse', 'Penumbral lunar eclipse'],
-  ['2023-10-14T18:00Z', 'solar-eclipse', 'Annular solar eclipse', 'The path of annularity crossed Texas; Houston saw a deep partial eclipse.'],
-  ['2023-10-28T20:15Z', 'lunar-eclipse', 'Partial lunar eclipse'],
-  ['2024-03-25T07:13Z', 'lunar-eclipse', 'Penumbral lunar eclipse'],
-  ['2024-04-08T18:18Z', 'solar-eclipse', 'Total solar eclipse', 'The path of totality crossed Texas; Houston saw about 94% of the Sun covered.'],
-  ['2024-09-18T02:45Z', 'lunar-eclipse', 'Partial lunar eclipse'],
-  ['2024-10-02T18:46Z', 'solar-eclipse', 'Annular solar eclipse'],
-  ['2025-03-14T06:59Z', 'lunar-eclipse', 'Total lunar eclipse', 'Visible from Houston overnight.'],
-  ['2025-03-29T10:48Z', 'solar-eclipse', 'Partial solar eclipse'],
-  ['2025-09-07T18:12Z', 'lunar-eclipse', 'Total lunar eclipse'],
-  ['2025-09-21T19:43Z', 'solar-eclipse', 'Partial solar eclipse'],
-  ['2026-02-17T12:13Z', 'solar-eclipse', 'Annular solar eclipse'],
-  ['2026-03-03T11:34Z', 'lunar-eclipse', 'Total lunar eclipse', 'Visible from Houston before dawn.'],
-  ['2026-08-12T17:47Z', 'solar-eclipse', 'Total solar eclipse'],
-  ['2026-08-28T04:14Z', 'lunar-eclipse', 'Partial lunar eclipse']
+  ['2023-04-20T04:17:55Z', 'solar-eclipse', 'Hybrid solar eclipse'],
+  ['2023-05-05T17:24:05Z', 'lunar-eclipse', 'Penumbral lunar eclipse'],
+  ['2023-10-14T18:00:40Z', 'solar-eclipse', 'Annular solar eclipse', 'The path of annularity crossed Texas; Houston saw a deep partial eclipse.'],
+  ['2023-10-28T20:15:18Z', 'lunar-eclipse', 'Partial lunar eclipse'],
+  ['2024-03-25T07:13:59Z', 'lunar-eclipse', 'Penumbral lunar eclipse'],
+  ['2024-04-08T18:18:29Z', 'solar-eclipse', 'Total solar eclipse', 'The path of totality crossed Texas; Houston saw about 94% of the Sun covered.'],
+  ['2024-09-18T02:45:25Z', 'lunar-eclipse', 'Partial lunar eclipse'],
+  ['2024-10-02T18:46:13Z', 'solar-eclipse', 'Annular solar eclipse'],
+  ['2025-03-14T06:59:56Z', 'lunar-eclipse', 'Total lunar eclipse', 'Visible from Houston overnight.'],
+  ['2025-03-29T10:48:36Z', 'solar-eclipse', 'Partial solar eclipse'],
+  ['2025-09-07T18:12:58Z', 'lunar-eclipse', 'Total lunar eclipse'],
+  ['2025-09-21T19:43:04Z', 'solar-eclipse', 'Partial solar eclipse'],
+  ['2026-02-17T12:13:05Z', 'solar-eclipse', 'Annular solar eclipse'],
+  ['2026-03-03T11:34:52Z', 'lunar-eclipse', 'Total lunar eclipse', 'Visible from Houston before dawn.'],
+  ['2026-08-12T17:47:05Z', 'solar-eclipse', 'Total solar eclipse'],
+  ['2026-08-28T04:14:04Z', 'lunar-eclipse', 'Partial lunar eclipse']
 ];
 
 export function eclipses(year: number): AstroEvent[] {
   return ECLIPSES.filter(([d]) => d.startsWith(String(year))).map(([d, kind, title, note]) => {
-    const t = Date.parse(d);
+    const t = Date.parse(d) - 69184; // TT - UTC = 69.184 s for 2023–2026
     return { id: `${kind}-${d.slice(0, 10)}`, kind, t, title, note };
   });
 }
@@ -341,12 +341,18 @@ export function eclipses(year: number): AstroEvent[] {
 
 /** IAU constellations along the ecliptic, with the ecliptic longitude (J2000) where the Sun enters each. */
 export const ZODIAC: [string, number][] = [
-  ['Pisces', 351.6], ['Aries', 29.1], ['Taurus', 53.4], ['Gemini', 90.1], ['Cancer', 118.0], ['Leo', 138.1],
-  ['Virgo', 174.0], ['Libra', 217.8], ['Scorpius', 241.1], ['Ophiuchus', 247.7], ['Sagittarius', 266.3],
-  ['Capricornus', 299.7], ['Aquarius', 327.9]
+  ['Pisces', 351.650], ['Aries', 28.687], ['Taurus', 53.417], ['Gemini', 90.140], ['Cancer', 117.988], ['Leo', 138.038],
+  ['Virgo', 173.851], ['Libra', 217.810], ['Scorpius', 241.047], ['Ophiuchus', 247.638], ['Sagittarius', 266.238],
+  ['Capricornus', 299.656], ['Aquarius', 327.488]
 ];
 
-/** The constellation the Sun sits in, seen from Earth. */
+/** Approximate Sun longitude in the same J2000 frame as the constellation boundaries.
+ * Boundaries: https://www.cantab.net/users/davidasher/orrery/zodiac.html */
+export function sunLongitudeJ2000(t: number): number {
+  return norm(sun(t).lon - 1.39697 * centuries(t));
+}
+
+/** The constellation for a J2000 ecliptic longitude. */
 export function sunConstellation(lon: number): string {
   const l = norm(lon);
   let name = ZODIAC[0][0];
@@ -375,20 +381,30 @@ export function chicagoOffset(y: number, m: number, d: number): number {
   return dst ? -5 : -6;
 }
 
-/** Houston's UTC offset (hours) at an instant. */
+/** Houston's UTC offset at an instant, including the 2 AM transition hours. */
 export function chicagoOffsetAt(t: number): number {
-  const d = new Date(t - 6 * 3600000);
-  return chicagoOffset(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+  const y = new Date(t).getUTCFullYear();
+  const sunday = (m: number, n: number) => 1 + (7 - new Date(Date.UTC(y, m, 1)).getUTCDay()) % 7 + (n - 1) * 7;
+  const start = Date.UTC(y, 2, sunday(2, 2), 8); // 2 AM CST
+  const end = Date.UTC(y, 10, sunday(10, 1), 7); // 2 AM CDT
+  return t >= start && t < end ? -5 : -6;
 }
 
-/** JS time for a Houston wall-clock time. */
+/** JS time for Houston wall time. Overflows normalize before DST lookup.
+ * Repeated fall hour uses its earlier occurrence; the missing spring hour advances. */
 export function houstonTime(y: number, m: number, d: number, h: number, min = 0): number {
-  return Date.UTC(y, m, d, h - chicagoOffset(y, m, d), min);
+  const wall = Date.UTC(y, m, d, h, min);
+  const daylight = wall + 5 * 3600000;
+  const standard = wall + 6 * 3600000;
+  return chicagoOffsetAt(daylight) === -5 ? daylight : standard;
 }
 
 export const fmtHouston = (t: number, opts: Intl.DateTimeFormatOptions) =>
   new Intl.DateTimeFormat('en-US', { timeZone: HOUSTON.tz, ...opts }).format(new Date(t));
 
-export const hm = (hours: number) => `${Math.floor(hours)}h ${String(Math.round((hours % 1) * 60)).padStart(2, '0')}m`;
+export const hm = (hours: number) => {
+  const minutes = Math.round(hours * 60);
+  return `${Math.floor(minutes / 60)}h ${String(minutes % 60).padStart(2, '0')}m`;
+};
 
 export const compass = (az: number) => ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round(norm(az) / 45) % 8];

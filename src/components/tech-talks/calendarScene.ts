@@ -27,7 +27,6 @@ import {
   PerspectiveCamera,
   Points,
   PointsMaterial,
-  Quaternion,
   Raycaster,
   SRGBColorSpace,
   Scene,
@@ -44,7 +43,7 @@ import {
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { CSS2DObject, CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
-import { AstroKind, HOUSTON, ZODIAC, gmst, moon, planet, sun } from './astro';
+import { AstroKind, HOUSTON, ZODIAC, gmst, moon, planet, houstonTime, sunLongitudeJ2000 } from './astro';
 
 export type MarkerKind = 'talk' | 'talk-upcoming' | 'talk-canceled' | AstroKind;
 
@@ -268,15 +267,13 @@ export function startCalendarScene(o: Options): CalendarScene {
   camera.position.set(0, 21, 27);
 
   const controls = new OrbitControls(camera, o.canvas);
-  controls.enableDamping = true;
+  controls.enableDamping = !o.still;
   controls.dampingFactor = 0.08;
-  controls.enableZoom = false; // page scroll stays page scroll; zoom is ctrl/pinch or the HUD buttons
-  controls.enablePan = true;
+  controls.enableZoom = false; // page scroll stays page scroll; zoom is trackpad ctrl+wheel or the HUD buttons
+  controls.enablePan = false;
   controls.minDistance = 0.6;
   controls.maxDistance = 90;
   controls.rotateSpeed = 0.6;
-  // a drag hands the view back to the visitor
-  controls.addEventListener('start', () => (focusView = null));
   o.canvas.style.touchAction = 'pan-y'; // vertical swipes scroll the page; horizontal drags orbit
 
   const disposables: { dispose: () => void }[] = [renderer, controls];
@@ -435,7 +432,6 @@ export function startCalendarScene(o: Options): CalendarScene {
     yearGroup.children.slice().forEach((c) => {
       yearGroup.remove(c);
       if (c instanceof Line || c instanceof LineSegments || c instanceof LineLoop) c.geometry.dispose();
-      if (c instanceof Sprite) c.material.dispose();
       if (c instanceof CSS2DObject) c.element.remove();
       c.traverse((d) => {
         if (d instanceof CSS2DObject) d.element.remove();
@@ -448,8 +444,8 @@ export function startCalendarScene(o: Options): CalendarScene {
 
   const setYear = (year: number, markers: CalendarMarker[]) => {
     clearYear();
-    const t0 = Date.UTC(year, 0, 1);
-    const t1 = Date.UTC(year + 1, 0, 1);
+    const t0 = houstonTime(year, 0, 1, 0);
+    const t1 = houstonTime(year + 1, 0, 1, 0);
     const days = Math.round((t1 - t0) / 86400000);
     // the ring: one point per six hours of the year, so Earth's changing speed shows in the spacing
     const ring: number[] = [];
@@ -461,10 +457,10 @@ export function startCalendarScene(o: Options): CalendarScene {
     const ticks: number[] = [];
     const months: number[] = [];
     for (let d = 0; d < days; d++) {
-      const t = t0 + d * 86400000;
+      const t = houstonTime(year, 0, d + 1, 0);
       const p = earthAt(t);
       const out = p.clone().setY(0).normalize();
-      const first = new Date(t).getUTCDate() === 1;
+      const first = new Date(Date.UTC(year, 0, d + 1)).getUTCDate() === 1;
       const inner = p.clone().addScaledVector(out, first ? -0.45 : -0.14);
       const outer = p.clone().addScaledVector(out, first ? 0.45 : 0.14);
       (first ? months : ticks).push(...inner.toArray(), ...outer.toArray());
@@ -476,7 +472,7 @@ export function startCalendarScene(o: Options): CalendarScene {
     mg.setAttribute('position', new BufferAttribute(new Float32Array(months), 3));
     yearGroup.add(new LineSegments(mg, monthMat));
     MONTHS.forEach((m, i) => {
-      const t = Date.UTC(year, i, 15);
+      const t = houstonTime(year, i, 15, 0);
       const p = earthAt(t);
       const obj = label(m, 'tt-cal-label is-month');
       obj.position.copy(p.clone().addScaledVector(p.clone().setY(0).normalize(), 1.35));
@@ -584,10 +580,15 @@ export function startCalendarScene(o: Options): CalendarScene {
     const r = o.canvas.getBoundingClientRect();
     ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
     ray.setFromCamera(ndc, camera);
-    const hit = ray.intersectObjects(pickables, false)[0];
+    const hit = ray.intersectObjects(pickables, false).find(({ object }) => {
+      for (let parent: Object3D | null = object; parent; parent = parent.parent) if (!parent.visible) return false;
+      return true;
+    });
     return (hit?.object.userData.id as string | undefined) ?? null;
   };
   const onMove = (e: PointerEvent) => {
+    if (down && Math.hypot(e.clientX - down.x, e.clientY - down.y) > 6 &&
+      (e.pointerType !== 'touch' || Math.abs(e.clientX - down.x) > Math.abs(e.clientY - down.y))) focusView = null;
     if (e.pointerType === 'touch') return;
     const id = pick(e);
     if (id !== hovered) {
@@ -603,11 +604,14 @@ export function startCalendarScene(o: Options): CalendarScene {
   };
   const onDown = (e: PointerEvent) => (down = { x: e.clientX, y: e.clientY });
   const onUp = (e: PointerEvent) => {
-    if (!down || Math.hypot(e.clientX - down.x, e.clientY - down.y) > 6) return;
+    const start = down;
     down = null;
+    if (!start || Math.hypot(e.clientX - start.x, e.clientY - start.y) > 6) return;
     const id = pick(e);
     if (id) o.onPick(id);
   };
+  const onCancel = () => { down = null; onLeave(); };
+  o.canvas.addEventListener('pointercancel', onCancel);
   o.canvas.addEventListener('pointermove', onMove);
   o.canvas.addEventListener('pointerleave', onLeave);
   o.canvas.addEventListener('pointerdown', onDown);
@@ -617,8 +621,9 @@ export function startCalendarScene(o: Options): CalendarScene {
   const earthPos = new Vector3();
   const tmp = new Vector3();
   const m3 = new Matrix4();
-  const q = new Quaternion();
-  const X = new Vector3(1, 0, 0);
+  const lunarX = new Vector3();
+  const lunarY = new Vector3();
+  const lunarZ = new Vector3();
   const UP = new Vector3(0, 1, 0);
   const want = new Vector3();
 
@@ -650,10 +655,12 @@ export function startCalendarScene(o: Options): CalendarScene {
     const mo = moon(t);
     const ml = (mo.lon * Math.PI) / 180, mb = (mo.lat * Math.PI) / 180;
     moonMesh.position.copy(earthPos).add(toScene([Math.cos(mb) * Math.cos(ml), Math.cos(mb) * Math.sin(ml), Math.sin(mb)], MOON_ORBIT));
-    q.setFromUnitVectors(X, tmp.copy(earthPos).sub(moonMesh.position).normalize());
-    moonMesh.quaternion.copy(q);
+    lunarX.copy(earthPos).sub(moonMesh.position).normalize();
+    lunarY.copy(UP).addScaledVector(lunarX, -UP.dot(lunarX)).normalize();
+    lunarZ.crossVectors(lunarX, lunarY);
+    moonMesh.quaternion.setFromRotationMatrix(m3.makeBasis(lunarX, lunarY, lunarZ));
     moonOrbit.position.copy(earthPos);
-    (moonMat.uniforms.sunPos.value as Vector3).set(0, 0, 0);
+    (moonMat.uniforms.sunPos.value as Vector3).copy(moonMesh.position).addScaledVector(earthUniforms.sunDir.value, 10000);
 
     for (const p of others) {
       p.mesh.position.copy(toScene(planet(p.name, t).pos));
@@ -661,7 +668,7 @@ export function startCalendarScene(o: Options): CalendarScene {
     }
 
     // the constellation behind the Sun, seen from Earth
-    const sl = sun(t).lon;
+    const sl = sunLongitudeJ2000(t);
     zodiacLabels.forEach(({ obj }, i) => {
       const start = ZODIAC[i][1];
       const next = ZODIAC[(i + 1) % ZODIAC.length][1];
@@ -716,7 +723,7 @@ export function startCalendarScene(o: Options): CalendarScene {
       if (focusView === 'houston') houston.getWorldPosition(want).sub(earthPos).normalize();
       else if (focusView === 'from-earth') want.subVectors(earthPos, moonMesh.position).normalize();
       else want.crossVectors(UP, earthUniforms.sunDir.value).normalize();
-      want.addScaledVector(UP, 0.28).normalize();
+      if (focusView !== 'from-earth') want.addScaledVector(UP, 0.28).normalize();
       offset.normalize().lerp(want, k).normalize();
     } else offset.normalize();
     offset.multiplyScalar(len + (focusDist - len) * k);
@@ -752,6 +759,7 @@ export function startCalendarScene(o: Options): CalendarScene {
       io.disconnect();
       cancelAnimationFrame(raf);
       o.canvas.removeEventListener('wheel', onWheel);
+      o.canvas.removeEventListener('pointercancel', onCancel);
       o.canvas.removeEventListener('pointermove', onMove);
       o.canvas.removeEventListener('pointerleave', onLeave);
       o.canvas.removeEventListener('pointerdown', onDown);

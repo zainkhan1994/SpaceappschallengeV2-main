@@ -18,8 +18,6 @@ export interface CalendarTalk extends TechTalk {
   monthIndex: number;
   /** Start of the talk. */
   t: number;
-  /** One hour, unless the listing says otherwise. */
-  end: number;
   card?: TechTalkCard;
   /** Card photo, when the talk has one. */
   art?: string;
@@ -55,7 +53,7 @@ export const calendarTalks: CalendarTalk[] = byYear.flatMap(([year, talks]) =>
     const t = houstonTime(year, monthIndex, day, h, min);
     const id = talkId(year, monthIndex);
     const card = cards.get(id);
-    return { ...talk, id, year, monthIndex, t, end: t + 3600000, card, art: card?.art ? `/tech-talks/cards/${card.slug}.jpg` : undefined };
+    return { ...talk, id, year, monthIndex, t, card, art: card?.art ? `/tech-talks/cards/${card.slug}.jpg` : undefined };
   })
 );
 

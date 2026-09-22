@@ -3,6 +3,8 @@ import { REDUCED_MOTION } from './useScrollProgress';
 import {
   AstroEvent,
   compass,
+  chicagoOffsetAt,
+  sunLongitudeJ2000,
   daylightHours,
   eclipses,
   fmtHouston,
@@ -40,14 +42,13 @@ interface CalEvent {
   astro?: AstroEvent;
 }
 
-const YEAR_MIN = Date.UTC(CALENDAR_YEARS[0], 0, 1);
-const YEAR_MAX = Date.UTC(CALENDAR_YEARS[CALENDAR_YEARS.length - 1] + 1, 0, 1) - 3600000;
+const YEAR_MIN = houstonTime(CALENDAR_YEARS[0], 0, 1, 0);
+const YEAR_MAX = houstonTime(CALENDAR_YEARS[CALENDAR_YEARS.length - 1] + 1, 0, 1, 0) - 3600000;
 const SPEEDS = [1, 10, 100]; // hours of sky per second
-const DAY = 86400000;
 const WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 const clamp = (t: number) => Math.min(YEAR_MAX, Math.max(YEAR_MIN, t));
-const yearOf = (t: number) => new Date(t).getUTCFullYear();
+const yearOf = (t: number) => new Date(t + chicagoOffsetAt(t) * 3600000).getUTCFullYear();
 /** The body responsible for an event, and the view that shows why: Houston at talk time, the Moon as Earth sees it,
  * Earth side-on to the Sun at an equinox or solstice. */
 const viewFor = (kind: MarkerKind): [FocusBody, FocusView] => {
@@ -59,12 +60,12 @@ const viewFor = (kind: MarkerKind): [FocusBody, FocusView] => {
 const eventsFor = (year: number): CalEvent[] => {
   const talks: CalEvent[] = talksIn(year).map((talk) => ({
     id: talk.id,
-    kind: talk.status === 'canceled' ? 'talk-canceled' : talk.status === 'upcoming' ? 'talk-upcoming' : 'talk',
+    kind: talk.status === 'canceled' ? 'talk-canceled' : talk.t >= Date.now() ? 'talk-upcoming' : 'talk',
     t: talk.t,
     title: talk.status === 'canceled' ? 'Canceled' : talk.title,
     talk
   }));
-  const sky: CalEvent[] = [...moonPhases(year), ...seasons(year), ...eclipses(year)].map((a) => ({ id: a.id, kind: a.kind, t: a.t, title: a.title, astro: a }));
+  const sky: CalEvent[] = [year - 1, year, year + 1].flatMap((y) => [...moonPhases(y), ...seasons(y), ...eclipses(y)]).filter((a) => yearOf(a.t) === year).map((a) => ({ id: a.id, kind: a.kind, t: a.t, title: a.title, astro: a }));
   return [...talks, ...sky].sort((a, b) => a.t - b.t);
 };
 
@@ -109,7 +110,7 @@ const SkyFacts: React.FC<{ t: number; kind: MarkerKind }> = ({ t, kind }) => {
     const mh = horizontal(t, m.ra, m.dec);
     rows.push(['From Houston', mh.alt > 0 ? `${mh.alt.toFixed(0)}° up, ${compass(mh.az)}` : 'Below the horizon']);
   }
-  rows.push(['Earth', `${e.speed.toFixed(2)} km/s · ${e.r.toFixed(4)} AU from the Sun · Sun in ${sunConstellation(s.lon)}`]);
+  rows.push(['Earth', `${e.speed.toFixed(2)} km/s · ${e.r.toFixed(4)} AU from the Sun · Sun in ${sunConstellation(sunLongitudeJ2000(t))}`]);
   return (
     <dl className="tt-cal-facts">
       {rows.map(([k, v]) => (
@@ -126,15 +127,15 @@ const EventCard: React.FC<{ ev: CalEvent | null; preview: boolean }> = ({ ev, pr
   if (!ev) return <div className="tt-cal-card is-empty tt-body">Hover or pick any mark on the calendar.</div>;
   const talk = ev.talk;
   const canceled = talk?.status === 'canceled';
-  const upcoming = talk?.status === 'upcoming';
+  const upcoming = talk && !canceled && talk.t >= Date.now();
   const who = talk ? [talk.speaker, talk.role].filter(Boolean).join(' — ') : '';
   return (
-    <article className={`tt-cal-card${preview ? ' is-preview' : ''}`}>
+    <article tabIndex={-1} aria-label="Event details" className={`tt-cal-card${preview ? ' is-preview' : ''}`}>
       {talk?.art && <img className="tt-cal-card-art" src={talk.art} alt="" loading="lazy" />}
       <div className="tt-cal-card-body">
         <p className="tt-cal-card-kicker tt-mono">
           <Glyph kind={ev.kind} />
-          {dateLong(ev.t)} · {clock(ev.t)}
+          {dateLong(ev.t)} · {clock(ev.t)}{ev.kind.endsWith('eclipse') && ' · Greatest eclipse worldwide'}
           {upcoming && <span className="tt-cal-pill">Upcoming</span>}
         </p>
         <h3 className="tt-cal-card-title">{canceled ? `Canceled: ${talk?.title}` : ev.title}</h3>
@@ -150,7 +151,8 @@ const EventCard: React.FC<{ ev: CalEvent | null; preview: boolean }> = ({ ev, pr
           ev.astro?.note && <p className="tt-cal-card-desc tt-body">{ev.astro.note}</p>
         )}
         <SkyFacts t={ev.t} kind={ev.kind} />
-        {talk?.url && (
+        {preview && <p className="tt-body">Select this event to open its details and event link.</p>}
+        {talk?.url && !preview && (
           <a className="tt-cal-card-link tt-mono" href={talk.url} target="_blank" rel="noopener noreferrer">
             Event page on Ion District <span aria-hidden="true">↗</span>
             <span className="sr-only"> (opens in a new tab)</span>
@@ -162,7 +164,7 @@ const EventCard: React.FC<{ ev: CalEvent | null; preview: boolean }> = ({ ev, pr
 };
 
 export const TalkCalendar: React.FC = () => {
-  const [still] = useState(() => typeof window !== 'undefined' && window.matchMedia(REDUCED_MOTION).matches);
+  const [still, setStill] = useState(() => typeof window !== 'undefined' && window.matchMedia(REDUCED_MOTION).matches);
   const now = useMemo(() => clamp(Date.now()), []);
   const timeRef = useRef(now);
   const [time, setTimeState] = useState(now);
@@ -180,7 +182,23 @@ export const TalkCalendar: React.FC = () => {
   const scene = useRef<CalendarScene | null>(null);
   const tip = useRef<HTMLDivElement>(null);
   const hoverId = useRef<string | null>(null);
-  const pending = useRef<string | null>(null);
+  const [pending, setPending] = useState<string | null>(null);
+  const pendingFocus = useRef<[FocusBody, FocusView] | null>(null);
+  const [detailsRequest, setDetailsRequest] = useState(0);
+
+  useEffect(() => {
+    const media = window.matchMedia(REDUCED_MOTION);
+    const update = () => setStill(media.matches);
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+
+  useEffect(() => {
+    if (!detailsRequest) return;
+    const card = section.current?.querySelector<HTMLElement>('.tt-cal-card');
+    card?.focus({ preventScroll: true });
+    card?.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'center' });
+  }, [detailsRequest, still]);
 
   const strip = useRef<HTMLOListElement>(null);
   const events = useMemo(() => eventsFor(year), [year]);
@@ -241,6 +259,7 @@ export const TalkCalendar: React.FC = () => {
     );
     io.observe(el);
     return () => {
+      setSceneOk(false);
       cancelled = true;
       io.disconnect();
       scene.current?.dispose();
@@ -254,6 +273,10 @@ export const TalkCalendar: React.FC = () => {
       year,
       events.map((e): CalendarMarker => ({ id: e.id, kind: e.kind, t: e.t, label: e.title }))
     );
+    if (pendingFocus.current) {
+      scene.current?.focus(...pendingFocus.current);
+      pendingFocus.current = null;
+    }
   }, [sceneOk, year, events]);
 
   useEffect(() => {
@@ -292,17 +315,25 @@ export const TalkCalendar: React.FC = () => {
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(raf);
+      setTime(timeRef.current);
+    };
   }, [playing, speed, setTime]);
 
   const pick = useCallback(
     (id: string, fly = true) => {
       const ev = byId.get(id);
       if (!ev) return;
+      setHover(null);
+      hoverId.current = null;
       setSelected(id);
       setPlaying(false);
       setTime(ev.t);
-      if (fly) scene.current?.focus(...viewFor(ev.kind));
+      if (fly) {
+        if (scene.current) scene.current.focus(...viewFor(ev.kind));
+        else pendingFocus.current = viewFor(ev.kind);
+      }
     },
     [byId, setTime]
   );
@@ -315,43 +346,56 @@ export const TalkCalendar: React.FC = () => {
       const id = (e as CustomEvent<string>).detail;
       const y = Number(id.slice(5, 9));
       if (!CALENDAR_YEARS.includes(y)) return;
-      pending.current = id;
+      setPending(id);
       setYear(y);
-      setTime(Date.UTC(y, Number(id.slice(10, 12)) - 1, 15));
+      setTime(houstonTime(y, Number(id.slice(10, 12)) - 1, 15, 18));
       stage.current?.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'center' });
     };
     window.addEventListener(CALENDAR_EVENT, on);
     return () => window.removeEventListener(CALENDAR_EVENT, on);
   }, [still, setTime]);
   useEffect(() => {
-    const id = pending.current;
+    const id = pending;
     if (id && byId.has(id)) {
-      pending.current = null;
+      setPending(null);
       pick(id);
+      setDetailsRequest((n) => n + 1);
     }
-  }, [byId, pick]);
+  }, [pending, byId, pick]);
 
+  const wallTime = () => new Date(timeRef.current + chicagoOffsetAt(timeRef.current) * 3600000);
   const chooseYear = (y: number) => {
-    const d = new Date(timeRef.current);
-    const t = Date.UTC(y, d.getUTCMonth(), Math.min(d.getUTCDate(), 28), d.getUTCHours());
-    setYear(y);
-    setTime(t);
+    if (y === year) return;
+    setPending(null);
+    setHover(null);
+    setPlaying(false);
+    const d = wallTime();
+    const day = Math.min(d.getUTCDate(), new Date(Date.UTC(y, d.getUTCMonth() + 1, 0)).getUTCDate());
+    setTime(houstonTime(y, d.getUTCMonth(), day, d.getUTCHours(), d.getUTCMinutes()));
     setSelected(null);
   };
 
   const step = (days: number, months = 0) => {
     setPlaying(false);
-    const d = new Date(timeRef.current);
-    if (months) d.setUTCMonth(d.getUTCMonth() + months);
-    setTime(d.getTime() + days * DAY);
+    setHover(null);
+    const d = wallTime();
+    const target = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + months, 1));
+    const day = Math.min(d.getUTCDate(), new Date(Date.UTC(target.getUTCFullYear(), target.getUTCMonth() + 1, 0)).getUTCDate());
+    setTime(houstonTime(target.getUTCFullYear(), target.getUTCMonth(), day + days, d.getUTCHours(), d.getUTCMinutes()));
+  };
+
+  const togglePlayback = () => {
+    setTime(timeRef.current >= YEAR_MAX && !playing ? houstonTime(year, 0, 1, 0) : timeRef.current);
+    setPlaying((p) => !p);
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') { setHover(null); hoverId.current = null; }
     const target = e.target as HTMLElement;
     // shortcuts belong to the view; buttons, links and the scrubber keep their own keys
     if (target.closest('button, a, input, select, textarea') || e.altKey || e.ctrlKey || e.metaKey) return;
     const k = e.key;
-    if (k === ' ' || k === 'k') setPlaying((p) => !p);
+    if (k === ' ' || k === 'k') togglePlayback();
     else if (k === 'ArrowRight') step(e.shiftKey ? 0 : 1, e.shiftKey ? 1 : 0);
     else if (k === 'ArrowLeft') step(e.shiftKey ? 0 : -1, e.shiftKey ? -1 : 0);
     else if (k === '1' || k === '2' || k === '3') setSpeed(Number(k) - 1);
@@ -367,8 +411,8 @@ export const TalkCalendar: React.FC = () => {
   const s = sun(time);
   const earth = planet('earth', time);
   const mNow = moon(time);
-  const yearStart = Date.UTC(year, 0, 1);
-  const yearEnd = Math.min(Date.UTC(year + 1, 0, 1) - 3600000, YEAR_MAX);
+  const yearStart = houstonTime(year, 0, 1, 0);
+  const yearEnd = Math.min(houstonTime(year + 1, 0, 1, 0) - 3600000, YEAR_MAX);
 
   /* month grid for the month on the clock (Houston calendar) */
   const lp = localParts(time);
@@ -403,9 +447,9 @@ export const TalkCalendar: React.FC = () => {
               The calendar
             </h2>
           </div>
-          <div role="tablist" aria-label="Year" className="tt-cal-years">
+          <div role="group" aria-label="Year" className="tt-cal-years">
             {CALENDAR_YEARS.map((y) => (
-              <button key={y} type="button" role="tab" aria-selected={year === y} className="tt-tab tt-mono" onClick={() => chooseYear(y)}>
+              <button key={y} type="button" aria-pressed={year === y} className="tt-tab tt-mono" onClick={() => chooseYear(y)}>
                 {y}
               </button>
             ))}
@@ -423,7 +467,7 @@ export const TalkCalendar: React.FC = () => {
         <canvas ref={canvas} className="tt-cal-canvas" aria-hidden="true" />
         <div ref={labels} className="tt-cal-labels" aria-hidden="true" />
 
-        <div className="tt-cal-hud is-tl tt-mono" aria-hidden="true">
+        <div className="tt-cal-hud is-tl tt-mono">
           <p className="tt-cal-hud-date">{dateLong(time)}</p>
           <p>{utc(time)}</p>
           <p>
@@ -440,7 +484,7 @@ export const TalkCalendar: React.FC = () => {
             Sun RA {raHm(s.ra)} · Dec {s.dec >= 0 ? '+' : ''}
             {s.dec.toFixed(1)}°
           </p>
-          <p>Sun in {sunConstellation(s.lon)}</p>
+          <p>Sun in {sunConstellation(sunLongitudeJ2000(time))}</p>
           <p>
             {phaseName(mNow.elong)} · {Math.round(mNow.illum * 100)}%
           </p>
@@ -464,7 +508,7 @@ export const TalkCalendar: React.FC = () => {
             <button type="button" onClick={() => step(-1)} aria-label="Back one day">
               ‹
             </button>
-            <button type="button" className="is-play" onClick={() => setPlaying((p) => !p)} aria-label={playing ? 'Pause' : 'Play'} aria-pressed={playing}>
+            <button type="button" className="is-play" onClick={togglePlayback} aria-label={playing ? 'Pause' : 'Play'}>
               {playing ? '❚❚' : '▶'}
             </button>
             <button type="button" onClick={() => step(1)} aria-label="Forward one day">
@@ -474,9 +518,9 @@ export const TalkCalendar: React.FC = () => {
               »
             </button>
           </div>
-          <div className="tt-cal-speeds" role="radiogroup" aria-label="Playback speed">
+          <div className="tt-cal-speeds" role="group" aria-label="Playback speed">
             {SPEEDS.map((v, i) => (
-              <button key={v} type="button" role="radio" aria-checked={speed === i} onClick={() => setSpeed(i)} title={`${v} hour${v > 1 ? 's' : ''} of sky per second`}>
+              <button key={v} type="button" aria-pressed={speed === i} onClick={() => setSpeed(i)} title={`${v} hour${v > 1 ? 's' : ''} of sky per second`}>
                 {v}×
               </button>
             ))}
@@ -548,6 +592,10 @@ export const TalkCalendar: React.FC = () => {
         </ol>
 
         <div className="tt-cal-panels">
+          <button type="button" className="tt-cal-skip" onClick={() => {
+            setHover(null);
+            setDetailsRequest((n) => n + 1);
+          }}>Skip to event details</button>
           <div className="tt-cal-month">
             <div className="tt-cal-month-head">
               <button type="button" onClick={() => step(0, -1)} aria-label="Previous month">
@@ -560,29 +608,30 @@ export const TalkCalendar: React.FC = () => {
                 ›
               </button>
             </div>
-            <div className="tt-cal-grid" role="grid" aria-label={`${monthName} ${lp.y}`}>
-              <div role="row" className="tt-cal-week">
+            <div className="tt-cal-grid" role="group" aria-label={`${monthName} ${lp.y}`}>
+              <div className="tt-cal-week">
                 {WEEK.map((d) => (
-                  <span key={d} role="columnheader" className="tt-mono">
+                  <span key={d} className="tt-mono">
                     {d}
                   </span>
                 ))}
               </div>
               {Array.from({ length: Math.ceil((lead + daysIn) / 7) }, (_, w) => (
-                <div role="row" className="tt-cal-week" key={w}>
+                <div className="tt-cal-week" key={w}>
                   {Array.from({ length: 7 }, (_, i) => {
                     const day = w * 7 + i - lead + 1;
-                    if (day < 1 || day > daysIn) return <span key={i} role="gridcell" className="tt-cal-day is-out" />;
+                    if (day < 1 || day > daysIn) return <span key={i} className="tt-cal-day is-out" />;
                     const evs = monthEvents.get(day) ?? [];
                     const talk = evs.find(isTalk);
                     const today = day === lp.d;
                     const label = [`${monthName} ${day}`, ...evs.map((e) => e.title)].join(', ');
                     return (
-                      <span key={i} role="gridcell" className="tt-cal-cell">
+                      <span key={i} className="tt-cal-cell">
                         <button
                           type="button"
                           className={`tt-cal-day${talk ? ` is-talk is-${talk.kind}` : ''}${today ? ' is-today' : ''}${evs.some((e) => e.id === selected) ? ' is-selected' : ''}`}
                           aria-label={label}
+                          aria-current={today ? 'date' : undefined}
                           onClick={() => (evs[0] ? pick((talk ?? evs[0]).id) : setTime(houstonTime(lp.y, lp.m, day, 18)))}
                           onMouseEnter={() => evs[0] && setHover({ id: (talk ?? evs[0]).id, x: -1, y: -1 })}
                           onMouseLeave={() => setHover(null)}
@@ -600,6 +649,16 @@ export const TalkCalendar: React.FC = () => {
                 </div>
               ))}
             </div>
+            <details className="tt-cal-event-list">
+              <summary className="tt-mono">All events in {monthName}</summary>
+              <ul>
+                {[...monthEvents.entries()].sort(([a], [b]) => a - b).flatMap(([day, evs]) => evs.map((ev) => (
+                  <li key={ev.id}><button type="button" aria-pressed={selected === ev.id} onClick={() => pick(ev.id)}>
+                    <Glyph kind={ev.kind} /> {monthName} {day}: {ev.title}
+                  </button></li>
+                )))}
+              </ul>
+            </details>
             <ul className="tt-cal-legend tt-mono" aria-label="Legend">
               <li>
                 <Glyph kind="talk" /> Talk
@@ -615,8 +674,9 @@ export const TalkCalendar: React.FC = () => {
               </li>
             </ul>
           </div>
-          <EventCard ev={shown} preview={!!hover && hover.id !== selected} />
+          <div id="tt-event-details"><EventCard ev={shown} preview={!!hover && hover.id !== selected} /></div>
           <p className="sr-only" aria-live="polite">
+            {!playing ? `Calendar date: ${dateLong(time)}, ${clock(time)}. ` : ''}
             {selected && byId.get(selected) ? `Selected: ${byId.get(selected)!.title}, ${dateLong(byId.get(selected)!.t)}` : ''}
           </p>
         </div>

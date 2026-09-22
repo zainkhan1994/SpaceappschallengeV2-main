@@ -1,4 +1,6 @@
 import React from 'react';
+import { calendarTalks } from '../tech-talks/calendarData';
+import { fmtHouston } from '../tech-talks/astro';
 import { ArrowRight } from 'lucide-react';
 import BrighterTomorrowHero from '../get-involved/BrighterTomorrowHero';
 import { ScrollReveal } from '../ui/ScrollReveal';
@@ -8,7 +10,7 @@ const paths = [
     href: '#/tech-talks',
     eyebrow: 'Monthly at The Ion',
     title: 'NASA Tech Talks',
-    body: 'Thursday evenings with NASA engineers, scientists and partners. Next: September 24, 2026, Enhancing Autonomous Onboard Navigation Systems with NASA JSC’s Jorge Chong and Montgomery B. Goforth.',
+    body: 'Thursday evenings with NASA engineers, scientists and partners.',
     cta: 'Explore Tech Talks',
     accent: '#EAFE07'
   },
@@ -23,6 +25,8 @@ const paths = [
 ];
 
 export const GetInvolvedNasaSection: React.FC = () => {
+  const next = calendarTalks.find((talk) => talk.status !== 'canceled' && talk.t >= Date.now());
+  const nextTalk = next ? ` Next: ${fmtHouston(next.t, { month: 'long', day: 'numeric', year: 'numeric' })}, ${next.short === 'Topic TBA' ? 'topic to be announced' : next.title}${next.speaker ? ` with ${next.speaker}` : ''}.` : '';
   return (
     <div>
       <BrighterTomorrowHero />
@@ -62,7 +66,7 @@ export const GetInvolvedNasaSection: React.FC = () => {
                 <span className="mt-3 font-['Overpass',sans-serif] font-black text-[clamp(26px,3vw,38px)] leading-tight uppercase text-white">
                   {p.title}
                 </span>
-                <span className="mt-3 flex-1 text-[17px] leading-relaxed text-white/75 font-light">{p.body}</span>
+                <span className="mt-3 flex-1 text-[17px] leading-relaxed text-white/75 font-light">{p.body}{p.href === '#/tech-talks' ? nextTalk : ''}</span>
                 <span className="mt-7 inline-flex items-center gap-2 font-extrabold text-[16px] text-white">
                   {p.cta}
                   <ArrowRight aria-hidden="true" size={18} className="transition-transform duration-300 group-hover:translate-x-1" />

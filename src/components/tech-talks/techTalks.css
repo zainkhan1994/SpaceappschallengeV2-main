@@ -1261,7 +1261,7 @@ html.tt-cs-lock { overflow: hidden; scrollbar-gutter: stable; }
 .tt-cal-controls button:focus-visible { border-color: var(--tt-yellow); outline: none; }
 .tt-cal-controls button:disabled { opacity: 0.35; cursor: default; }
 .tt-cal-speeds button { font-family: 'Fira Sans', sans-serif; font-size: 11px; letter-spacing: 0.12em; }
-.tt-cal-speeds button[aria-checked='true'] { background: #fff; color: #04070f; border-color: #fff; }
+.tt-cal-speeds button[aria-pressed='true'] { background: #fff; color: #04070f; border-color: #fff; }
 .tt-cal-scrub { position: relative; grid-column: 1 / -1; display: block; height: 26px; }
 .tt-cal-scrub input { position: absolute; inset: 0; width: 100%; margin: 0; background: transparent; -webkit-appearance: none; appearance: none; cursor: pointer; }
 .tt-cal-scrub input::-webkit-slider-runnable-track { height: 2px; background: rgba(157, 198, 255, 0.35); }
@@ -1399,4 +1399,32 @@ html.tt-cs-lock { overflow: hidden; scrollbar-gutter: stable; }
 }
 @media (prefers-reduced-motion: reduce) {
   .tt-cal-canvas { transition: none; }
+}
+
+/* Focus must remain visible on selected controls and above the WebGL layer. */
+.tt-cal :is(button, a, summary, [tabindex]):focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 2px #04070f;
+}
+.tt-cal-stage:focus-visible::after {
+  content: ''; position: absolute; inset: 0; z-index: 4;
+  box-shadow: inset 0 0 0 3px var(--tt-yellow); pointer-events: none;
+}
+.tt-cal-label.is-zodiac { color: rgba(157,198,255,.8); text-shadow: 0 1px 4px #000; }
+.tt-cal-label.is-year { color: rgba(255,255,255,.7); text-shadow: 0 1px 4px #000; }
+.tt-cal-event-list { margin-top: 18px; }
+.tt-cal-event-list summary { padding: 8px 0; cursor: pointer; font-size: 12px; }
+.tt-cal-event-list ul { padding: 0; list-style: none; }
+.tt-cal-event-list button { background: transparent; border: 0; color: #fff; padding: 10px 4px; text-align: left; font-size: 13px; }
+.tt-cal-event-list button[aria-pressed='true'] { color: var(--tt-yellow); }
+.tt-cal-panels { position: relative; }
+.tt-cal-skip { position: absolute; width: 1px; height: 1px; overflow: hidden; }
+.tt-cal-skip:focus { width: auto; height: auto; z-index: 5; background: #04070f; padding: 12px; }
+@media (max-width: 899px) {
+  .tt-cal-hud.is-tr { top: 150px; text-align: left; left: 16px; right: auto; }
+}
+@media (max-width: 480px) {
+  .tt-cal-controls { grid-template-columns: minmax(0,1fr); }
+  .tt-cal-speeds, .tt-cal-view { grid-column: 1; justify-content: center; flex-wrap: wrap; }
 }
