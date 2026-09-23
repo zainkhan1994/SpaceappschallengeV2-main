@@ -23,23 +23,10 @@ const TeamRow: React.FC<{ team: WinnerTeam }> = ({ team }) => (
   <ScrollReveal>
     <article className="grid grid-cols-1 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)] gap-[clamp(20px,3vw,44px)] border border-white/14 rounded-2xl p-[clamp(20px,3vw,38px)] bg-[#050A1C]/80">
       <div>
-        {team.image ? (
-          <img src={team.image} alt="" className="w-full aspect-square object-cover rounded-xl border border-white/12 block" loading="lazy" />
-        ) : (
-          <div
-            aria-hidden="true"
-            className="w-full aspect-square rounded-xl border border-white/12 grid place-items-center overflow-hidden"
-            style={{ background: `radial-gradient(120% 120% at 20% 0%, ${team.accent}26 0%, rgba(5,10,28,0.9) 62%)` }}
-          >
-            <span
-              className="font-['Overpass',sans-serif] font-black uppercase text-[clamp(22px,3vw,40px)] leading-[0.95] text-center px-5 break-words hyphens-auto max-w-full"
-              style={{ color: team.accent }}
-            >
-              {team.name}
-            </span>
-          </div>
+        {team.image && (
+          <img src={team.image} alt="" className="w-full aspect-square object-cover rounded-xl border border-white/12 block mb-5" loading="lazy" />
         )}
-        <div className="mt-5 flex flex-wrap items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2.5">
           <span
             className="font-['Fira_Sans_Condensed',sans-serif] text-[11px] font-extrabold tracking-wider uppercase px-2.5 py-1 rounded bg-white/10"
             style={{ color: team.accent }}
@@ -50,9 +37,16 @@ const TeamRow: React.FC<{ team: WinnerTeam }> = ({ team }) => (
         <h3 className="m-0 mt-3 font-['Overpass',sans-serif] font-black text-[clamp(30px,3.6vw,46px)] leading-none uppercase text-white">
           {team.name}
         </h3>
+        {team.project && (
+          <p className="m-0 mt-3 text-[17px] leading-snug text-white/85">
+            <span className="font-['Fira_Sans_Condensed',sans-serif] text-[11px] font-bold tracking-widest uppercase text-white/45 block mb-1">Project</span>
+            {team.project}
+          </p>
+        )}
         {team.challenge && (
           <p className="m-0 mt-3 text-[15px] leading-relaxed text-white/60">
-            Challenge: <span className="text-white/80">{team.challenge}</span>
+            <span className="font-['Fira_Sans_Condensed',sans-serif] text-[11px] font-bold tracking-widest uppercase text-white/45 block mb-1">Challenge</span>
+            {team.challenge}
           </p>
         )}
         {team.links && <LinkRow links={team.links} className="mt-5" />}
