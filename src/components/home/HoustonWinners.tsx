@@ -1,94 +1,128 @@
 import React from 'react';
 import { ScrollReveal } from '../ui/ScrollReveal';
+import { houstonWinners, WinnerTeam } from '../../data/winnersData';
 
-export interface WinnerTeam {
-  name: string;
-  category: string;
-  members: string[];
-  description: string;
-  badgeColor: string;
-}
+const LinkRow: React.FC<{ links: { label: string; href: string }[]; className?: string }> = ({ links, className = '' }) => (
+  <div className={`flex flex-wrap gap-x-5 gap-y-2 ${className}`}>
+    {links.map((l) => (
+      <a
+        key={l.href}
+        href={l.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-1.5 font-['Fira_Sans_Condensed',sans-serif] text-[13px] font-bold tracking-wider uppercase text-[#9ecdff] hover:text-[#EAFE07] transition-colors"
+      >
+        {l.label}
+        <span aria-hidden="true">↗</span>
+      </a>
+    ))}
+  </div>
+);
 
-const winnersList: WinnerTeam[] = [
-  {
-    name: 'Bluetonium',
-    category: 'Houston Global Nominee',
-    members: ['Silas Lovett', 'Maxwell Campbell-Ricketts', 'Devin Gross', 'Kaiden Dillon', 'Jim Foreman'],
-    description: 'Advanced space mission modeling and open data technical solution.',
-    badgeColor: '#EAFE07'
-  },
-  {
-    name: 'Cosmobots',
-    category: 'Houston Global Nominee',
-    members: ['Thevesh Pal', 'Yunus Kilinc', 'Amey Mishra', 'Yen-Ching Cheng', 'Parth Zanwar', 'Dhruv Mantri'],
-    description: 'Autonomous robotics, satellite data, and space technology innovation.',
-    badgeColor: '#2E96F5'
-  },
-  {
-    name: 'EnviroCast',
-    category: 'Houston Global Nominee',
-    members: ['Ahaan Thota', 'Divin Giddaluru', 'Sathyan Gopal', 'Arnav Nemade', 'Kavin Elangovan', 'Vir Sanghavi'],
-    description: 'Environmental predictive analytics and Earth observation platform.',
-    badgeColor: '#00E5FF'
-  },
-  {
-    name: 'Team AI MED',
-    category: 'Houston Global Nominee',
-    members: ['Abyaz Bhuiyan', 'Ashley Jiang', 'Xiaoqian Jiang', 'Sonia A', 'Carlos Alfredo', 'Myreen Ahsan'],
-    description: 'AI medical analysis and space medicine data application.',
-    badgeColor: '#FF3366'
-  }
-];
+const Featured: React.FC<{ team: WinnerTeam }> = ({ team }) => (
+  <ScrollReveal>
+    <article className="grid grid-cols-1 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)] gap-[clamp(20px,3vw,44px)] border border-white/14 rounded-2xl p-[clamp(20px,3vw,38px)] bg-[#050A1C]/80">
+      <div>
+        {team.image && (
+          <img
+            src={team.image}
+            alt=""
+            className="w-full aspect-square object-cover rounded-xl border border-white/12 block"
+            loading="lazy"
+          />
+        )}
+        <div className="mt-5 flex flex-wrap items-center gap-2.5">
+          <span
+            className="font-['Fira_Sans_Condensed',sans-serif] text-[11px] font-extrabold tracking-wider uppercase px-2.5 py-1 rounded bg-white/10"
+            style={{ color: team.accent }}
+          >
+            {team.year} {team.award}
+          </span>
+        </div>
+        <h3 className="m-0 mt-3 font-['Overpass',sans-serif] font-black text-[clamp(30px,3.6vw,46px)] leading-none uppercase text-white">
+          {team.name}
+        </h3>
+        {team.challenge && (
+          <p className="m-0 mt-3 text-[15px] leading-relaxed text-white/60">
+            Challenge: <span className="text-white/80">{team.challenge}</span>
+          </p>
+        )}
+        {team.links && <LinkRow links={team.links} className="mt-5" />}
+      </div>
+
+      <div>
+        <p className="m-0 text-[clamp(18px,1.8vw,22px)] leading-relaxed text-white/85 font-light">{team.summary}</p>
+        {team.detail?.map((p) => (
+          <p key={p.slice(0, 24)} className="m-0 mt-4 text-[16px] leading-relaxed text-white/70 font-light">
+            {p}
+          </p>
+        ))}
+
+        <div className="mt-7 grid grid-cols-1 md:grid-cols-2 gap-4">
+          {team.members.map((m) => (
+            <div key={m.name} className="border-t border-white/12 pt-4">
+              <h4 className="m-0 font-['Overpass',sans-serif] font-bold text-[18px] text-white">{m.name}</h4>
+              {m.note && <p className="m-0 mt-2 text-[15px] leading-relaxed text-white/68 font-light">{m.note}</p>}
+              {m.links && <LinkRow links={m.links} className="mt-3" />}
+            </div>
+          ))}
+        </div>
+      </div>
+    </article>
+  </ScrollReveal>
+);
 
 export const HoustonWinners: React.FC = () => {
+  const featured = houstonWinners.find((t) => t.featured);
+  const rest = houstonWinners.filter((t) => !t.featured);
+  const year = featured?.year ?? rest[0]?.year;
+
   return (
     <section data-screen-label="Houston winners" className="py-[clamp(56px,7vw,104px)] px-6">
       <div className="max-w-[1320px] mx-auto">
         <ScrollReveal>
           <div className="flex flex-wrap items-baseline gap-3 mb-2">
             <h2 className="m-0 font-['Overpass',sans-serif] font-black text-[clamp(28px,3.6vw,46px)] uppercase text-white">
-              Houston <span className="text-[#EAFE07]">2024 Winners</span>
+              Houston <span className="text-[#EAFE07]">{year} winners</span>
             </h2>
             <span className="font-['Fira_Sans_Condensed',sans-serif] text-[13px] font-bold tracking-widest uppercase text-[#2E96F5]">
               Global Nominees
             </span>
           </div>
           <p className="m-0 mb-10 max-w-[720px] text-[18px] leading-relaxed text-white/75 font-light">
-            Official Houston local event winners nominated for the global NASA Space Apps Challenge judging rounds.
+            Every local event sends its strongest projects to global judging. These are the teams Houston put forward.
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {winnersList.map((team, idx) => (
-            <ScrollReveal key={idx} className="h-full">
-              <div className="h-full flex flex-col justify-between border border-white/14 rounded-2xl p-6 bg-[#050A1C]/80 backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-[#EAFE07] shadow-xl">
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="font-['Fira_Sans_Condensed',sans-serif] text-[11px] font-extrabold tracking-wider uppercase px-2.5 py-1 rounded bg-white/10" style={{ color: team.badgeColor }}>
-                      🏆 {team.category}
-                    </span>
-                  </div>
-                  <h3 className="m-0 mb-2 text-[22px] font-extrabold text-white leading-snug font-['Overpass',sans-serif]">
-                    {team.name}
-                  </h3>
-                  <p className="m-0 mb-4 text-[14px] leading-relaxed text-white/75 font-light">
-                    {team.description}
-                  </p>
-                </div>
+        {featured && <Featured team={featured} />}
 
-                <div className="pt-4 border-t border-white/10">
+        <div className="mt-[1.125rem] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[1.125rem]">
+          {rest.map((team) => (
+            <ScrollReveal key={team.name} className="h-full">
+              <article className="h-full flex flex-col border border-white/14 rounded-2xl p-6 bg-[#050A1C]/80 transition-all duration-300 hover:-translate-y-1.5 hover:border-[#EAFE07]">
+                <span
+                  className="self-start font-['Fira_Sans_Condensed',sans-serif] text-[11px] font-extrabold tracking-wider uppercase px-2.5 py-1 rounded bg-white/10"
+                  style={{ color: team.accent }}
+                >
+                  {team.year} {team.award}
+                </span>
+                <h3 className="m-0 mt-3 mb-2 font-['Overpass',sans-serif] font-extrabold text-[22px] leading-snug text-white">
+                  {team.name}
+                </h3>
+                <p className="m-0 mb-4 text-[15px] leading-relaxed text-white/72 font-light">{team.summary}</p>
+                <div className="mt-auto pt-4 border-t border-white/10">
                   <div className="font-['Fira_Sans_Condensed',sans-serif] text-[11px] font-bold tracking-widest uppercase text-white/50 mb-2">
-                    Team Members
+                    Team
                   </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {team.members.map((m, mIdx) => (
-                      <span key={mIdx} className="text-[12px] font-medium text-white/85 bg-white/6 px-2.5 py-1 rounded-md border border-white/10">
-                        {m}
-                      </span>
+                  <ul className="m-0 p-0 list-none grid gap-1">
+                    {team.members.map((m) => (
+                      <li key={m.name} className="text-[14px] text-white/78">
+                        {m.name}
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
-              </div>
+              </article>
             </ScrollReveal>
           ))}
         </div>

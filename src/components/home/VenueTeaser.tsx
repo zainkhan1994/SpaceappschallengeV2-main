@@ -53,9 +53,6 @@ export const VenueTeaser: React.FC = () => {
                 </div>
               ))}
             </div>
-            <p className="mt-6 m-0 text-[15px] leading-relaxed text-white/55">
-              No venue is confirmed yet. Nothing on this page implies a host site.
-            </p>
           </div>
         </ScrollReveal>
       </div>

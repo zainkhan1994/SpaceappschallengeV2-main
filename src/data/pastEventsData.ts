@@ -8,9 +8,3 @@ export const pastStats = [
   { n: 120, label: 'Subject matter experts' },
   { n: 26, label: 'Navigators' }
 ];
-
-export const videos = [
-  'https://www.youtube.com/embed/EWSqfntpYoM',
-  'https://www.youtube.com/embed/0B3RlwvWICg',
-  'https://www.youtube.com/embed/SeriamoGlnw'
-];

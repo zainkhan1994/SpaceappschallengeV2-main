@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollReveal } from '../ui/ScrollReveal';
-import { venueCriteria, venuePhotos } from '../../data/venueData';
+import { venueCriteria, venueHosts } from '../../data/venueData';
 
 export const VenueSection: React.FC = () => {
   return (
@@ -60,7 +60,7 @@ export const VenueSection: React.FC = () => {
         </ScrollReveal>
       </section>
 
-      {/* Historical Venue Photos */}
+      {/* Universities behind past Houston Local Events */}
       <section className="py-[clamp(56px,7vw,104px)] px-6 bg-gradient-to-b from-transparent via-[rgba(0,66,166,0.2)] to-transparent">
         <div className="max-w-[1320px] mx-auto">
           <ScrollReveal>
@@ -68,20 +68,21 @@ export const VenueSection: React.FC = () => {
               Where we've been
             </h2>
             <p className="m-0 mb-9 max-w-[700px] text-[18px] leading-relaxed text-white/72">
-              Archive photos from previous Houston Local Events. None of these are confirmed for 2026.
+              The universities behind past Houston Local Events.
             </p>
           </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-[1.125rem]">
-            {venuePhotos.map((p, i) => (
-              <ScrollReveal key={i}>
-                <figure className="m-0">
-                  <img
-                    src={p.src}
-                    alt={p.alt}
-                    className="w-full aspect-[4/3] object-cover rounded-2xl border border-white/16 block"
-                  />
-                  <figcaption className="mt-2.5 text-[14px] text-white/55">{p.caption}</figcaption>
+            {venueHosts.map((h) => (
+              <ScrollReveal key={h.name}>
+                <figure className="m-0 h-full">
+                  <div className="grid place-items-center h-[clamp(140px,18vw,200px)] px-8 rounded-2xl border border-white/16 bg-white/[0.04]">
+                    <img src={h.logo} alt={`${h.name} logo`} className="w-full max-w-[340px] max-h-[62px] object-contain block" />
+                  </div>
+                  <figcaption className="mt-2.5 text-[14px] text-white/55">
+                    {h.name}
+                    {h.unit ? ` · ${h.unit}` : ''}
+                  </figcaption>
                 </figure>
               </ScrollReveal>
             ))}

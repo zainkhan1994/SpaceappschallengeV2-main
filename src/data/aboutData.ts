@@ -73,3 +73,15 @@ export const roster: TeamNode[] = [
     loves: 'Loves: Building technology & solving problems'
   }
 ];
+
+/**
+ * Space Apps Houston's own films, looped on the About page. The three vertical clips and the two event films come
+ * from the Space Apps Houston marketing library.
+ */
+export const motionClips: { src: string; poster: string; label: string; wide?: boolean }[] = [
+  { src: '/videos/loops/houston.mp4', poster: '/videos/loops/houston-poster.jpg', label: 'Houston from above' },
+  { src: '/videos/loops/space-data.mp4', poster: '/videos/loops/space-data-poster.jpg', label: 'Houston after dark' },
+  { src: '/videos/loops/space.mp4', poster: '/videos/loops/space-poster.jpg', label: 'Earth from orbit' },
+  { src: '/videos/SACHoustonIntro.mp4', poster: '/Pictures/StudentCenterNorth.jpg', label: 'Inside the hackathon', wide: true },
+  { src: '/videos/SavetheDate.mp4', poster: '/videos/save-the-date-poster.jpg', label: 'Save the date', wide: true }
+];

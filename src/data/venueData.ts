@@ -7,7 +7,7 @@ export const venueCriteria = [
   { title: 'Available all weekend', desc: 'Open for the full agenda including early access for setup, with areas for food and trash.' }
 ];
 
-export const venuePhotos = [
-  { src: '/Pictures/Student Center South.jpg', alt: 'Large open student centre hall with tables', caption: 'Previous Houston Local Event venue — archive.' },
-  { src: '/Pictures/StudentCenterNorth.jpg', alt: 'University student centre exterior', caption: 'Previous Houston Local Event venue — archive.' }
+export const venueHosts = [
+  { logo: '/logos/university-of-houston.svg', name: 'University of Houston', unit: 'College of Education' },
+  { logo: '/logos/rice-university.svg', name: 'Rice University' }
 ];

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollReveal } from '../ui/ScrollReveal';
+import HoustonInMotion from '../about/HoustonInMotion';
 import { basics } from '../../data/homeData';
 import { audiences, takeaways, roster } from '../../data/aboutData';
 import { TeamNode } from '../../types';
@@ -94,6 +95,8 @@ export const AboutSection: React.FC = () => {
           </ScrollReveal>
         </div>
       </section>
+
+      <HoustonInMotion />
 
       {/* Interactive Team Nodes Map */}
       <section data-screen-label="Who runs it" className="py-[clamp(56px,7vw,104px)] px-6">
