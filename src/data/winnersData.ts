@@ -22,13 +22,12 @@ export interface WinnerTeam {
   /** The Space Apps challenge the team answered. */
   challenge?: string;
   summary: string;
-  /** Longer story, for the featured team. */
+  /** Longer story, where we have one. */
   detail?: string[];
   members: WinnerMember[];
   image?: string;
   links?: WinnerLink[];
   accent: string;
-  featured?: boolean;
 }
 
 export const houstonWinners: WinnerTeam[] = [
@@ -66,12 +65,89 @@ export const houstonWinners: WinnerTeam[] = [
       { label: 'Slides', href: 'https://docs.google.com/presentation/d/1li-WhVqb-3GmzET4satab2NlbWf9P9UeNMMF79hCCKw/edit' },
       { label: 'Code', href: 'https://github.com/farmvis' }
     ],
-    accent: '#EAFE07',
-    featured: true
+    accent: '#EAFE07'
+  },
+  {
+    name: 'EnviroCast',
+    year: 2025,
+    award: 'Houston Global Nominee',
+    summary: 'Air quality forecasting that pairs satellite and ground data with hybrid quantum-classical models.',
+    detail: [
+      'EnviroCast forecasts what the air will be like, using quantum algorithms alongside conventional machine learning where the classical models run out of room. The team has kept building since the hackathon: EnviroNex is the current version of the work.'
+    ],
+    members: [
+      {
+        name: 'Arnav Nemade',
+        note: 'Team lead and lead quantum developer, working in AI, multi-agent orchestration, autonomous workflows and machine learning.',
+        links: [
+          { label: 'Site', href: 'https://arnavnemade.vercel.app' },
+          { label: 'LinkedIn', href: 'https://www.linkedin.com/in/arnav-nemade-586871390/' }
+        ]
+      },
+      {
+        name: 'Kavin Elangovan',
+        note: 'Co-lead on web applications and graphics, working in deep learning, visual interfaces and full-stack development.',
+        links: [
+          { label: 'Site', href: 'https://www.kavinelangovan.com' },
+          { label: 'LinkedIn', href: 'https://www.linkedin.com/in/kavin-elangovan-93b556324/' }
+        ]
+      },
+      { name: 'Ahaan Thota' },
+      { name: 'Divin Giddaluru' },
+      { name: 'Sathyan Gopal' },
+      { name: 'Vir Sanghavi' }
+    ],
+    links: [
+      { label: 'envirocast.org', href: 'https://www.envirocast.org/team' },
+      { label: 'Code', href: 'https://github.com/envirocast' }
+    ],
+    accent: '#00E5FF'
+  },
+  {
+    name: 'Team AI MED',
+    year: 2025,
+    award: 'Houston Global Nominee',
+    summary: 'AI analysis applied to space medicine data.',
+    members: [
+      {
+        name: 'Myreen Ahsan',
+        note: 'Founder and chief executive of AI-MED STEM for ALL, a youth-led nonprofit, working in translational medicine and AI.',
+        links: [{ label: 'AI-MED STEM', href: 'https://aimedstemforall.org/meet-the-team/' }]
+      },
+      {
+        name: 'Ashley Jiang',
+        note: 'Vice president of AI-MED STEM for ALL, working in medical AI.',
+        links: [{ label: 'AI-MED STEM', href: 'https://aimedstemforall.org/meet-the-team/' }]
+      },
+      {
+        name: 'Xiaoqian Jiang',
+        note: 'Professor and chair of health data science and artificial intelligence at UTHealth Houston\u2019s McWilliams School of Biomedical Informatics, and an advisor to AI-MED STEM.',
+        links: [{ label: 'UTHealth', href: 'https://sbmi.uth.edu/faculty-and-staff/xiaoqian-jiang.htm' }]
+      },
+      { name: 'Abyaz Bhuiyan' },
+      { name: 'Sonia A' },
+      { name: 'Carlos Alfredo' }
+    ],
+    accent: '#FF3366'
+  },
+  {
+    name: 'Cosmobots',
+    year: 2025,
+    award: 'Houston Global Nominee',
+    summary: 'Autonomous robotics working from satellite data.',
+    members: [
+      { name: 'Amey Mishra', links: [{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/amey-mishra/' }] },
+      { name: 'Thevesh Pal' },
+      { name: 'Yunus Kilinc' },
+      { name: 'Yen-Ching Cheng' },
+      { name: 'Parth Zanwar' },
+      { name: 'Dhruv Mantri' }
+    ],
+    accent: '#2E96F5'
   },
   {
     name: 'Bluetonium',
-    year: 2024,
+    year: 2025,
     award: 'Houston Global Nominee',
     summary: 'Space mission modelling built on open data.',
     members: [
@@ -82,50 +158,5 @@ export const houstonWinners: WinnerTeam[] = [
       { name: 'Jim Foreman' }
     ],
     accent: '#EAFE07'
-  },
-  {
-    name: 'Cosmobots',
-    year: 2024,
-    award: 'Houston Global Nominee',
-    summary: 'Autonomous robotics working from satellite data.',
-    members: [
-      { name: 'Thevesh Pal' },
-      { name: 'Yunus Kilinc' },
-      { name: 'Amey Mishra' },
-      { name: 'Yen-Ching Cheng' },
-      { name: 'Parth Zanwar' },
-      { name: 'Dhruv Mantri' }
-    ],
-    accent: '#2E96F5'
-  },
-  {
-    name: 'EnviroCast',
-    year: 2024,
-    award: 'Houston Global Nominee',
-    summary: 'Environmental prediction from Earth observation data.',
-    members: [
-      { name: 'Ahaan Thota' },
-      { name: 'Divin Giddaluru' },
-      { name: 'Sathyan Gopal' },
-      { name: 'Arnav Nemade' },
-      { name: 'Kavin Elangovan' },
-      { name: 'Vir Sanghavi' }
-    ],
-    accent: '#00E5FF'
-  },
-  {
-    name: 'Team AI MED',
-    year: 2024,
-    award: 'Houston Global Nominee',
-    summary: 'AI analysis applied to space medicine data.',
-    members: [
-      { name: 'Abyaz Bhuiyan' },
-      { name: 'Ashley Jiang' },
-      { name: 'Xiaoqian Jiang' },
-      { name: 'Sonia A' },
-      { name: 'Carlos Alfredo' },
-      { name: 'Myreen Ahsan' }
-    ],
-    accent: '#FF3366'
   }
 ];
