@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollReveal } from '../ui/ScrollReveal';
 import { houstonWinners, WinnerLink, WinnerTeam } from '../../data/winnersData';
 
@@ -19,7 +19,17 @@ const LinkRow: React.FC<{ links: WinnerLink[]; className?: string }> = ({ links,
   </div>
 );
 
-const TeamRow: React.FC<{ team: WinnerTeam }> = ({ team }) => (
+const TABS = ['About', 'Project', 'Members'] as const;
+
+const Heading: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <h4 className="m-0 mb-2 font-['Fira_Sans_Condensed',sans-serif] text-[13px] font-extrabold tracking-widest uppercase text-[#2E96F5]">{children}</h4>
+);
+
+const TeamRow: React.FC<{ team: WinnerTeam }> = ({ team }) => {
+  const [tab, setTab] = useState<(typeof TABS)[number]>('About');
+  const hasTabs = !!(team.aboutTeam || team.project2);
+  const show = hasTabs ? tab : 'About';
+  return (
   <ScrollReveal>
     <article className="grid grid-cols-1 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)] gap-[clamp(20px,3vw,44px)] border border-white/14 rounded-2xl p-[clamp(20px,3vw,38px)] bg-[#050A1C]/80">
       <div>
@@ -53,26 +63,89 @@ const TeamRow: React.FC<{ team: WinnerTeam }> = ({ team }) => (
       </div>
 
       <div>
-        <p className="m-0 text-[clamp(18px,1.8vw,22px)] leading-relaxed text-white/85 font-light">{team.summary}</p>
-        {team.detail?.map((p) => (
-          <p key={p.slice(0, 24)} className="m-0 mt-4 text-[16px] leading-relaxed text-white/70 font-light">
-            {p}
-          </p>
-        ))}
+        {hasTabs && (
+          <div role="tablist" aria-label={`${team.name} details`} className="flex flex-wrap gap-1.5 mb-6">
+            {TABS.map((t) => (
+              <button
+                key={t}
+                type="button"
+                role="tab"
+                aria-selected={show === t}
+                onClick={() => setTab(t)}
+                className={`px-4 py-2 rounded-lg font-['Fira_Sans_Condensed',sans-serif] text-[13px] font-bold tracking-wider uppercase transition-colors ${
+                  show === t ? 'bg-white text-[#04122F]' : 'bg-white/[0.06] text-white/70 hover:text-white'
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+        )}
 
-        <div className="mt-7 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-          {team.members.map((m) => (
-            <div key={m.name} className="border-t border-white/12 pt-4">
-              <h4 className="m-0 font-['Overpass',sans-serif] font-bold text-[18px] text-white">{m.name}</h4>
-              {m.note && <p className="m-0 mt-2 text-[15px] leading-relaxed text-white/68 font-light">{m.note}</p>}
-              {m.links && <LinkRow links={m.links} className="mt-3" />}
+        {show === 'About' && (
+          <>
+            <p className="m-0 text-[clamp(18px,1.8vw,22px)] leading-relaxed text-white/85 font-light">{team.summary}</p>
+            {team.aboutTeam && (
+              <div className="mt-6">
+                <Heading>About the team</Heading>
+                <p className="m-0 text-[16px] leading-relaxed text-white/72 font-light">{team.aboutTeam}</p>
+              </div>
+            )}
+            {team.aboutChallenge && (
+              <div className="mt-6">
+                <Heading>About the challenge</Heading>
+                <p className="m-0 text-[16px] leading-relaxed text-white/72 font-light">{team.aboutChallenge}</p>
+              </div>
+            )}
+            {!team.aboutTeam &&
+              team.detail?.map((p) => (
+                <p key={p.slice(0, 24)} className="m-0 mt-4 text-[16px] leading-relaxed text-white/70 font-light">
+                  {p}
+                </p>
+              ))}
+          </>
+        )}
+
+        {show === 'Project' && team.project2 && (
+          <>
+            <h4 className="m-0 font-['Overpass',sans-serif] font-black text-[clamp(20px,2.2vw,28px)] uppercase text-white">{team.project2.name}</h4>
+            <div className="mt-5">
+              <Heading>Summary</Heading>
+              <p className="m-0 text-[16px] leading-relaxed text-white/80 font-light">{team.project2.summary}</p>
             </div>
-          ))}
-        </div>
+            {team.project2.details && (
+              <div className="mt-6">
+                <Heading>Project details</Heading>
+                <p className="m-0 text-[16px] leading-relaxed text-white/72 font-light">{team.project2.details}</p>
+              </div>
+            )}
+            <LinkRow
+              className="mt-6"
+              links={[
+                ...(team.project2.demo ? [{ label: 'Demonstration', href: team.project2.demo }] : []),
+                ...(team.project2.url ? [{ label: 'Project', href: team.project2.url }] : []),
+                ...(team.teamPage ? [{ label: 'Space Apps team page', href: team.teamPage }] : [])
+              ]}
+            />
+          </>
+        )}
+
+        {(show === 'Members' || !hasTabs) && (
+          <div className={`grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 ${hasTabs ? '' : 'mt-7'}`}>
+            {team.members.map((m) => (
+              <div key={m.name} className="border-t border-white/12 pt-4">
+                <h4 className="m-0 font-['Overpass',sans-serif] font-bold text-[18px] text-white">{m.name}</h4>
+                {m.note && <p className="m-0 mt-2 text-[15px] leading-relaxed text-white/68 font-light">{m.note}</p>}
+                {m.links && <LinkRow links={m.links} className="mt-3" />}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </article>
   </ScrollReveal>
-);
+  );
+};
 
 export const HoustonWinners: React.FC = () => {
   const years = [...new Set(houstonWinners.map((t) => t.year))].sort((a, b) => b - a);
